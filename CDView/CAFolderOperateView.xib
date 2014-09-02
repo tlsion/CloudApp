@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CAFolderOperateView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="操作按钮底部.png" translatesAutoresizingMaskIntoConstraints="NO" id="Uuz-S1-ePs">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="urZ-Gh-bss">
+                    <rect key="frame" x="0.0" y="0.0" width="80" height="49"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <inset key="titleEdgeInsets" minX="-10" minY="15" maxX="10" maxY="-10"/>
+                    <inset key="imageEdgeInsets" minX="10" minY="-15" maxX="-10" maxY="0.0"/>
+                    <state key="normal" title="下载" image="下载2.png">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="disabled">
+                        <color key="titleColor" red="0.85882352939999995" green="0.85882352939999995" blue="0.85882352939999995" alpha="1" colorSpace="deviceRGB"/>
+                    </state>
+                    <state key="selected" image="下载.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <state key="highlighted" image="下载.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="selectFolderOperateAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="mjF-Pb-rht"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPQ-rK-hJz">
+                    <rect key="frame" x="80" y="0.0" width="80" height="49"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <inset key="titleEdgeInsets" minX="-10" minY="15" maxX="10" maxY="-10"/>
+                    <inset key="imageEdgeInsets" minX="10" minY="-15" maxX="-10" maxY="0.0"/>
+                    <state key="normal" title="删除" image="删除2.png">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="删除.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <state key="highlighted" image="删除.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="selectFolderOperateAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="TUN-7l-McZ"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ylr-Im-DYK">
+                    <rect key="frame" x="160" y="0.0" width="80" height="49"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <inset key="titleEdgeInsets" minX="-10" minY="15" maxX="10" maxY="-10"/>
+                    <inset key="imageEdgeInsets" minX="25" minY="-15" maxX="-10" maxY="0.0"/>
+                    <state key="normal" title="重命名" image="重命名2.png">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="重命名.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <state key="highlighted" image="重命名.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="selectFolderOperateAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="8tl-Oh-uSn"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jv8-cm-LDw">
+                    <rect key="frame" x="240" y="0.0" width="80" height="49"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <inset key="titleEdgeInsets" minX="-10" minY="15" maxX="10" maxY="-10"/>
+                    <inset key="imageEdgeInsets" minX="10" minY="-15" maxX="-10" maxY="0.0"/>
+                    <state key="normal" title="移动" image="移动2.png">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="移动.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <state key="highlighted" image="移动.png">
+                        <color key="titleColor" red="0.0" green="0.75686274509999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="selectFolderOperateAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="or7-9t-QmO"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="下载.png" width="18" height="18"/>
+        <image name="下载2.png" width="18" height="18"/>
+        <image name="删除.png" width="18" height="18"/>
+        <image name="删除2.png" width="18" height="18"/>
+        <image name="操作按钮底部.png" width="320" height="49"/>
+        <image name="移动.png" width="18" height="18"/>
+        <image name="移动2.png" width="18" height="18"/>
+        <image name="重命名.png" width="18" height="18"/>
+        <image name="重命名2.png" width="18" height="18"/>
+    </resources>
+</document>

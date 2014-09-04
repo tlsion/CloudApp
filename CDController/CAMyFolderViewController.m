@@ -450,15 +450,15 @@
         switch (buttonIndex) {
             case 0:
             {
-//                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
-                [self showPickerController:(NSString *)kUTTypeImage];
+                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
+//                [self showPickerController:(NSString *)kUTTypeImage];
             }
                 break;
                 
             case 1:
             {
 //                [self showAssetPicker:ASSET_PICKER_VIDEO_TAG];
-                [self showPickerController:(NSString *)kUTTypeVideo];
+                [self showPickerController:(NSString *)kUTTypeMovie];
                 
             }
                 break;

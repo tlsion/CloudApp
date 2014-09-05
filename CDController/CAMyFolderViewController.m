@@ -524,10 +524,12 @@
 //            
 //            CGImageRef ref = [[result  defaultRepresentation]fullResolutionImage];
         }
+        
         NSLog(@"name:%@,size:%ld",fileName,uploadData.length);
         [self uploadFile:fileName andData:uploadData];
         
     }
+    
 //    [self.tableView beginUpdates];
 //    [self.tableView insertRowsAtIndexPaths:[self indexPathOfNewlyAddedAssets:assets]
 //                          withRowAnimation:UITableViewRowAnimationBottom];
@@ -565,12 +567,12 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     
-    NSData * imageData=nil;
+    __weak NSData * uploadData=nil;
     
     if ([mediaType isEqualToString:@"public.image"]) {
         
         UIImage * pickerImage=[info objectForKey:UIImagePickerControllerOriginalImage];
-        imageData=UIImageJPEGRepresentation(pickerImage, 1);
+        uploadData=UIImageJPEGRepresentation(pickerImage, 1);
         
 //        NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
 //        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
@@ -591,8 +593,9 @@
         
     }
     else if ([mediaType isEqualToString:@"public.movie"]){
-//        NSString* path = [[info objectForKey:UIImagePickerControllerMediaURL] path];
-//        UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+        
+        NSString *videoPath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
+        uploadData= [NSData dataWithContentsOfFile:videoPath];
     }
     NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
@@ -602,7 +605,7 @@
         fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSLog(@"fileName : %@",fileName);
         
-        [self uploadFile:fileName andData:imageData];
+        [self uploadFile:fileName andData:uploadData];
     };
     
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];

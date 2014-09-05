@@ -118,11 +118,16 @@
             else if (response.statusCode==kOCErrorServerURLNotCorrect){
                 ALERT(@"服务器连接错误！");
             }
+            else {
+                ALERT(@"登录失败！");
+            }
         } failureRequest:^(NSHTTPURLResponse *response) {
             if (response.statusCode==kOCErrorServerUserNoFault) {
                 ALERT(@"账号密码错误！");
             }
-            
+            else {
+                ALERT(@"登录失败！");
+            }
         }];
 //        [self dismissViewControllerAnimated:YES completion:^(){
 //            [userDefaults setBool:YES forKey:User_IsLogined];

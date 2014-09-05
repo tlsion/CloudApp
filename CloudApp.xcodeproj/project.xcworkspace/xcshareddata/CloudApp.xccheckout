@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>0B239CF6-F0FF-4AB2-9174-F2A1882C8365</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CloudApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</key>
+		<string>https://github.com/tlsion/CloudApp.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CloudApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/tlsion/CloudApp.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CloudApp</string>
+		</dict>
+	</array>
+</dict>
+</plist>

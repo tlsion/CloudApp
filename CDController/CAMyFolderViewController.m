@@ -195,45 +195,45 @@
 //    }];
 }
 - (void) createFolderName:(NSString *)name {
-//    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,name];
-//    [CADataHelper createFolderWithPath:path IsSuccess:^(BOOL isSuccess) {
-//        if (isSuccess) {
-//            [self getFoldersData];
-//        }
-//    }];
+    //    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,name];
+    //    [CADataHelper createFolderWithPath:path IsSuccess:^(BOOL isSuccess) {
+    //        if (isSuccess) {
+    //            [self getFoldersData];
+    //        }
+    //    }];
 }
 
 -(void)uploadFile:(NSString *)fileName andData:(NSData *)fileData {
     NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,fileName];
     
-    __weak CAMyFolderViewController * controller=self;
+    __weak AppDelegate * app=APP;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{
-        [controller.view makeToast:@"已加入上传列表"];
+        [app.window makeToast:@"已加入上传列表"];
     }progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
-        NSLog(@"上传：%ld",bytesWrite);
+        //        NSLog(@"上传：%ld",bytesWrite);
     }successRequest:^{
-        [controller.view makeToast:@"上传成功"];
+        [app.window makeToast:@"上传成功"];
         [_itemsTableView headerBeginRefreshing];
     } failureRequest:^(NSError * error) {
-        [controller.view makeToast:@"上传失败"];
+        [app.window makeToast:@"上传失败"];
     } failureBeforeRequest:^(NSError *error) {
-        [controller.view makeToast:@"上传失败"];
+        [app.window makeToast:@"上传失败"];
     }];
 }
 -(void)downloadFile:(NSString *)fileName {
     NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,fileName];
     
-    __weak CAMyFolderViewController * controller=self;
     
+    __weak AppDelegate * app=APP;
     [CADataHelper downloadFile:path downloadFileName:fileName willStart:^{
-        [controller.view makeToast:@"已加入下载列表"];
+        [app.window makeToast:@"已加入下载列表"];
     }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
-//        NSLog(@"下载外：%ld",bytesRead);
+        //        NSLog(@"下载外：%ld",bytesRead);
     } successRequest:^(NSString *downPath) {
-         [controller.view makeToast:@"下载成功"];
+        [app.window makeToast:@"下载成功"];
     } failureRequest:^(NSError *error) {
-         [controller.view makeToast:@"下载失败"];
+        [app.window makeToast:@"下载失败"];
     }];
     
     [self backToNoSelect];
@@ -241,13 +241,14 @@
 -(void)deleteFile:(OCFileDto *)itemDto{
     
     NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,itemDto.fileName];
-    __weak CAMyFolderViewController * controller=self;
+    
+    __weak AppDelegate * app=APP;
     [CADataHelper deleteFileOrFolder:path successRequest:^{
-        [controller.view makeToast:[NSString stringWithFormat:@"删除成功"]];
+        [app.window makeToast:[NSString stringWithFormat:@"删除成功"]];
         [_itemsTableView headerBeginRefreshing];
     } failureRquest:^(NSError *error) {
-        [controller.view makeToast:@"删除失败"];
-//        [_itemsTableView reloadData];
+        [app.window makeToast:@"删除失败"];
+        [_itemsTableView reloadData];
     }];
     
     [self backToNoSelect];
@@ -255,14 +256,15 @@
 -(void)renameItemDto:(OCFileDto *)itemDto andNewName:(NSString *)newName{
     NSString * oldPath=[NSString stringWithFormat:@"%@/%@",_az_folderPath,itemDto.fileName];
     NSString * newPath=[NSString stringWithFormat:@"%@/%@",_az_folderPath,newName];
-    __weak CAMyFolderViewController * controller=self;
+    
+    __weak AppDelegate * app=APP;
     [CADataHelper moveFileOrFolder:oldPath toDestiny:newPath successRequest:^{
-        [controller.view makeToast:[NSString stringWithFormat:@"重命名成功"]];
+        [app.window makeToast:[NSString stringWithFormat:@"重命名成功"]];
         [_itemsTableView headerBeginRefreshing];
     } failureRequest:^{
-        [controller.view makeToast:[NSString stringWithFormat:@"重命名失败"]];
+        [app.window makeToast:[NSString stringWithFormat:@"重命名失败"]];
     } errorBeforeRequest:^{
-        [controller.view makeToast:[NSString stringWithFormat:@"重命名失败"]];
+        [app.window makeToast:[NSString stringWithFormat:@"重命名失败"]];
     }];
     
     [self backToNoSelect];
@@ -450,15 +452,15 @@
         switch (buttonIndex) {
             case 0:
             {
-//                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
-                [self showPickerController:(NSString *)kUTTypeImage];
+                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
+//                [self showPickerController:(NSString *)kUTTypeImage];
             }
                 break;
                 
             case 1:
             {
 //                [self showAssetPicker:ASSET_PICKER_VIDEO_TAG];
-                [self showPickerController:(NSString *)kUTTypeVideo];
+                [self showPickerController:(NSString *)kUTTypeMovie];
                 
             }
                 break;
@@ -562,29 +564,51 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    NSData * imageData=nil;
+    
     if ([mediaType isEqualToString:@"public.image"]) {
         
-        __weak UIImage * pickerImage=[info objectForKey:UIImagePickerControllerOriginalImage];
-        NSData * imageData=UIImageJPEGRepresentation(pickerImage, 1);
+        UIImage * pickerImage=[info objectForKey:UIImagePickerControllerOriginalImage];
+        imageData=UIImageJPEGRepresentation(pickerImage, 1);
         
-        NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
-        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
-        {
-            ALAssetRepresentation *representation = [myasset defaultRepresentation];
-            NSString *fileName = [representation filename];
-            fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            NSLog(@"fileName : %@",fileName);
-            
-            [self uploadFile:fileName andData:imageData];
-        };
-        
-        ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-        [assetslibrary assetForURL:imageURL
-                       resultBlock:resultblock
-                      failureBlock:nil];
+//        NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+//        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
+//        {
+//            ALAssetRepresentation *representation = [myasset defaultRepresentation];
+//            NSString *fileName = [representation filename];
+//            fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//            NSLog(@"fileName : %@",fileName);
+//            
+//            [self uploadFile:fileName andData:imageData];
+//        };
+//        
+//        ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+//        [assetslibrary assetForURL:imageURL
+//                       resultBlock:resultblock
+//                      failureBlock:nil];
         
         
     }
+    else if ([mediaType isEqualToString:@"public.movie"]){
+//        NSString* path = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+//        UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+    }
+    NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+    ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
+    {
+        ALAssetRepresentation *representation = [myasset defaultRepresentation];
+        NSString *fileName = [representation filename];
+        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"fileName : %@",fileName);
+        
+        [self uploadFile:fileName andData:imageData];
+    };
+    
+    ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+    [assetslibrary assetForURL:imageURL
+                   resultBlock:resultblock
+                  failureBlock:nil];
 //    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
 //    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 //    [library assetForURL:assetURL

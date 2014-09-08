@@ -27,6 +27,7 @@
 #import "CAShowFileViewController.h"
 #import "OCWebDAVClient.h"
 #import "Reachability.h"
+#import "TXMD5.h"
 #define AV_RENAME_TAG 100
 #define AS_UPLOAD_TAG 200
 
@@ -442,7 +443,7 @@
 
 #pragma mark -- UIActionSheet
 -(UIActionSheet *)uploadActionSheet{
-    UIActionSheet * as=[[UIActionSheet alloc]initWithTitle:@"上传文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"照片",@"视频", nil];
+    UIActionSheet * as=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"照片",@"视频", nil];
     as.tag=AS_UPLOAD_TAG;
     return as;
 }
@@ -452,8 +453,8 @@
         switch (buttonIndex) {
             case 0:
             {
-                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
-//                [self showPickerController:(NSString *)kUTTypeImage];
+//                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
+                [self showPickerController:(NSString *)kUTTypeImage];
             }
                 break;
                 
@@ -597,6 +598,7 @@
         NSString *videoPath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
         uploadData= [NSData dataWithContentsOfFile:videoPath];
     }
+    
     NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
     {
@@ -605,25 +607,15 @@
         fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSLog(@"fileName : %@",fileName);
         
-        [self uploadFile:fileName andData:uploadData];
+        NSString *uploadFileName = [self getFileName:fileName];
+        [self uploadFile:uploadFileName andData:uploadData];
+
     };
     
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
     [assetslibrary assetForURL:imageURL
                    resultBlock:resultblock
                   failureBlock:nil];
-//    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-//    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-//    [library assetForURL:assetURL
-//             resultBlock:^(ALAsset *asset) {
-//                 NSDictionary* imageMetadata = [[NSMutableDictionary alloc] initWithDictionary:asset.defaultRepresentation.metadata];
-//                 NSDictionary *GPSDict=[imageMetadata objectForKey:kCGImagePropertyGPSDictionary];
-//                 NSLog(@"%@",GPSDict);
-//                 NSLog(@"%@",imageMetadata);
-////                  GPSDict 里面即是照片的GPS信息,具体可以输出看看
-//             }
-//            failureBlock:^(NSError *error) {
-//            }];
 
     
 }
@@ -645,6 +637,19 @@
 //    controller.showFileDto=itemDto;
 //    [self.navigationController pushViewController:controller animated:YES];
 //}
+-(NSString *)getFileName:(NSString *)oldFileName{
+//    oldFileName hasSuffix:
+    NSRange suffixRange=[oldFileName rangeOfString:@"."];
+    NSString * suffixStr=[oldFileName substringFromIndex:suffixRange.location-1];
+    NSDateFormatter * dateFormatter=[[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyy-MM-DD HH:mm:ss"];
+    NSString * dateStr=[dateFormatter stringFromDate:[NSDate date]];
+    dateStr=[dateStr stringByAppendingFormat:@"%d",arc4random()%999999];
+    dateStr=[TXMD5 md5:dateStr];
+    dateStr=[dateStr stringByAppendingFormat:@"%@",suffixStr];
+    NSLog(@"md5:%@",dateStr);
+    return dateStr;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -266,6 +266,9 @@ static BOOL isShowWifi =NO;
                 dispatch_async(kMainQueue, ^{
                     start();
                     [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartUpload]}];
+                    
+                    
+                    [self currentNetIsWiFi];
                 });
                 
             }
@@ -282,8 +285,6 @@ static BOOL isShowWifi =NO;
             [self didFileRequestWithWay:Do_Upload_Request fileName:fileName];
             dispatch_async(kMainQueue, ^{
                 successRequest(localPath);[[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidUploaded]}];
-                
-                [self currentNetIsWiFi];
             });
         });
         
@@ -745,6 +746,8 @@ static BOOL isShowWifi =NO;
     Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     BOOL isWifi=[reachability currentReachabilityStatus] == ReachableViaWiFi;
     NSLog(@"wifi:%d",isShowWifi);
+//    AppDelegate * app=APP;
+//    [app showNoWifi];
     if (!isWifi && !isShowWifi){
         AppDelegate * app=APP;
         [app showNoWifi];

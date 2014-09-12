@@ -77,6 +77,10 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
 +(void)deletePlaceFileDto:(OCFileDto *)foleDto andPlistName:(NSString *)plistName;
 //更新目录
 + (void) updateFolderWithPath:(NSString *)path successRequest:(void (^)(NSHTTPURLResponse *,NSArray *))itemsOfPath failureRequest:(void (^)(NSHTTPURLResponse *))errorRequest;
+
+//创建文件夹
++ (void) createFolderWithPath:(NSString *)path IsSuccess:(void(^)(BOOL)) result;
+
 //上传
 + (void) uploadFile:(NSString *) remotePath uploadFileName:(NSString *)fileName fileData:(NSData *)fileData willStart:(void(^)())start progressUpload:(void(^)(NSUInteger, long long, long long))progressUpload successRequest:(void(^)()) successRequest failureRequest:(void(^)(NSError *)) failureRequest  failureBeforeRequest:(void(^)(NSError *)) failureBeforeRequest ;
 //下载
@@ -95,7 +99,6 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
 //判断文件是否存在
 +(BOOL)placeHasSave:(OCFileDto *)fileDto;
 //+ (NSOperation *) downloadFile:(NSString *)remotePath toDestiny:(NSString *)localPath withLIFOSystem:(BOOL)isLIFO onCommunication:(OCCommunication *)sharedOCCommunication progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSHTTPURLResponse *, NSString *)) successRequest failureRequest:(void(^)(NSHTTPURLResponse *, NSError *)) failureRequest shouldExecuteAsBackgroundTaskWithExpirationHandler:(void (^)(void))handler;
-//+ (void) createFolderWithPath:(NSString *)path IsSuccess:(void(^)(BOOL)) result;
 //+ (NSMutableArray*)getFoldersWith:(NSArray *)folderDicts;
 ////+ (NSArray*)folders;
 //+(NSMutableArray *)getFoldersOfPath:(NSString *)path;

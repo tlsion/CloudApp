@@ -47,6 +47,24 @@ static BOOL isShowWifi =NO;
 +(void)deletePlistItemsOfName:(NSString *)plistName{
     [self deleteLocalFile:[self getCachesPathOfFolderName:[NSString stringWithFormat:@"%@/%@",Caches_CloudPlist,plistName]]];
 }
+
++ (void) createFolderWithPath:(NSString *)path IsSuccess:(void (^)(BOOL))result{
+    [[AppDelegate sharedOCCommunication] createFolder:[self getServiceUrl:path] onCommunication:[AppDelegate sharedOCCommunication] successRequest:^(NSHTTPURLResponse * response, NSString * redirected) {
+        [[self appDelegateWindow] makeToastActivity];
+        result(YES);
+    } failureRequest:^(NSHTTPURLResponse * response, NSError * error) {
+        if (response.statusCode==405) {
+            [[self appDelegateWindow] makeToast:@"文件夹已存在"];
+        }
+        [[self appDelegateWindow] hideToastActivity];
+        result(NO);
+    } errorBeforeRequest:^(NSError * error) {
+        [[self appDelegateWindow] makeToast:@"文件夹新建失败"];
+        [[self appDelegateWindow] hideToastActivity];
+        result(NO);
+        
+    }];
+}
 +(void)deletePlaceFileDto:(OCFileDto *)foleDto andPlistName:(NSString *)plistName{
     NSMutableArray * itemDictArr=[self getPlistFolders:plistName];
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",foleDto.fileName];
@@ -521,22 +539,6 @@ static BOOL isShowWifi =NO;
 //    [self saveContext];
 //    return newFolder.myIdValue;
 //}
-//+ (void) createFolderWithPath:(NSString *)path successRequest:(void(^)(BOOL)) requestResult{
-//    [[AppDelegate sharedOCCommunication] createFolder:path onCommunication:[AppDelegate sharedOCCommunication] successRequest:^(NSHTTPURLResponse * response, NSString * redirected) {
-//        [[self appDelegateWindow] makeToastActivity];
-//        NSLog(@"succes:%@",redirected);
-//        requestResult(YES);
-//    } failureRequest:^(NSHTTPURLResponse * response, NSError * error) {
-//        
-//        [[self appDelegateWindow] hideToastActivity];
-//        requestResult(NO);
-//    } errorBeforeRequest:^(NSError * error) {
-//        
-//        [[self appDelegateWindow] hideToastActivity];
-//        requestResult(NO);
-//        
-//    }];
-//}
 
 +(NSMutableArray *)getFoldersOfPath:(NSString *)path{
     
@@ -567,15 +569,21 @@ static BOOL isShowWifi =NO;
     NSArray * allPaths=[self subPath:path];
     
     NSMutableArray * pathFolders=[self getPlistFolders:Plist_Name_AllFolders];
+    NSMutableArray * items=pathFolders;
+    //pathFolder是根目录的文件，必须取到子目录下的对象
     for (int i=0; i<allPaths.count; i++) {
         NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@", allPaths[i]];
-        NSArray * matches=[pathFolders filteredArrayUsingPredicate:predicate];
+        NSArray * matches=[items filteredArrayUsingPredicate:predicate];
         if (matches.count>0) {
+            
             NSMutableDictionary * currentFolderDict=[matches lastObject];
             if (i==allPaths.count-1) {
                 [currentFolderDict setObject:saveFolders forKey:@"folders"];
             }
-            
+            else{
+                items=currentFolderDict[@"folders"];
+                continue;
+            }
         }else{
             return NO;
         }
@@ -686,6 +694,7 @@ static BOOL isShowWifi =NO;
 }
 +(NSString *)plistPath:(NSString *)plistName{
     NSString * plistPath=[NSString stringWithFormat:@"%@/%@",[self getCachesPathOfFolderName:Caches_CloudPlist],plistName];
+    
     return plistPath;
 
 }
@@ -721,7 +730,7 @@ static BOOL isShowWifi =NO;
     
 }
 +(NSString *)getServiceUrl:(NSString *)remotePath{
-    NSString * serverUrl=[NSString stringWithFormat:@"%@%@",[self serviceUrl],remotePath];
+    NSString * serverUrl=[NSString stringWithFormat:@"%@/%@",[self serviceUrl],remotePath];
     serverUrl = [serverUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     return serverUrl;
 }

@@ -69,8 +69,42 @@
         [self.navigationItem setLeftBarButtonItem:backBarItem];
     }
     
-    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"上传" andTarget:self andAction:@selector(updateFileAction)];
+    UIButton * rightButton1=[UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton1.frame=CGRectMake(0, 0, 60, 44);
+    [rightButton1 setTitle:@"新建" forState:UIControlStateNormal];
+    rightButton1.titleLabel.font=FONTBOLD(13);
+    [rightButton1 setContentEdgeInsets:UIEdgeInsetsMake(0, 16, 0, -16)];
+    [rightButton1 setTitleEdgeInsets:UIEdgeInsetsMake(0, -55, 0, 0)];
+    [rightButton1 setImage:[UIImage imageNamed:@"右上角按钮.png"] forState:UIControlStateNormal];
+    [rightButton1 setTitleColor:WHITE forState:UIControlStateNormal];
+    [rightButton1 addTarget:self action:@selector(newFolderAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton * rightButton2=[UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton2.frame=CGRectMake(60, 0, 60, 44);
+    [rightButton2 setTitle:@"上传" forState:UIControlStateNormal];
+    rightButton2.titleLabel.font=FONTBOLD(13);
+    [rightButton2 setContentEdgeInsets:UIEdgeInsetsMake(0, 16, 0, -16)];
+    [rightButton2 setTitleEdgeInsets:UIEdgeInsetsMake(0, -55, 0, 0)];
+    [rightButton2 setImage:[UIImage imageNamed:@"右上角按钮.png"] forState:UIControlStateNormal];
+    [rightButton2 setTitleColor:WHITE forState:UIControlStateNormal];
+    [rightButton2 addTarget:self action:@selector(uploadFileAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIView * rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 120, 44)];
+    
+    UIView * lineView=[[UIView alloc]initWithFrame:CGRectMake(76, 0, 1, 44)];
+    
+    [rightView addSubview:rightButton1];
+    [rightView addSubview:rightButton2];
+    
+    lineView.backgroundColor=SubBlue;
+    [rightView addSubview:lineView];
+    UIBarButtonItem * rightBarItem=[[UIBarButtonItem alloc]initWithCustomView:rightView];
     [self.navigationItem setRightBarButtonItem:rightBarItem];
+    
+//    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"上传" andTarget:self andAction:@selector(uploadFileAction)];
+//    [self.navigationItem setRightBarButtonItem:rightBarItem];
 }
 -(void)backAction{
     [self.navigationController popViewControllerAnimated:YES];
@@ -129,7 +163,10 @@
         isRequest=YES;
     }
 }
--(void)updateFileAction{
+-(void)newFolderAction{
+    [[self addFolderAlertView]show];
+}
+-(void)uploadFileAction{
 //    [[self addFolderAlertView]show];
 //    [self getFoldersData];
 //    FirstViewController * f=[[FirstViewController alloc]init];
@@ -196,12 +233,12 @@
 //    }];
 }
 - (void) createFolderName:(NSString *)name {
-    //    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,name];
-    //    [CADataHelper createFolderWithPath:path IsSuccess:^(BOOL isSuccess) {
-    //        if (isSuccess) {
-    //            [self getFoldersData];
-    //        }
-    //    }];
+    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,name];
+    [CADataHelper createFolderWithPath:path IsSuccess:^(BOOL isSuccess) {
+        if (isSuccess) {
+            [self getFoldersData];
+        }
+    }];
 }
 
 -(void)uploadFile:(NSString *)fileName andData:(NSData *)fileData {
@@ -318,7 +355,7 @@
             CAMyFolderViewController * folderVC=[[UIStoryboard storyboardWithName:STORYBAORD_NAME bundle:nil] instantiateViewControllerWithIdentifier:@"CAMyFolderViewController"];
             folderVC.title=itemDto.fileTitle;
             
-            folderVC.az_folderPath=[NSString stringWithFormat:@"%@/%@",_az_folderPath,itemDto.fileName];
+            folderVC.az_folderPath=[NSString stringWithFormat:@"%@%@",[_az_folderPath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding],[itemDto.fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [self.navigationController pushViewController:folderVC animated:YES];
         }
         else{
@@ -403,6 +440,7 @@
         addFolderAlertView = [[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"请输入文件夹的名称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"添加", nil];
         addFolderAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
         UITextField * alertTextField = [addFolderAlertView textFieldAtIndex:0];
+        alertTextField.clearButtonMode=UITextFieldViewModeAlways;
         alertTextField.text=@"新建文件夹";
         alertTextField.clearButtonMode=UITextFieldViewModeAlways;
         alertTextField.keyboardType = UIKeyboardTypeDefault;
@@ -642,12 +680,12 @@
     NSRange suffixRange=[oldFileName rangeOfString:@"."];
     NSString * suffixStr=[oldFileName substringFromIndex:suffixRange.location-1];
     NSDateFormatter * dateFormatter=[[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:@"yyyy-MM-DD HH:mm:ss"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString * dateStr=[dateFormatter stringFromDate:[NSDate date]];
-    dateStr=[dateStr stringByAppendingFormat:@"%d",arc4random()%999999];
-    dateStr=[TXMD5 md5:dateStr];
+    dateStr=[dateStr stringByAppendingFormat:@"_%d",arc4random()%9999];
+//    dateStr=[TXMD5 md5:dateStr];
     dateStr=[dateStr stringByAppendingFormat:@"%@",suffixStr];
-    NSLog(@"md5:%@",dateStr);
+    NSLog(@"filename1:%@",dateStr);
     return dateStr;
 }
 - (void)didReceiveMemoryWarning

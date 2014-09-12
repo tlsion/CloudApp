@@ -27,10 +27,15 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"顶部蓝条64.png"] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                WHITE,
-                                                UITextAttributeTextColor,nil]];
+    if (IS_IOS_7) {
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"顶部蓝条64.png"] forBarMetrics:UIBarMetricsDefault];
+        
+        [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                    WHITE,
+                                                    UITextAttributeTextColor,nil]];
+    }else{
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"顶部蓝条.png"] forBarMetrics:UIBarMetricsDefault];
+    }
 }
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {

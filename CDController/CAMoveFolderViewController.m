@@ -46,7 +46,7 @@
 }
 -(void)moveAction{
     __weak CAMoveFolderViewController * controller=self;
-    NSString * destinyPath=[NSString stringWithFormat:@"/%@%@",_folderPath,_itemDto.fileName];
+    NSString * destinyPath=[NSString stringWithFormat:@"%@%@",_folderPath,_itemDto.fileName];
     [self.view makeToastActivity];
     [CADataHelper moveFileOrFolder:_sourcePath toDestiny:destinyPath successRequest:^{
         [controller.view hideToastActivity];
@@ -121,7 +121,7 @@
     folderVC.title=itemDto.fileTitle;
     folderVC.homeDelegate=_homeDelegate;
     folderVC.currentDelegate=_currentDelegate;
-    folderVC.folderPath=[NSString stringWithFormat:@"%@%@",_folderPath,itemDto.fileName];
+    folderVC.folderPath=[NSString stringWithFormat:@"%@%@",[_folderPath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding],[itemDto.fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     folderVC.sourcePath=_sourcePath;
     folderVC.itemDto=_itemDto;
     [self.navigationController pushViewController:folderVC animated:YES];

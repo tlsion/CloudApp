@@ -70,7 +70,7 @@
     }
     
     UIButton * rightButton1=[UIButton buttonWithType:UIButtonTypeCustom];
-    rightButton1.frame=CGRectMake(0, 0, 60, 44);
+    rightButton1.frame=CGRectMake(60, 0, 60, 44);
     [rightButton1 setTitle:@"新建" forState:UIControlStateNormal];
     rightButton1.titleLabel.font=FONTBOLD(13);
     [rightButton1 setContentEdgeInsets:UIEdgeInsetsMake(0, 16, 0, -16)];
@@ -81,7 +81,7 @@
     
     
     UIButton * rightButton2=[UIButton buttonWithType:UIButtonTypeCustom];
-    rightButton2.frame=CGRectMake(60, 0, 60, 44);
+    rightButton2.frame=CGRectMake(0, 0, 60, 44);
     [rightButton2 setTitle:@"上传" forState:UIControlStateNormal];
     rightButton2.titleLabel.font=FONTBOLD(13);
     [rightButton2 setContentEdgeInsets:UIEdgeInsetsMake(0, 16, 0, -16)];
@@ -113,6 +113,7 @@
     if (_az_isRootPath) {
         [super viewWillAppear:animated];
     }
+    [[CAGlobalData shared].az_mainTab setAz_operateDelegate:self];
 }
 -(void)viewDidAppear:(BOOL)animated {
     
@@ -137,7 +138,7 @@
     if (!_az_folderPath) _az_folderPath=@"";
     
 
-    [[CAGlobalData shared].az_mainTab setAz_operateDelegate:self];
+//    [[CAGlobalData shared].az_mainTab setAz_operateDelegate:self];
     
 //    [self Contacts];
 }
@@ -233,7 +234,7 @@
 //    }];
 }
 - (void) createFolderName:(NSString *)name {
-    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,name];
+    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,name];
     [CADataHelper createFolderWithPath:path IsSuccess:^(BOOL isSuccess) {
         if (isSuccess) {
             [self getFoldersData];
@@ -242,7 +243,7 @@
 }
 
 -(void)uploadFile:(NSString *)fileName andData:(NSData *)fileData {
-    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,fileName];
+    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileName];
     
     __weak AppDelegate * app=APP;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{
@@ -259,7 +260,7 @@
     }];
 }
 -(void)downloadFile:(NSString *)fileName {
-    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,fileName];
+    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileName];
     
     
     __weak AppDelegate * app=APP;
@@ -278,7 +279,7 @@
 }
 -(void)deleteFile:(OCFileDto *)itemDto{
     
-    NSString * path=[NSString stringWithFormat:@"%@/%@",_az_folderPath,itemDto.fileName];
+    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,itemDto.fileName];
     
     __weak AppDelegate * app=APP;
     [CADataHelper deleteFileOrFolder:path successRequest:^{
@@ -292,8 +293,8 @@
     [self backToNoSelect];
 }
 -(void)renameItemDto:(OCFileDto *)itemDto andNewName:(NSString *)newName{
-    NSString * oldPath=[NSString stringWithFormat:@"%@/%@",_az_folderPath,itemDto.fileName];
-    NSString * newPath=[NSString stringWithFormat:@"%@/%@",_az_folderPath,newName];
+    NSString * oldPath=[NSString stringWithFormat:@"%@%@",_az_folderPath,itemDto.fileName];
+    NSString * newPath=[NSString stringWithFormat:@"%@%@",_az_folderPath,newName];
     
     __weak AppDelegate * app=APP;
     [CADataHelper moveFileOrFolder:oldPath toDestiny:newPath successRequest:^{
@@ -411,7 +412,7 @@
                 folderVC.homeDelegate=[self.navigationController. viewControllers objectAtIndex:0];
                 folderVC.currentDelegate=self;
                 folderVC.folderPath=@"";
-                folderVC.sourcePath=[NSString stringWithFormat:@"%@/%@",_az_folderPath,selectItemDto.fileName];
+                folderVC.sourcePath=[NSString stringWithFormat:@"%@%@",_az_folderPath,selectItemDto.fileName];
                 folderVC.itemDto=selectItemDto;
                 [self presentViewController:controllerNC animated:YES completion:^{
                     [self backToNoSelect];

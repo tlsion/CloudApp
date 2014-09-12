@@ -39,8 +39,8 @@
         [self.navigationItem setLeftBarButtonItem:backBarItem];
     }
     
-    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"注册" andTarget:self andAction:@selector(registerAction)];
-    [self.navigationItem setRightBarButtonItem:rightBarItem];
+//    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"注册" andTarget:self andAction:@selector(registerAction)];
+//    [self.navigationItem setRightBarButtonItem:rightBarItem];
 }
 -(void)backAction{
     if (

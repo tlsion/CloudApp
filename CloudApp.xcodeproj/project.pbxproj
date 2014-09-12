@@ -68,6 +68,7 @@
 		DDB4D06B19B4C43F0021FB4D /* NoWifiShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB4D06A19B4C43F0021FB4D /* NoWifiShowView.m */; };
 		DDB4D06D19B4C4570021FB4D /* NoWifiShowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB4D06C19B4C4570021FB4D /* NoWifiShowView.xib */; };
 		DDB7A9A819A9FE5600B87553 /* CATransferHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7A9A719A9FE5600B87553 /* CATransferHelper.m */; };
+		DDBB704B19C33C580055B103 /* UIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBB704A19C33C580055B103 /* UIUtils.m */; };
 		DDBB88B019A4E5600047B142 /* CommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBB88AF19A4E5600047B142 /* CommonHelper.m */; };
 		DDBB88B819A4E7750047B142 /* 文件-其他_2_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDBB88B119A4E7750047B142 /* 文件-其他_2_4@2x.png */; };
 		DDBB88B919A4E7750047B142 /* 文件-压缩_2_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDBB88B219A4E7750047B142 /* 文件-压缩_2_4@2x.png */; };
@@ -296,6 +297,8 @@
 		DDB4D06C19B4C4570021FB4D /* NoWifiShowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoWifiShowView.xib; sourceTree = "<group>"; };
 		DDB7A9A619A9FE5600B87553 /* CATransferHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransferHelper.h; sourceTree = "<group>"; };
 		DDB7A9A719A9FE5600B87553 /* CATransferHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransferHelper.m; sourceTree = "<group>"; };
+		DDBB704919C33C580055B103 /* UIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIUtils.h; sourceTree = "<group>"; };
+		DDBB704A19C33C580055B103 /* UIUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIUtils.m; sourceTree = "<group>"; };
 		DDBB88AE19A4E5600047B142 /* CommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHelper.h; sourceTree = "<group>"; };
 		DDBB88AF19A4E5600047B142 /* CommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHelper.m; sourceTree = "<group>"; };
 		DDBB88B119A4E7750047B142 /* 文件-其他_2_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "文件-其他_2_4@2x.png"; sourceTree = "<group>"; };
@@ -908,6 +911,8 @@
 				DDBB967D1997C09B00A8784A /* UIImageView+OCWebCache.m */,
 				DDCD75FE199B99F3001166ED /* ViewUtils.h */,
 				DDCD75FF199B99F3001166ED /* ViewUtils.m */,
+				DDBB704919C33C580055B103 /* UIUtils.h */,
+				DDBB704A19C33C580055B103 /* UIUtils.m */,
 			);
 			name = CAModel;
 			path = CDModel;
@@ -1517,6 +1522,7 @@
 				DDA962FD198A021200A5B5A1 /* CATransferCell.m in Sources */,
 				DDD35FD419A0595B0027938D /* Unicode.m in Sources */,
 				DDBFC21C199A640A008A37C6 /* UIView+Extension.m in Sources */,
+				DDBB704B19C33C580055B103 /* UIUtils.m in Sources */,
 				DDCD75C2199B90AC001166ED /* AFHTTPRequestOperation.m in Sources */,
 				DDBB96A71997C0B500A8784A /* SDWebImageDownloader.m in Sources */,
 				DDBD4F89198002E7002E739D /* AppDelegate.m in Sources */,
@@ -1657,7 +1663,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
+				PROVISIONING_PROFILE = "032c602e-cd7e-43f6-8f97-0f923e5b084f";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1679,7 +1685,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
+				PROVISIONING_PROFILE = "032c602e-cd7e-43f6-8f97-0f923e5b084f";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

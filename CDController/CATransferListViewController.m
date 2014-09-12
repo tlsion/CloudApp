@@ -146,7 +146,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     return 65;
 }
 -(CGFloat )tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 25;
+    return 0;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView * headBgView=[[UIView alloc]init];
@@ -292,7 +292,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     filePath = [filePath stringByReplacingOccurrencesOfString:RemoteWebdav withString:@""];
     filePath =[filePath stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"/%@",item.fileName] withString:@""];
     NSLog(@"path:%@,file:%@",filePath,fileName);
-    NSString * path=[NSString stringWithFormat:@"%@/%@",filePath,fileName];
+    NSString * path=[NSString stringWithFormat:@"%@%@",filePath,fileName];
     
 //    __weak CATransferListViewController * controller=self;
     
@@ -314,7 +314,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     filePath = [filePath stringByReplacingOccurrencesOfString:RemoteWebdav withString:@""];
     filePath =[filePath stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"/%@",item.fileName] withString:@""];
     NSLog(@"path:%@,file:%@",filePath,fileName);
-    NSString * path=[NSString stringWithFormat:@"%@/%@",filePath,fileName];
+    NSString * path=[NSString stringWithFormat:@"%@%@",filePath,fileName];
     
 //    __weak CAMyFolderViewController * controller=self;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{

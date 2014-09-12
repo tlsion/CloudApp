@@ -11,6 +11,7 @@
 #import "Reachability.h"
 #import "ViewUtils.h"
 #import "NoWifiShowView.h"
+#import "UIUtils.h"
 @implementation AppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -207,6 +208,7 @@
 }
 -(void)showNoWifi{
     NoWifiShowView * wifiView=[ViewUtils loadViewFromNib:@"NoWifiShowView"];
+    wifiView.center=self.window.center;
     [self.window addSubview:wifiView];
 }
 @end

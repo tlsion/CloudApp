@@ -51,7 +51,7 @@
     if (txtTitle) {
         
         leftView.text=[NSString stringWithFormat:@"%@",txtTitle];
-        leftView.frame=CGRectMake(0, 0, txtTitle.length*8+30, self.frame.size.height);
+        leftView.frame=CGRectMake(0, 0, txtTitle.length*9+30, self.frame.size.height);
     }
 //    _txtTitle=txtTitle;
 //    if (txtTitle) {

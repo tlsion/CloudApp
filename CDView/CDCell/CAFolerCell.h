@@ -15,10 +15,10 @@
 @property (strong, nonatomic) IBOutlet UILabel *mainTitleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *sizeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *selectImageView;
+@property (strong, nonatomic) IBOutlet UIButton *selectButton;
 @property (strong, nonatomic) OCFileDto * itemDto;
 @property (weak, nonatomic) id<CAFolerCellDelegate>delegate;
-@property (weak, nonatomic) IBOutlet UILongPressGestureRecognizer *longPressGesture;
+//@property (weak, nonatomic) IBOutlet UILongPressGestureRecognizer *longPressGesture;
 
 @end
 @protocol CAFolerCellDelegate <NSObject>

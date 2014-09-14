@@ -16,7 +16,7 @@
 {
     // Initialization code
     self.mainImageView.placeholderImage=[UIImage imageNamed:@"预览小图.png"];
-    self.longPressGesture.minimumPressDuration=0.5;
+//    self.longPressGesture.minimumPressDuration=0.5;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -25,18 +25,25 @@
 
     // Configure the view for the selected state
 }
-- (IBAction)longPressGetures:(UILongPressGestureRecognizer *)sender {
-    if(UIGestureRecognizerStateBegan == sender.state) {
-        //        NSInteger row=gesture.view.tag;
-        CAFolerCell * cell=(CAFolerCell *)sender.view.superview.superview;
-        
-        if (_delegate) {
-            [_delegate longTouchSelectFoler:cell.itemDto cellIsSelect:cell.selectImageView.hidden];
-        }
-//        cell.selectImageView.hidden=!cell.selectImageView.hidden;
-//        cell.itemDto.isSelect=!cell.selectImageView.hidden;
+- (IBAction)selectItemAction:(UIButton *)sender {
+    sender.selected=!sender.selected;
+    if (_delegate) {
+        CAFolerCell * cell=(CAFolerCell *)sender.superview.superview.superview;
+        [_delegate longTouchSelectFoler:cell.itemDto cellIsSelect:sender.selected];
     }
 }
+//- (IBAction)longPressGetures:(UILongPressGestureRecognizer *)sender {
+//    if(UIGestureRecognizerStateBegan == sender.state) {
+//        //        NSInteger row=gesture.view.tag;
+//        CAFolerCell * cell=(CAFolerCell *)sender.view.superview.superview;
+//        
+//        if (_delegate) {
+//            [_delegate longTouchSelectFoler:cell.itemDto cellIsSelect:cell.selectImageView.hidden];
+//        }
+////        cell.selectImageView.hidden=!cell.selectImageView.hidden;
+////        cell.itemDto.isSelect=!cell.selectImageView.hidden;
+//    }
+//}
 -(void)setItemDto:(OCFileDto *)itemDto{
     _itemDto=itemDto;
     self.sizeLabel.text=[NSString stringWithFormat:@"%@",[CommonHelper getFileSizeString: itemDto.size]];
@@ -67,7 +74,7 @@
             break;
     }
     
-    self.selectImageView.hidden=!itemDto.isSelect;
+    self.selectButton.selected=itemDto.isSelect;
     
     self.mainTitleLabel.text=itemDto.fileTitle;
     

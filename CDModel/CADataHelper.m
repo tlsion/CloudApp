@@ -458,8 +458,8 @@ static BOOL isShowWifi =NO;
            successRequest:(void (^)())successRequest
            failureRequest:(void (^)())failureRequest
        errorBeforeRequest:(void (^)())errorBeforeRequest{
-//    NSLog(@"原来：%@",sourcePath);
-//    NSLog(@"新：%@",destinyPath);
+    NSLog(@"原来：%@",sourcePath);
+    NSLog(@"新：%@",destinyPath);
     [[self appDelegateWindow] makeToastActivity];
     [[AppDelegate sharedOCCommunication] moveFileOrFolder:[self getServiceUrl:sourcePath] toDestiny:[self getServiceUrl:destinyPath] onCommunication:[AppDelegate sharedOCCommunication] successRequest:^(NSHTTPURLResponse * response, NSString * redirected) {
         [[self appDelegateWindow] hideToastActivity];
@@ -718,7 +718,7 @@ static BOOL isShowWifi =NO;
     
     //    NSString *result = [pathDirectory stringByAppendingPathComponent];
     
-    NSLog(@"placePath:%@",pathDirectory);
+//    NSLog(@"placePath:%@",pathDirectory);
     return pathDirectory;
     
 }

@@ -474,12 +474,26 @@
             }
             else {
                 //重命名
-                [self renameItemDto:selectItemDto andNewName:txt.text];
+                
+                [self renameItemDto:selectItemDto andNewName:[self removeTheSensitiveCharacter:txt.text]];
             }
         }
     }
 }
-
+-(NSString *)removeTheSensitiveCharacter:(NSString *)string{
+    string =[string stringByReplacingOccurrencesOfString:@"/" withString:@""];
+    string =[string stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    string =[string stringByReplacingOccurrencesOfString:@">" withString:@""];
+    string =[string stringByReplacingOccurrencesOfString:@":" withString:@""];
+    string =[string stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    string =[string stringByReplacingOccurrencesOfString:@" " withString:@""];
+    string =[string stringByReplacingOccurrencesOfString:@"?" withString:@""];
+//    string =[string stringByReplacingOccurrencesOfString:@"'" withString:@""];
+//    string =[string stringByReplacingOccurrencesOfString:@"," withString:@""];
+//    string =[string stringByReplacingOccurrencesOfString:@";" withString:@""];
+    NSLog(@"%@",string);
+    return string;
+}
 #pragma mark -- UIActionSheet
 -(UIActionSheet *)uploadActionSheet{
     UIActionSheet * as=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"照片",@"视频", nil];
@@ -680,10 +694,12 @@
 //    oldFileName hasSuffix:
     NSRange suffixRange=[oldFileName rangeOfString:@"."];
     NSString * suffixStr=[oldFileName substringFromIndex:suffixRange.location-1];
-    NSDateFormatter * dateFormatter=[[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString * dateStr=[dateFormatter stringFromDate:[NSDate date]];
-    dateStr=[dateStr stringByAppendingFormat:@"_%d",arc4random()%9999];
+//    NSDateFormatter * dateFormatter=[[NSDateFormatter alloc]init];
+//    [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
+//    NSString * dateStr=[dateFormatter stringFromDate:[NSDate date]];
+    NSString * dateStr=[NSString stringWithFormat:@"%.0f",[[NSDate date]timeIntervalSince1970] * 1000];
+    NSLog(@"%@",dateStr);
+    dateStr=[dateStr stringByAppendingFormat:@"%d",arc4random()%999];
 //    dateStr=[TXMD5 md5:dateStr];
     dateStr=[dateStr stringByAppendingFormat:@"%@",suffixStr];
     NSLog(@"filename1:%@",dateStr);

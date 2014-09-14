@@ -43,34 +43,32 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="选中.png" translatesAutoresizingMaskIntoConstraints="NO" id="bwm-tO-gBE">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQN-Zu-wUz">
                         <rect key="frame" x="285" y="19" width="23" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
+                        <state key="normal" backgroundImage="重命名2.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" backgroundImage="选中.png"/>
+                        <connections>
+                            <action selector="selectItemAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0r0-ke-x2d"/>
+                        </connections>
+                    </button>
                 </subviews>
-                <connections>
-                    <outletCollection property="gestureRecognizers" destination="LOL-lo-CuX" appends="YES" id="Eey-RX-VO4"/>
-                </connections>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
-                <outlet property="longPressGesture" destination="LOL-lo-CuX" id="H4M-Ep-FdK"/>
                 <outlet property="mainImageView" destination="o4h-ed-8Jv" id="5YF-xp-MsS"/>
                 <outlet property="mainTitleLabel" destination="ZTh-tx-ADi" id="iPQ-P2-W7a"/>
-                <outlet property="selectImageView" destination="bwm-tO-gBE" id="81P-EI-vuT"/>
+                <outlet property="selectButton" destination="rQN-Zu-wUz" id="4am-Mf-Bed"/>
                 <outlet property="sizeLabel" destination="0P7-Bq-3Jx" id="alw-Ay-eCU"/>
                 <outlet property="timeLabel" destination="cnE-Fd-k5C" id="ers-0l-EG4"/>
-                <outletCollection property="gestureRecognizers" destination="LOL-lo-CuX" appends="YES" id="35a-Eg-kgQ"/>
             </connections>
         </tableViewCell>
-        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="LOL-lo-CuX">
-            <connections>
-                <action selector="longPressGetures:" destination="KGk-i7-Jjw" id="6hm-iZ-m6M"/>
-            </connections>
-        </pongPressGestureRecognizer>
     </objects>
     <resources>
         <image name="单个文件.png" width="320" height="62"/>
         <image name="选中.png" width="22" height="22"/>
+        <image name="重命名2.png" width="18" height="18"/>
     </resources>
 </document>

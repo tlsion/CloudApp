@@ -28,13 +28,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CDController/CAMyFolderViewController.m"
-            timestampString = "432370073.217476"
+            filePath = "CDTools/Classes/MWPhoto.m"
+            timestampString = "432485947.375155"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "-createFolderName:"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "-dealloc"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

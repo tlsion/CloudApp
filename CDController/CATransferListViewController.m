@@ -11,6 +11,7 @@
 #import "ViewUtils.h"
 #import "CATransferHelper.h"
 #import "CAShowFileViewController.h"
+#import "CABaseNavigationController.h"
 typedef NS_ENUM(NSInteger, CATransferListCode) {
     CATransferListCodeUploading,
     CATransferListCodeUploaded,
@@ -232,9 +233,12 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
             item=uploadedFiles[indexPath.row];
         }
     }
+    
     CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
     controller.itemDto=item;
-    [self.navigationController pushViewController:controller animated:YES];
+    CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+    [self presentViewController:nController animated:YES completion:nil];
+//    [self.navigationController pushViewController:controller animated:YES];
 }
 //删除
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

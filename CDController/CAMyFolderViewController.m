@@ -360,10 +360,14 @@
             [self.navigationController pushViewController:folderVC animated:YES];
         }
         else{
-//            [self showImageWithOCFileDto:itemDto];
             CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
             controller.itemDto=itemDto;
-            [self.navigationController pushViewController:controller animated:YES];
+            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+            [self presentViewController:nController animated:YES completion:nil];
+//            [self showImageWithOCFileDto:itemDto];
+//            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+//            controller.itemDto=itemDto;
+//            [self.navigationController pushViewController:controller animated:YES];
         }
     }
     else{

@@ -44,7 +44,9 @@
     
 //    UIBarButtonItem * leftBarItem=[CrateComponent createLeftBarButtonItemWithTitle:@"服务器" andTarget:self andAction:@selector(leftAction:)];
 //    [self.navigationItem setLeftBarButtonItem:leftBarItem];
-    
+    UIImageView  * logoImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"左上角LOGO.png"]];
+    UIBarButtonItem * leftBarItem=[[UIBarButtonItem alloc]initWithCustomView:logoImageView];
+    [self.navigationItem setLeftBarButtonItem:leftBarItem];
     
     UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"登录" andTarget:self andAction:@selector(rightAction:)];
     [self.navigationItem setRightBarButtonItem:rightBarItem];

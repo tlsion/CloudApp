@@ -88,7 +88,8 @@
     }
 }
 -(void)backAction{
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)imageLoaderDidLoad:(NSNotification*)notification{
     [self.view hideToastActivity];

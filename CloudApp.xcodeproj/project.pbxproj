@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */; };
 		DD41DCCB19AE12CF00B96439 /* CAMoveFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */; };
 		DD41DCCC19AE12CF00B96439 /* CAMoveFolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */; };
 		DD5DEECC1985FAF4006C49BD /* cyphy-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEE9C1985FAF4006C49BD /* cyphy-logo@2x.png */; };
@@ -226,6 +227,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选中(未选中)@2x.png"; sourceTree = "<group>"; };
 		DD41DCC819AE12CF00B96439 /* CAMoveFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMoveFolderViewController.h; sourceTree = "<group>"; };
 		DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAMoveFolderViewController.m; sourceTree = "<group>"; };
 		DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAMoveFolderViewController.xib; sourceTree = "<group>"; };
@@ -597,6 +599,7 @@
 		DD5DEE9B1985FAF4006C49BD /* CDImage */ = {
 			isa = PBXGroup;
 			children = (
+				15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */,
 				DDBB88B119A4E7750047B142 /* 文件-其他_2_4@2x.png */,
 				DDBB88B219A4E7750047B142 /* 文件-压缩_2_4@2x.png */,
 				DDBB88B319A4E7750047B142 /* 文件-图片_2_4@2x.png */,
@@ -1355,6 +1358,7 @@
 				DD5DEEE91985FAF4006C49BD /* 文件-文档@2x.png in Resources */,
 				DD5DEECE1985FAF4006C49BD /* 下载2@2x.png in Resources */,
 				DD5DEEDD1985FAF4006C49BD /* 开始@2x.png in Resources */,
+				15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */,
 				DDBFC203199A4D73008A37C6 /* Main.storyboard in Resources */,
 				DDBB88BA19A4E7750047B142 /* 文件-图片_2_4@2x.png in Resources */,
 				DD5DEEEC1985FAF4006C49BD /* 暂停@2x.png in Resources */,
@@ -1663,7 +1667,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "032c602e-cd7e-43f6-8f97-0f923e5b084f";
+				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1685,7 +1689,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "032c602e-cd7e-43f6-8f97-0f923e5b084f";
+				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

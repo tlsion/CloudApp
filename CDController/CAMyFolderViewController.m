@@ -218,7 +218,8 @@
     [CADataHelper updateFolderWithPath:_az_folderPath successRequest:^(NSHTTPURLResponse * response, NSArray *itemsOfPath) {
 //        NSLog(@"%@",itemsOfPath);
         _itemsOfPath=[CADataHelper getItemsOfPath:_az_folderPath];
-        [_itemsTableView reloadData];
+        
+        [self backToNoSelect];
 
     } failureRequest:^(NSHTTPURLResponse * response) {
         

@@ -569,7 +569,10 @@ static BOOL isShowWifi =NO;
     NSArray * allPaths=[self subPath:path];
     
     NSMutableArray * pathFolders=[self getPlistFolders:Plist_Name_AllFolders];
-    NSMutableArray * items=pathFolders;
+    if ([path rangeOfString:@"接口"] .length>0) {
+        NSLog(@"bbb:%@",[[[[pathFolders lastObject]objectForKey:@"folders"] objectAtIndex:4] objectForKey:@"folders"]);
+    }
+    NSMutableArray * items=[NSMutableArray arrayWithArray:pathFolders];
     //pathFolder是根目录的文件，必须取到子目录下的对象
     for (int i=0; i<allPaths.count; i++) {
         NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@", allPaths[i]];
@@ -732,6 +735,7 @@ static BOOL isShowWifi =NO;
 +(NSString *)getServiceUrl:(NSString *)remotePath{
     NSString * serverUrl=[NSString stringWithFormat:@"%@/%@",[self serviceUrl],remotePath];
     serverUrl = [serverUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     NSLog(@"serverUrl:%@",serverUrl);
     return serverUrl;
 }

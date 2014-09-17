@@ -65,6 +65,20 @@
     [acountTxt setTxtTitle:@"账   号"];
     [passwordTxt setTxtTitle:@"密   码"];
     [serviceURLTxt setTxtTitle:@"服务器地址"];
+    if (self.navigationController.viewControllers.count < 2) {
+        NSLog(@"aaa");
+    }
+    
+    NSUserDefaults * userDefaults=[NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:User_UserName]) {
+        acountTxt.text=[userDefaults objectForKey:User_UserName];
+    }
+    if ([userDefaults objectForKey:User_UserPassword]) {
+        passwordTxt.text=[userDefaults objectForKey:User_UserPassword];
+    }
+    if ([userDefaults objectForKey:User_AllServiceUrl]) {
+        serviceURLTxt.text=[userDefaults objectForKey:User_AllServiceUrl];
+    }
 }
 -(void)registerAction{
     CARegisterViewController * regVC=[[CARegisterViewController alloc]init];
@@ -77,6 +91,8 @@
         __weak NSUserDefaults * userDefaults=[NSUserDefaults standardUserDefaults];
         [userDefaults setObject:acountTxt.text forKey:User_UserName];
         [userDefaults setObject:passwordTxt.text forKey:User_UserPassword];
+        [userDefaults setObject:serviceURLTxt.text forKey:User_AllServiceUrl];
+        
         NSString * serviceUrl=serviceURLTxt.text;
         if ([serviceUrl hasSuffix:@"/"]) {
             serviceUrl=[serviceUrl substringToIndex:serviceUrl.length-1];

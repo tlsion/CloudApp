@@ -14,6 +14,7 @@
 #define User_UserName @"UserName"
 #define User_UserPassword @"UserPassword"
 #define User_Domain @"Domain"
+#define User_AllServiceUrl @"AllServiceUrl"
 
 #define RemoteWebdav @"/remote.php/webdav"
 

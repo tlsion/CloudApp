@@ -58,15 +58,13 @@
 
 - (void)viewDidLoad
 {
+    self.title=@"登录";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self customNavigationBar];
     [acountTxt setTxtTitle:@"账   号"];
     [passwordTxt setTxtTitle:@"密   码"];
     [serviceURLTxt setTxtTitle:@"服务器地址"];
-    if (self.navigationController.viewControllers.count < 2) {
-        NSLog(@"aaa");
-    }
 }
 -(void)registerAction{
     CARegisterViewController * regVC=[[CARegisterViewController alloc]init];
@@ -93,7 +91,6 @@
         [CADataHelper updateFolderWithPath:@"" successRequest:^(NSHTTPURLResponse *response, NSArray *items) {
             if (response.statusCode==kOCOKServerSuccess) {
                 //登录成功
-                [self backAction];
 //                [userDefaults setBool:YES forKey:User_IsLogined];
 //                [userDefaults synchronize];
 //                
@@ -112,7 +109,11 @@
                     if (_delegate) {
                         [_delegate getFoldersDataReloadData];
                     }
+                    
+                    [self backAction];
                 });
+                
+                
 //
             }
             else if (response.statusCode==kOCErrorServerURLNotCorrect){

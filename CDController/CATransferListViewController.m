@@ -247,7 +247,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     {
         selectTabelView=tableView;
         selectIndexPath=indexPath;
-        UIAlertView * av=[[UIAlertView alloc]initWithTitle:@"提示" message:@"您确定要删除文件？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        UIAlertView * av=[[UIAlertView alloc]initWithTitle:@"提示" message:@"您确定要删除记录？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         av.tag=indexPath.row;
         [av show];
     }

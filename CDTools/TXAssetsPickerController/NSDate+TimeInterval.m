@@ -66,8 +66,9 @@
 //    NSDateComponents *components = [self.class componetsWithTimeInterval:timeInterval];
     
     NSDateFormatter * formatter=[[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MM-dd_HHmmss"];
     NSString * dateName=[formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
+    dateName=[dateName stringByAppendingFormat:@"%d",arc4random()%9999];
 //    NSString * dateName=[NSString stringWithFormat:@"%04d-%02d-%02d_%02d:%02d:%02d",components.year,components.month,components.day, components.hour, components.minute, components.second];
     NSLog(@"dateName:%@",dateName);
     return dateName;

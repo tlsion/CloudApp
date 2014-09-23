@@ -33,7 +33,7 @@
 
 #define ASSET_PICKER_PHOTO_TAG @"ALAssetTypePhoto"
 #define ASSET_PICKER_VIDEO_TAG @"ALAssetTypeVideo"
-#define MaximumNumberOfSelection 1
+#define MaximumNumberOfSelection 10
 
 @interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate>
 {
@@ -44,6 +44,8 @@
     OCFileDto * selectItemDto;
     
     NSMutableArray * _assets;
+    
+    NSData * o_uploadData;
 }
 
 @end
@@ -254,10 +256,14 @@
     }successRequest:^{
         [app.window makeToast:@"上传成功"];
         [_itemsTableView headerBeginRefreshing];
+        
+        o_uploadData =nil;
     } failureRequest:^(NSError * error) {
         [app.window makeToast:@"上传失败"];
+        o_uploadData =nil;
     } failureBeforeRequest:^(NSError *error) {
         [app.window makeToast:@"上传失败"];
+        o_uploadData =nil;
     }];
 }
 -(void)downloadFile:(NSString *)fileName {
@@ -511,8 +517,8 @@
         switch (buttonIndex) {
             case 0:
             {
-//                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
-                [self showPickerController:(NSString *)kUTTypeImage];
+                [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
+//                [self showPickerController:(NSString *)kUTTypeImage];
             }
                 break;
                 
@@ -554,23 +560,30 @@
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     for (ALAsset *asset in assets) {
-        NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-        NSLog(@"a:%@,b:%@,c:%@",[dateFormatter stringFromDate:[asset valueForProperty:ALAssetPropertyDate]],[asset valueForProperty:ALAssetPropertyType],[UIImage imageWithCGImage:asset.thumbnail]);
-        
+//        NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
+//        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+//        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+//        NSLog(@"a:%@,b:%@,c:%@",[dateFormatter stringFromDate:[asset valueForProperty:ALAssetPropertyDate]],[asset valueForProperty:ALAssetPropertyType],[UIImage imageWithCGImage:asset.thumbnail]);
+//        [asset valueForProperty:ALAssetPropertyType]
         NSString *fileName =[NSString stringWithFormat:@"%@.jpg",[NSDate nameDescriptionOfTimeInterval:[[asset valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]]];
         NSString * ALAssetType=[NSString stringWithFormat:@"%@",[asset valueForProperty:ALAssetPropertyType]];
         NSData * uploadData=nil;
         if ([ALAssetType isEqualToString:ASSET_PICKER_PHOTO_TAG]) {
-            uploadData=UIImageJPEGRepresentation([UIImage imageWithCGImage:asset.thumbnail], 1);
+            CGImageRef ref = [[asset  defaultRepresentation]fullScreenImage];
+            UIImage *img = [[UIImage alloc]initWithCGImage:ref];
+            uploadData=UIImageJPEGRepresentation(img, 1);
+//            uploadData=UIImageJPEGRepresentation([UIImage imageWithCGImage:[[asset  defaultRepresentation]fullScreenImage]], 1);
         }
         else if ([ALAssetType isEqualToString:ASSET_PICKER_VIDEO_TAG]) {
-            uploadData=UIImageJPEGRepresentation([UIImage imageWithCGImage:[[asset  defaultRepresentation]fullScreenImage]], 1);
+            //暂未完成多选视频
+             NSLog(@"ALAssetPropertyAssetURL:%@",[[asset defaultRepresentation]metadata]);
+//            NSURL *videoURL = [[asset  defaultRepresentation] url];
+//            NSString *videoPath=videoURL.absoluteString;
+//            uploadData= [NSData dataWithContentsOfURL:videoURL];
 //            获取缩略图：
 //            
 //            CGImageRef  ref = [result thumbnail];
-//            
+//
 //            UIImage *img = [[UIImage alloc]initWithCGImage:ref];
 //            
 //            获取全屏相片：
@@ -584,7 +597,13 @@
 //            CGImageRef ref = [[result  defaultRepresentation]fullResolutionImage];
         }
         
-        NSLog(@"name:%@,size:%ld",fileName,uploadData.length);
+//        NSLog(@"name:%@,size:%ld",fileName,uploadData.length);
+//        NSString *fileName = [asset filename];
+//        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSLog(@"fileName : %@",fileName);
+//        
+//        NSString *uploadFileName = [self getFileName:fileName];
+        
         [self uploadFile:fileName andData:uploadData];
         
     }
@@ -656,17 +675,19 @@
         NSString *videoPath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
         uploadData= [NSData dataWithContentsOfFile:videoPath];
     }
+//    videoPath	__NSCFString *	@"/private/var/mobile/Applications/43421C8A-ED55-4E61-B45D-B1F722E60D30/tmp/trim.5E80BB7F-A77B-416E-AF30-78714154557A.MOV"	0x158238c0
     
+    o_uploadData=uploadData;
     NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
     {
-        ALAssetRepresentation *representation = [myasset defaultRepresentation];
-        NSString *fileName = [representation filename];
-        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"fileName : %@",fileName);
-        
-        NSString *uploadFileName = [self getFileName:fileName];
-        [self uploadFile:uploadFileName andData:uploadData];
+//        ALAssetRepresentation *representation = [myasset defaultRepresentation];
+//        NSString *fileName = [representation filename];
+//        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSLog(@"fileName : %@",fileName);
+        NSString *fileName =[NSString stringWithFormat:@"%@.MOV",[NSDate nameDescriptionOfTimeInterval:[[myasset valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]]];
+//        NSString *uploadFileName = [self getFileName:fileName];
+        [self uploadFile:fileName andData:o_uploadData];
 
     };
     

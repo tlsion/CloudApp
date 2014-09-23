@@ -115,8 +115,10 @@
 //                if (controller) {
 //                    [controller getFoldersDataReloadData];
 //                }
-                dispatch_async(kBgQueue, ^{
-                    
+                
+                
+//                dispatch_async(kBgQueue, ^{
+                
                     [userDefaults setBool:YES forKey:User_IsLogined];
                     [userDefaults synchronize];
                     
@@ -127,7 +129,7 @@
                     }
                     
                     [self backAction];
-                });
+//                });
                 
                 
 //

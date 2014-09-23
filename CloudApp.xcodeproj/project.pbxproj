@@ -231,6 +231,8 @@
 		DD41DCC819AE12CF00B96439 /* CAMoveFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMoveFolderViewController.h; sourceTree = "<group>"; };
 		DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAMoveFolderViewController.m; sourceTree = "<group>"; };
 		DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAMoveFolderViewController.xib; sourceTree = "<group>"; };
+		DD5A618A19D1DAF500CF4E65 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		DD5A618B19D1DAF500CF4E65 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DD5DEE9C1985FAF4006C49BD /* cyphy-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cyphy-logo@2x.png"; sourceTree = "<group>"; };
 		DD5DEE9D1985FAF4006C49BD /* WIFI标志@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WIFI标志@2x.png"; sourceTree = "<group>"; };
 		DD5DEE9E1985FAF4006C49BD /* 下载2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "下载2@2x.png"; sourceTree = "<group>"; };
@@ -1313,6 +1315,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
 			);
 			mainGroup = DDBD4F6A198002E7002E739D;
 			productRefGroup = DDBD4F74198002E7002E739D /* Products */;
@@ -1565,6 +1568,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				DDBD4F82198002E7002E739D /* en */,
+				DD5A618A19D1DAF500CF4E65 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1573,6 +1577,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				DDBD4F9F198002E8002E739D /* en */,
+				DD5A618B19D1DAF500CF4E65 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1667,7 +1672,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
+				PROVISIONING_PROFILE = "707af6f6-2c7a-4aeb-97a0-ec91d5def5a6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1689,7 +1694,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
+				PROVISIONING_PROFILE = "707af6f6-2c7a-4aeb-97a0-ec91d5def5a6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

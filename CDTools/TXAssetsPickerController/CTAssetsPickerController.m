@@ -43,8 +43,8 @@
 @end
 
 
-@interface CTAssetsGroupViewController : UITableViewController
-
+@interface CTAssetsGroupViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic,strong) UITableView * tableView;
 @end
 
 
@@ -144,6 +144,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -163,7 +164,7 @@
 
 - (id)init
 {
-    if (self = [super initWithStyle:UITableViewStylePlain])
+    if (self = [super init])
     {
         if ([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
             [self setContentSizeForViewInPopover:kPopoverContentSize];
@@ -175,10 +176,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height) style:UITableViewStylePlain];
+    self.tableView.delegate=self;
+    self.tableView.dataSource=self;
+    [self.view addSubview:self.tableView];
+    
     [self setupViews];
     [self setupButtons];
     [self localize];
     [self setupGroup];
+    
+    self.view.backgroundColor=[UIColor whiteColor];
 }
 
 
@@ -197,7 +206,7 @@
     if (picker.showsCancelButton)
     {
         self.navigationItem.rightBarButtonItem =
-        [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+        [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"取消", nil)
                                          style:UIBarButtonItemStylePlain
                                         target:self
                                         action:@selector(dismiss:)];
@@ -399,7 +408,7 @@
 
 #pragma mark - Table view delegate
 
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return kThumbnailLength + 12;
 }

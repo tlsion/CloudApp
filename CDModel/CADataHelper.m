@@ -81,7 +81,6 @@ static BOOL isShowWifi =NO;
     if (!path) path=@"";
     
     [[AppDelegate sharedOCCommunication] readFolder:[self getServiceUrl:path] onCommunication:[AppDelegate sharedOCCommunication] successRequest:^(NSHTTPURLResponse *response, NSArray *items, NSString *redirected) {
-        
         NSMutableArray *knownFolders = [self getFoldersOfPath:path];
         if (!knownFolders) {
             knownFolders=[[NSMutableArray alloc]init];
@@ -89,9 +88,11 @@ static BOOL isShowWifi =NO;
         NSArray *knownIds = [knownFolders valueForKey:@"etag"];
         
         NSMutableArray *newFolders = [NSMutableArray arrayWithArray:items];
-        if (newFolders.count>0) {
+        if (newFolders.count>0) {//去掉一个空的
             [newFolders removeObjectAtIndex:0];
         }
+        newFolders=[self sortItems:newFolders];
+        
         NSArray *newIds = [newFolders valueForKey:@"etag"];
         
         //更新
@@ -569,9 +570,9 @@ static BOOL isShowWifi =NO;
     NSArray * allPaths=[self subPath:path];
     
     NSMutableArray * pathFolders=[self getPlistFolders:Plist_Name_AllFolders];
-    if ([path rangeOfString:@"接口"] .length>0) {
-        NSLog(@"bbb:%@",[[[[pathFolders lastObject]objectForKey:@"folders"] objectAtIndex:4] objectForKey:@"folders"]);
-    }
+//    if ([path rangeOfString:@"接口"] .length>0) {
+//        NSLog(@"bbb:%@",[[[[pathFolders lastObject]objectForKey:@"folders"] objectAtIndex:4] objectForKey:@"folders"]);
+//    }
     NSMutableArray * items=[NSMutableArray arrayWithArray:pathFolders];
     //pathFolder是根目录的文件，必须取到子目录下的对象
     for (int i=0; i<allPaths.count; i++) {
@@ -754,7 +755,23 @@ static BOOL isShowWifi =NO;
     BOOL result = [fileManager fileExistsAtPath:filePath];
     return result;
 }
-
++(NSMutableArray *)sortItems:(NSArray *)oldItems{
+    NSMutableArray * files=[[NSMutableArray alloc]init];
+    NSMutableArray * folders=[[NSMutableArray alloc]init];
+    NSMutableArray * newItems=[[NSMutableArray alloc]init];
+    
+    for (OCFileDto * item in oldItems) {
+        if (item.isDirectory) {
+            [folders addObject:item];
+        }
+        else{
+            [files addObject:item];
+        }
+    }
+    [newItems addObjectsFromArray:folders];
+    [newItems addObjectsFromArray:files];
+    return newItems;
+}
 //判断网络是否是wifi
 + (void)currentNetIsWiFi {
     Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];

@@ -1,5 +1,5 @@
 //
-//  OCHTTPRequestOperation.h
+//  OCErrorMsg.h
 //  Owncloud iOs Client
 //
 // Copyright (C) 2014 ownCloud Inc. (http://www.owncloud.org/)
@@ -23,25 +23,11 @@
 // THE SOFTWARE.
 //
 
-#import "AFHTTPRequestOperation.h"
 
-
-@class OCChunkInputStream;
-
-typedef enum {
-    DownloadFIFOQueue = 0,
-    UploadQueue     = 1,
-    NavigationQueue = 2,
-    DownloadLIFOQueue = 3,
-} typeOfOperationQueue;
-
-
-@interface OCHTTPRequestOperation : AFHTTPRequestOperation
-
-@property (nonatomic, assign) typeOfOperationQueue typeOfOperation;
-@property (nonatomic, strong) NSString *localSource;
-@property (nonatomic, strong) OCChunkInputStream *chunkInputStream;
-
-
-
-@end
+#define kOCErrorServerUnauthorized 401
+#define kOCErrorServerForbidden 403
+#define kOCErrorServerPathNotFound 404
+#define kOCErrorServerMethodNotPermitted 405
+#define kOCErrorProxyAuth 407
+#define kOCErrorServerTimeout 408
+#define kOCErrorServerInternalError 500

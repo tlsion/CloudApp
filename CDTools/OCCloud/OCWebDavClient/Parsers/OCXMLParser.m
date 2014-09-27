@@ -25,7 +25,6 @@
 
 
 #import "OCXMLParser.h"
-#import "Unicode.h"
 #import "CommonHelper.h"
 NSString *OCCWebDAVContentTypeKey   = @"contenttype";
 NSString *OCCWebDAVETagKey          = @"etag";
@@ -152,8 +151,8 @@ NSString *OCCWebDAVURIKey           = @"uri";
             lastBit = [foo objectAtIndex: [foo count]-1];
         }
         
-//        NSString *lastBit = [_xmlChars substringFromIndex:_uriLength];
-//        NSLog(@"lastBit:- %@",lastBit);
+        //        NSString *lastBit = [_xmlChars substringFromIndex:_uriLength];
+        //        NSLog(@"lastBit:- %@",lastBit);
         if (isNotFirstFileOfList == YES) {
             [_xmlBucket setObject:lastBit forKey:OCCWebDAVHREFKey];
             _currentFile.fileName = lastBit;
@@ -166,7 +165,7 @@ NSString *OCCWebDAVURIKey           = @"uri";
             
             if([_xmlChars hasSuffix:@"/"]) {
                 _currentFile.isDirectory = YES;
-//                NSString * folderName=[lastBit stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                //                NSString * folderName=[lastBit stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 _currentFile.fileTitle= [_currentFile.fileTitle substringToIndex:_currentFile.fileTitle.length-1];
             } else {
                 _currentFile.isDirectory = NO;
@@ -204,7 +203,7 @@ NSString *OCCWebDAVURIKey           = @"uri";
     }
     //ETAG
     else if ([elementName hasSuffix:@":getetag"] && [_xmlChars length]) {
-//        NSLog(@"getetag: %@", _xmlChars);
+        //        NSLog(@"getetag: %@", _xmlChars);
         
         NSString *stringClean = [_xmlChars stringByReplacingOccurrencesOfString:@"\"" withString:@""];
         NSArray *listItems = [stringClean componentsSeparatedByString:@"."];
@@ -215,7 +214,7 @@ NSString *OCCWebDAVURIKey           = @"uri";
         [pScanner scanHexLongLong: &etag];
         //FileDto etag
         
-//        NSLog(@"the etag is: %lld", etag);
+        //        NSLog(@"the etag is: %lld", etag);
         
         _currentFile.etag = etag;
     }

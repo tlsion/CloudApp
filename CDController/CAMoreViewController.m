@@ -168,6 +168,8 @@
             [self.navigationController pushViewController:controller animated:YES];
         }
         else if(indexPath.row==1){
+            [HTTPService requestPostMethod:nil param:nil];
+            
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:DownLoadURL]];
         }
     }

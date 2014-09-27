@@ -70,56 +70,6 @@
         
         failureBeforeRequest(error);
         
-    } else if ([UtilsFramework getSizeInBytesByPath:localFilePath] > k_lenght_chunk) {
-    //} else if (NO) { //Force not use chunks
-        //The file have to be divided in chunks
-        
-        NSLog(@"Upload With Chunks");
-        
-        NSArray *listOfChunksDto = [self prepareChunksByFile:localFilePath andRemoteFilePath:remoteFilePath];
-        
-        NSInputStream *input = [NSInputStream inputStreamWithFileAtPath:localFilePath];
-        NSInputStream *inputForRedirection = [NSInputStream inputStreamWithFileAtPath:localFilePath];
-        
-        //We create two different InputStream for the same because if we work with a redirected server the redirection happens after begin to read the inputStream
-        OCChunkInputStream *chunkInputStream = [[OCChunkInputStream alloc]initWithInputStream:input andBytesToRead:totalBytesExpectedToWrote];
-        OCChunkInputStream *chunkInputStreamForRedirection = [[OCChunkInputStream alloc]initWithInputStream:inputForRedirection andBytesToRead:totalBytesExpectedToWrote];
-        
-        for (OCChunkDto *currentChunkDto in listOfChunksDto) {
-          
-            NSLog(@"Creating chunks operation %d of %d", ([listOfChunksDto indexOfObject:currentChunkDto]+1),[listOfChunksDto count]);
-            
-            [_listOfOperationsToUploadAFile addObject: [request putChunk:currentChunkDto fromInputStream:chunkInputStream andInputStreamForRedirection:chunkInputStreamForRedirection atRemotePath:currentChunkDto.remotePath onCommunication:sharedOCCommunication
-            progress:^(NSUInteger bytesWrote, long long totalBytesWrote) {
-                
-                totalBytesWrote = (_chunkPositionUploading * k_lenght_chunk) + totalBytesWrote;
-                
-                progressUpload(bytesWrote, totalBytesWrote, totalBytesExpectedToWrote);
-            } success:^(OCHTTPRequestOperation *operation, id responseObject) {
-                
-                [_listOfOperationsToUploadAFile removeObjectIdenticalTo:operation];
-
-                
-                _chunkPositionUploading++;
-                if (_chunkPositionUploading == [listOfChunksDto count]) {
-                    //This is the last chunk so we finish the upload.
-                    successRequest(operation.response, operation.redirectedServer);
-                }
-
-            } failure:^(OCHTTPRequestOperation *operation, NSError *error) {
-                 [_listOfOperationsToUploadAFile removeObjectIdenticalTo:operation];
-                [self cancel];
-                failureRequest(operation.response, operation.redirectedServer, error);
-            } forceCredentialsFailure:^(NSHTTPURLResponse *response, NSError *error) {
-                [self cancel];
-                NSString *redServer = @"";
-                failureRequest(response, redServer, error);
-            } shouldExecuteAsBackgroundTaskWithExpirationHandler:^{
-                [self cancel];
-                handler();
-            }]];
-        }
-        
     } else {
         
         NSLog(@"Upload NO Chunks");
@@ -128,13 +78,15 @@
 
             progressUpload(bytesWrote, totalBytesWrote, totalBytesExpectedToWrote);
         } success:^(OCHTTPRequestOperation *operation, id responseObject) {
+            [UtilsFramework addCookiesToStorageFromResponse:operation.response andPath:[NSURL URLWithString:remoteFilePath]];
             [_listOfOperationsToUploadAFile removeObjectIdenticalTo:operation];
-            successRequest(operation.response, operation.redirectedServer);
+            successRequest(operation.response, request.redirectedServer);
         } failure:^(OCHTTPRequestOperation *operation, NSError *error) {
+            [UtilsFramework addCookiesToStorageFromResponse:operation.response andPath:[NSURL URLWithString:remoteFilePath]];
             [_listOfOperationsToUploadAFile removeObjectIdenticalTo:operation];
             [self cancel];
             NSLog(@"Error: %@", operation.response);
-            failureRequest(operation.response, operation.redirectedServer, error);
+            failureRequest(operation.response, request.redirectedServer, error);
         } forceCredentialsFailure:^(NSHTTPURLResponse *response, NSError *error) {
             [self cancel];
             NSString *redServer = @"";
@@ -144,80 +96,6 @@
             handler();
         }]];
     }
-}
-
-
-///-----------------------------------
-/// @name prepareChunksByFile
-///-----------------------------------
-
-/**
- * Method to return an array of NSStrings that contains all the chunks with the paths that we will uploads.
- *
- * @param NSString -> localFilePath the path where is the file that we want upload
- * @param NSString -> remoteFilePath the path where we want upload the file
- */
-- (NSMutableArray *) prepareChunksByFile: (NSString *) localFilePath andRemoteFilePath: (NSString *) remoteFilePath {
-    NSLog(@"Prepare chunks");
-    
-    NSMutableArray *listOfChunksDto = [NSMutableArray new];
-    
-    //Random transfer id
-    int maxNumber = 1000000;
-    int randon_number;
-    randon_number=((int)arc4random() / maxNumber);
-    //Convert negative valors
-    if (randon_number<0) {
-        randon_number=randon_number*-1;
-    }
-    
-    //NSData *fileData = [ NSData dataWithContentsOfFile:_filePath];
-    
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:localFilePath error:NULL];
-    NSNumber * size = [attributes objectForKey: NSFileSize];
-    NSUInteger length = [size integerValue];
-    
-    // NSUInteger length = [fileData length];
-    NSLog(@"File length: %d", length);
-    NSUInteger chunkSize = k_lenght_chunk;
-    NSLog(@"ChunkSize: %d", chunkSize);
-    
-    NSUInteger offset = 0;
-    NSUInteger chunkIndex = 0;
-
-    
-    int totalChunksForThisFile = ceil((float)length/(float)k_lenght_chunk);
-    
-    NSLog(@"Number of chunks: %d", totalChunksForThisFile);
-    
-    do {
-        
-        OCChunkDto *currentChunk = [OCChunkDto new];
-        
-        //Store position
-        currentChunk.position = [NSNumber numberWithInt:offset];
-        
-        //Store the chunk size
-        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
-        currentChunk.size = [NSNumber numberWithInt:thisChunkSize];
-        
-        //Avanced position
-        offset += thisChunkSize;
-        
-        
-        // Store the name of chunk
-        //https://s3.owncloud.com/owncloud/remote.php/webdav/Demo%20Delete/Video-19-11-13-01-10-24-0.MOV-chunking-1189-17-0
-        currentChunk.remotePath = [NSString stringWithFormat:@"%@-chunking-%d-%d-%d", remoteFilePath, randon_number, totalChunksForThisFile, chunkIndex];
-        
-        NSLog(@"currentChunk.remotePath: %@", currentChunk.remotePath);
-        
-        chunkIndex++;
-        
-        [listOfChunksDto addObject:currentChunk];
-        
-    } while (offset < length);
-    
-    return listOfChunksDto;
 }
 
 ///-----------------------------------

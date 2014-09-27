@@ -326,6 +326,8 @@ static BOOL isShowWifi =NO;
         //Specifies that the operation should continue execution after the app has entered the background, and the expiration handler for that background task.
         [uploadOperation cancel];
     }];
+    
+    
 }
 +(void) downloadFile:(NSString *)remotePath downloadFileName:(NSString *)fileName willStart:(void(^)())start progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSString *)) successRequest failureRequest:(void(^)(NSError *)) failureRequest{
     fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

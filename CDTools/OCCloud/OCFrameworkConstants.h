@@ -1,5 +1,5 @@
 //
-//  OCHTTPRequestOperation.h
+//  OCFrameworkConstants.h
 //  Owncloud iOs Client
 //
 // Copyright (C) 2014 ownCloud Inc. (http://www.owncloud.org/)
@@ -23,25 +23,28 @@
 // THE SOFTWARE.
 //
 
-#import "AFHTTPRequestOperation.h"
+//Timeout to weddav requests
+#define k_timeout_webdav 30 //seconds
 
+//Timeout to upload
+#define k_timeout_upload 40 //seconds
 
-@class OCChunkInputStream;
+//Chunk length
+#define k_OC_lenght_chunk 1048576
 
-typedef enum {
-    DownloadFIFOQueue = 0,
-    UploadQueue     = 1,
-    NavigationQueue = 2,
-    DownloadLIFOQueue = 3,
-} typeOfOperationQueue;
+#define k_domain_error_code @"com.owncloud"
 
+//Url to access to Shared API to create
+#define k_url_acces_shared_api @"ocs/v1.php/apps/files_sharing/api/v1/shares"
 
-@interface OCHTTPRequestOperation : AFHTTPRequestOperation
+//Version of the server that have share API
+#define k_version_support_shared [NSArray arrayWithObjects:  @"5", @"0", @"27", nil]
 
-@property (nonatomic, assign) typeOfOperationQueue typeOfOperation;
-@property (nonatomic, strong) NSString *localSource;
-@property (nonatomic, strong) OCChunkInputStream *chunkInputStream;
+//Version of the server that support cookies
+#define k_version_support_cookies [NSArray arrayWithObjects:  @"7", @"0", @"0", nil]
 
+//Name of the session using for upload files with NSURLSession
+#define k_session_name @"com.owncloud.upload.session"
 
-
-@end
+//Name of the download session using for upload files with NSURLSession
+#define k_download_session_name @"com.owncloud.download.session"

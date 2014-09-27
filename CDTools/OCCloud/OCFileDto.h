@@ -1,5 +1,5 @@
 //
-//  OCHTTPRequestOperation.h
+//  OCFileDto.h
 //  Owncloud iOs Client
 //
 // Copyright (C) 2014 ownCloud Inc. (http://www.owncloud.org/)
@@ -22,26 +22,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+//
 
-#import "AFHTTPRequestOperation.h"
+#import <Foundation/Foundation.h>
+#import "CommonDefine.h"
+@protocol OCFileDtoDelegate;
+@interface OCFileDto : NSObject
 
+@property (nonatomic, copy) NSString *permissions;
 
-@class OCChunkInputStream;
+@property (nonatomic, copy) NSString *filePath;
+@property (nonatomic, copy) NSString *fileName;
+@property (nonatomic, copy) NSString *fileTitle;
+@property (nonatomic, assign)BOOL isDirectory;
+@property (nonatomic, assign)long long size;
+@property (nonatomic, assign)long date;
+@property (nonatomic, assign)long long etag;
 
-typedef enum {
-    DownloadFIFOQueue = 0,
-    UploadQueue     = 1,
-    NavigationQueue = 2,
-    DownloadLIFOQueue = 3,
-} typeOfOperationQueue;
+@property (nonatomic , assign) BOOL isSelect;
+@property (nonatomic, assign) CAFileTypeCode fileType;
 
+//传输列表
+@property (nonatomic, assign) BOOL isTransfer;
+@property (nonatomic, assign) NSInteger bytes;
+@property (nonatomic, assign) long long totalBytes;
+@property (nonatomic, assign) CATransferStatus tranferStatus;
+@property (nonatomic, weak) id<OCFileDtoDelegate>delegate;
+@end
 
-@interface OCHTTPRequestOperation : AFHTTPRequestOperation
+@protocol OCFileDtoDelegate <NSObject>
 
-@property (nonatomic, assign) typeOfOperationQueue typeOfOperation;
-@property (nonatomic, strong) NSString *localSource;
-@property (nonatomic, strong) OCChunkInputStream *chunkInputStream;
-
-
-
+-(void)setDoTotalBytes:(long long)aTotalBytes;
+-(void)setDoBytes:(NSInteger) aBytes;
 @end

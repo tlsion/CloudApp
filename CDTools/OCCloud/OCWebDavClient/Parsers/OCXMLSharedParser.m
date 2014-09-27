@@ -96,7 +96,7 @@
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
     
-    NSLog(@"elementName: %@:%@", elementName,_xmlChars);
+    //NSLog(@"elementName: %@:%@", elementName,_xmlChars);
     
     if ([elementName isEqualToString:@"id"]) {
         
@@ -145,7 +145,7 @@
         
     } else if ([elementName isEqualToString:@"stime"]) {
         
-        _currentShared.sharedDate = [_xmlChars longLongValue];
+        _currentShared.sharedDate = (long)[_xmlChars longLongValue];
         
         
     } else if ([elementName isEqualToString:@"expiration"]) {

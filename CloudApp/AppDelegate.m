@@ -36,7 +36,8 @@
         [[CATransferHelper sharedInstance]getPlaceData];
     }
     
-    
+    [self setTaskDidCompleteBlock];
+    [self setTaskDidSendBodyDataBlock];
     
 //    Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
 //    NSLog(@"%d", ([reachability currentReachabilityStatus] == ReachableViaWiFi));
@@ -205,6 +206,16 @@
 		sharedOCCommunication = [[OCCommunication alloc] init];
 	}
 	return sharedOCCommunication;
+}
+-(void)setTaskDidCompleteBlock{
+    [[AppDelegate sharedOCCommunication] setTaskDidCompleteBlock:^(NSURLSession *session, NSURLSessionTask *task, NSError *error) {
+        NSLog(@"setTaskDidCompleteBlock");
+    }];
+}
+-(void)setTaskDidSendBodyDataBlock{
+    [[AppDelegate sharedOCCommunication] setTaskDidSendBodyDataBlock:^(NSURLSession *session, NSURLSessionTask *task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
+        NSLog(@"setTaskDidSendBodyDataBlock");
+    }];
 }
 -(void)showNoWifi{
     NoWifiShowView * wifiView=[ViewUtils loadViewFromNib:@"NoWifiShowView"];

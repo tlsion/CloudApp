@@ -288,5 +288,183 @@
     return NO;
 }
 
++ (NSString *) AFBase64EncodedStringFromString:(NSString *) string {
+    NSData *data = [NSData dataWithBytes:[string UTF8String] length:[string lengthOfBytesUsingEncoding:NSUTF8StringEncoding]];
+    NSUInteger length = [data length];
+    NSMutableData *mutableData = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
+    
+    uint8_t *input = (uint8_t *)[data bytes];
+    uint8_t *output = (uint8_t *)[mutableData mutableBytes];
+    
+    for (NSUInteger i = 0; i < length; i += 3) {
+        NSUInteger value = 0;
+        for (NSUInteger j = i; j < (i + 3); j++) {
+            value <<= 8;
+            if (j < length) {
+                value |= (0xFF & input[j]);
+            }
+        }
+        
+        static uint8_t const kAFBase64EncodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        
+        NSUInteger idx = (i / 3) * 4;
+        output[idx + 0] = kAFBase64EncodingTable[(value >> 18) & 0x3F];
+        output[idx + 1] = kAFBase64EncodingTable[(value >> 12) & 0x3F];
+        output[idx + 2] = (i + 1) < length ? kAFBase64EncodingTable[(value >> 6)  & 0x3F] : '=';
+        output[idx + 3] = (i + 2) < length ? kAFBase64EncodingTable[(value >> 0)  & 0x3F] : '=';
+    }
+    
+    return [[NSString alloc] initWithData:mutableData encoding:NSASCIIStringEncoding];
+}
+
+#pragma mark - Manage Cookies
+
+//-----------------------------------
+/// @name addCookiesToStorageFromResponse
+///-----------------------------------
+
+/**
+ * Method to storage all the cookies from a response in order to use them in future requests
+ *
+ * @param NSHTTPURLResponse -> response
+ * @param NSURL -> url
+ *
+ */
++ (void) addCookiesToStorageFromResponse: (NSHTTPURLResponse *) response andPath:(NSURL *) url {
+    NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields] forURL:url];
+    NSLog(@"cookies: %@", cookies);
+    
+    for (NSHTTPCookie *current in cookies) {
+        NSLog(@"Current: %@", current);
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:current];
+    }
+}
+
+//-----------------------------------
+/// @name getRequestWithCookiesByRequest
+///-----------------------------------
+
+/**
+ * Method to return a request with all the necessary cookies of the original url without redirection
+ *
+ * @param NSMutableURLRequest -> request
+ * @param NSString -> originalUrlServer
+ *
+ * @return request
+ *
+ */
++ (NSMutableURLRequest *) getRequestWithCookiesByRequest: (NSMutableURLRequest *) request andOriginalUrlServer:(NSString *) originalUrlServer {
+    //We add the cookies of that URL
+    NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:originalUrlServer]];
+    NSDictionary *cookieHeaders = [NSHTTPCookie requestHeaderFieldsWithCookies:cookieStorage];
+    
+    NSLog(@"cookieStorage: %@", cookieStorage);
+    
+    for (NSString *key in cookieHeaders) {
+        [request addValue:cookieHeaders[key] forHTTPHeaderField:key];
+    }
+    
+    return request;
+}
+
+//-----------------------------------
+/// @name deleteAllCookies
+///-----------------------------------
+
+/**
+ * Method to clean the CookiesStorage
+ *
+ */
++ (void) deleteAllCookies {
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (NSHTTPCookie *each in cookieStorage.cookies) {
+        [cookieStorage deleteCookie:each];
+    }
+}
+
+//-----------------------------------
+/// @name isServerVersionHigherThanLimitVersion
+///-----------------------------------
+
+/**
+ * Method to detect if a server version is higher than a limit version.
+ * This methos is used for example to know if the server have share API or support Cookies
+ *
+ * @param NSArray -> serverVersion
+ * @param NSArray -> limitVersion
+ *
+ * @return BOOL
+ *
+ */
++ (BOOL) isServerVersion:(NSArray *) serverVersion higherThanLimitVersion:(NSArray *) limitVersion {
+    
+    __block BOOL isSupported = NO;
+    
+    //Loop of compare
+    [limitVersion enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *firstVersionString = obj;
+        NSString *currentVersionString;
+        if ([serverVersion count] > idx) {
+            currentVersionString = [serverVersion objectAtIndex:idx];
+            
+            int firstVersionInt = [firstVersionString intValue];
+            int currentVersionInt = [currentVersionString intValue];
+            
+            //NSLog(@"firstVersion item %d item is: %d", idx, firstVersionInt);
+            //NSLog(@"currentVersion item %d item is: %d", idx, currentVersionInt);
+            
+            //Comparation secure
+            switch (idx) {
+                case 0:
+                    //if the first number is higher
+                    if (currentVersionInt > firstVersionInt) {
+                        isSupported = YES;
+                        *stop=YES;
+                    }
+                    //if the first number is lower
+                    if (currentVersionInt < firstVersionInt) {
+                        isSupported = NO;
+                        *stop=YES;
+                    }
+                    
+                    break;
+                    
+                case 1:
+                    //if the seccond number is higger
+                    if (currentVersionInt > firstVersionInt) {
+                        isSupported = YES;
+                        *stop=YES;
+                    }
+                    //if the second number is lower
+                    if (currentVersionInt < firstVersionInt) {
+                        isSupported = NO;
+                        *stop=YES;
+                    }
+                    break;
+                    
+                case 2:
+                    //if the third number is higger or equal
+                    if (currentVersionInt >= firstVersionInt) {
+                        isSupported = YES;
+                        *stop=YES;
+                    } else {
+                        //if the third number is lower
+                        isSupported = NO;
+                        *stop=YES;
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        } else {
+            isSupported = NO;
+            *stop=YES;
+        }
+        
+    }];
+    
+    return isSupported;
+}
 
 @end

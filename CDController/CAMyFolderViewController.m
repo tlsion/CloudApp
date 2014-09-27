@@ -265,6 +265,7 @@
         [app.window makeToast:@"上传失败"];
         o_uploadData =nil;
     }];
+    
 }
 -(void)downloadFile:(NSString *)fileName {
     NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileName];

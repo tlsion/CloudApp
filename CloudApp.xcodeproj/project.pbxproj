@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */; };
+		DD33837C19D8295000B2C4D2 /* MVHTTPService.m in Sources */ = {isa = PBXBuildFile; fileRef = DD33837B19D8295000B2C4D2 /* MVHTTPService.m */; };
 		DD41DCCB19AE12CF00B96439 /* CAMoveFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */; };
 		DD41DCCC19AE12CF00B96439 /* CAMoveFolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */; };
 		DD5DEECC1985FAF4006C49BD /* cyphy-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEE9C1985FAF4006C49BD /* cyphy-logo@2x.png */; };
@@ -157,7 +158,6 @@
 		DDBD4FFB19800349002E739D /* CASuperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FAF19800349002E739D /* CASuperViewController.m */; };
 		DDBD4FFD19800349002E739D /* MDSlideNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FB319800349002E739D /* MDSlideNavigationViewController.m */; };
 		DDBD4FFF19800349002E739D /* UIViewController+TopView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FB719800349002E739D /* UIViewController+TopView.m */; };
-		DDBD500019800349002E739D /* HTTPService.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FBA19800349002E739D /* HTTPService.m */; };
 		DDBD500119800349002E739D /* UIView+Action.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FBC19800349002E739D /* UIView+Action.m */; };
 		DDBD5021198004B2002E739D /* CAMainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD5020198004B2002E739D /* CAMainTabBarController.m */; };
 		DDBD50271980057B002E739D /* CAMoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBD50261980057B002E739D /* CAMoreViewController.xib */; };
@@ -231,6 +231,8 @@
 
 /* Begin PBXFileReference section */
 		15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选中(未选中)@2x.png"; sourceTree = "<group>"; };
+		DD33837A19D8295000B2C4D2 /* MVHTTPService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVHTTPService.h; sourceTree = "<group>"; };
+		DD33837B19D8295000B2C4D2 /* MVHTTPService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MVHTTPService.m; sourceTree = "<group>"; };
 		DD41DCC819AE12CF00B96439 /* CAMoveFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMoveFolderViewController.h; sourceTree = "<group>"; };
 		DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAMoveFolderViewController.m; sourceTree = "<group>"; };
 		DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAMoveFolderViewController.xib; sourceTree = "<group>"; };
@@ -461,8 +463,6 @@
 		DDBD4FB319800349002E739D /* MDSlideNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDSlideNavigationViewController.m; sourceTree = "<group>"; };
 		DDBD4FB619800349002E739D /* UIViewController+TopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TopView.h"; sourceTree = "<group>"; };
 		DDBD4FB719800349002E739D /* UIViewController+TopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TopView.m"; sourceTree = "<group>"; };
-		DDBD4FB919800349002E739D /* HTTPService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPService.h; sourceTree = "<group>"; };
-		DDBD4FBA19800349002E739D /* HTTPService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPService.m; sourceTree = "<group>"; };
 		DDBD4FBB19800349002E739D /* UIView+Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Action.h"; sourceTree = "<group>"; };
 		DDBD4FBC19800349002E739D /* UIView+Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Action.m"; sourceTree = "<group>"; };
 		DDBD501A19800351002E739D /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -993,10 +993,10 @@
 				DDC5B63219991ED7000C7492 /* GTMBase64 */,
 				DDBB96731997BF8200A8784A /* CAObject */,
 				DDBB962E1997BE2500A8784A /* CAHelper */,
-				DDBD4FB919800349002E739D /* HTTPService.h */,
-				DDBD4FBA19800349002E739D /* HTTPService.m */,
 				DDBB88AE19A4E5600047B142 /* CommonHelper.h */,
 				DDBB88AF19A4E5600047B142 /* CommonHelper.m */,
+				DD33837A19D8295000B2C4D2 /* MVHTTPService.h */,
+				DD33837B19D8295000B2C4D2 /* MVHTTPService.m */,
 				DDCD75FB199B94E5001166ED /* CAGlobalData.h */,
 				DDCD75FC199B94E5001166ED /* CAGlobalData.m */,
 				DDBD4FBB19800349002E739D /* UIView+Action.h */,
@@ -1465,6 +1465,7 @@
 				DDB4D06819B4B5CF0021FB4D /* Reachability.m in Sources */,
 				DDB8C34119D647C100319B33 /* OCXMLSharedParser.m in Sources */,
 				DDBFC219199A640A008A37C6 /* MJRefreshHeaderView.m in Sources */,
+				DD33837C19D8295000B2C4D2 /* MVHTTPService.m in Sources */,
 				DDBD4F8C198002E7002E739D /* CloudApp.xcdatamodeld in Sources */,
 				DDCC0EE4199F1D690010FB80 /* TXUtilsDate.m in Sources */,
 				DDBFC218199A640A008A37C6 /* MJRefreshFooterView.m in Sources */,
@@ -1472,7 +1473,6 @@
 				DDCC0EE8199F1D690010FB80 /* TXUtilsString.m in Sources */,
 				DDBFC217199A640A008A37C6 /* MJRefreshConst.m in Sources */,
 				DDBB96C01997C1CA00A8784A /* _Item.m in Sources */,
-				DDBD500019800349002E739D /* HTTPService.m in Sources */,
 				DDA96310198A0DDB00A5B5A1 /* TitleTextField.m in Sources */,
 				DDBFC21A199A640A008A37C6 /* UIScrollView+Extension.m in Sources */,
 				DDBB96A31997C0B500A8784A /* NSData+ImageContentType.m in Sources */,

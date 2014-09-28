@@ -273,13 +273,7 @@
                             <outlet property="delegate" destination="Exq-I3-Wyq" id="Cx5-PB-rwf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="设置" id="4jo-Xj-y4S">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="1o9-Rd-iwf">
-                            <connections>
-                                <action selector="didTapDone:" destination="Exq-I3-Wyq" id="AOj-xs-yyl"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="设置" id="4jo-Xj-y4S"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="csc-Ua-Ciy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

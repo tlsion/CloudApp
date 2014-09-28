@@ -8,7 +8,7 @@
 
 #ifndef CloudApp_Config_h
 #import "AppDelegate.h"
-#import "HTTPService.h"
+#import "MVHTTPService.h"
 #import "UIView+Action.h"
 #import "CrateComponent.h"
 #import "UIViewExt.h"
@@ -17,7 +17,7 @@
 #import "TXUtils.h"
 #import "CADataHelper.h"
 #import "CommonDefine.h"
-#define DownLoadURL @"http://fir.im/6vv9"
+#define DownLoadURL @"http://27.154.58.234:2001/version.php?type=ios"
 //#define GaodeMapAppKey @"d73c73813b05a824b45689bb09f6f907"
 //#define UmengAppkey @"53a39c7e56240b5c70078ad5"
 #define STORYBAORD_NAME @"Main"

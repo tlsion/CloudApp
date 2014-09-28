@@ -10,8 +10,10 @@
 #import "CALoginViewController.h"
 #import "CAURLInputViewController.h"
 #import "CABaseNavigationController.h"
-@interface CAMoreViewController ()
-
+@interface CAMoreViewController ()<UIAlertViewDelegate>
+{
+    NSString * updateURL;
+}
 @end
 
 @implementation CAMoreViewController
@@ -48,8 +50,8 @@
     UIBarButtonItem * leftBarItem=[[UIBarButtonItem alloc]initWithCustomView:logoImageView];
     [self.navigationItem setLeftBarButtonItem:leftBarItem];
     
-    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"登录" andTarget:self andAction:@selector(rightAction:)];
-    [self.navigationItem setRightBarButtonItem:rightBarItem];
+//    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"登录" andTarget:self andAction:@selector(rightAction:)];
+//    [self.navigationItem setRightBarButtonItem:rightBarItem];
 }
 - (void)rightAction:(id)sender {
     CALoginViewController * loginVC=[[CALoginViewController alloc]init];
@@ -168,9 +170,12 @@
             [self.navigationController pushViewController:controller animated:YES];
         }
         else if(indexPath.row==1){
-            [HTTPService requestPostMethod:nil param:nil];
+            [MVHTTPService requestGetMethod:@"version.php" andParam:@{@"type": @"ios"} andServiceSuccessBlock:^(MVHTTPService * service) {
+                [self softUpdate:service.allDataDic];
+            } andServiceFailBlock:^{
+                [self.view makeToast:@"服务请求失败"];
+            }];
             
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:DownLoadURL]];
         }
     }
 }
@@ -232,6 +237,25 @@
     controller.delegate=firstNC.viewControllers[0];
     CABaseNavigationController * navController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+
+-(void)softUpdate:(NSDictionary *)data{
+    NSString * dataVersion=data[@"version"];
+    NSString * currentVersion=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    updateURL=data[@"client"];
+    if (![dataVersion isEqualToString:currentVersion]) {
+        UIAlertView * av=[[UIAlertView alloc]initWithTitle:nil message:@"是否更新最新版本？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"马上更新", nil];
+        [av show];
+    }
+    else {
+        ALERT(@"当前已是最新版本");
+    }
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:updateURL]];
+    }
 }
 
 @end

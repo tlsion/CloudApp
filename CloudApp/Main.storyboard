@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3jA-qJ-rBp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3jA-qJ-rBp">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Base Navigation Controller - Item-->
+        <!--Item-->
         <scene sceneID="ypj-gw-3bP">
             <objects>
                 <navigationController definesPresentationContext="YES" id="aCa-Ee-bkY" customClass="CABaseNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="HaE-fG-bo3"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="1qL-Ux-1gd">
-                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -23,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="-183" y="-994"/>
         </scene>
-        <!--My Folder View Controller - 赛凡云-->
+        <!--赛凡云-->
         <scene sceneID="gDq-2j-AIu">
             <objects>
                 <viewController storyboardIdentifier="CAMyFolderViewController" id="sxt-Li-TfF" customClass="CAMyFolderViewController" sceneMemberID="viewController">
@@ -53,7 +51,7 @@
             </objects>
             <point key="canvasLocation" x="250" y="-1010"/>
         </scene>
-        <!--Transfer List View Controller - 传输列表-->
+        <!--传输列表-->
         <scene sceneID="LYf-rs-790">
             <objects>
                 <viewController extendedLayoutIncludesOpaqueBars="YES" id="516-Sp-gEO" customClass="CATransferListViewController" sceneMemberID="viewController">
@@ -166,14 +164,13 @@
             </objects>
             <point key="canvasLocation" x="-644" y="-396"/>
         </scene>
-        <!--Base Navigation Controller - Item-->
+        <!--Item-->
         <scene sceneID="I3K-Hq-x4Y">
             <objects>
                 <navigationController definesPresentationContext="YES" id="ijY-nz-xeA" customClass="CABaseNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="0pW-RE-OUI"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="aeX-2s-i1J">
-                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -184,14 +181,13 @@
             </objects>
             <point key="canvasLocation" x="-183" y="381"/>
         </scene>
-        <!--Base Navigation Controller - Item-->
+        <!--Item-->
         <scene sceneID="pWT-3z-4RE">
             <objects>
                 <navigationController definesPresentationContext="YES" id="SML-yq-csh" customClass="CABaseNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="fPl-FJ-Rw3"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="3qw-6y-gSe">
-                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -202,7 +198,7 @@
             </objects>
             <point key="canvasLocation" x="-95" y="-350"/>
         </scene>
-        <!--More View Controller - 设置-->
+        <!--设置-->
         <scene sceneID="jpW-UC-t27">
             <objects>
                 <tableViewController id="Exq-I3-Wyq" customClass="CAMoreViewController" sceneMemberID="viewController">

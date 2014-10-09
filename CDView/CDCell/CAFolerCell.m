@@ -25,11 +25,11 @@
 
     // Configure the view for the selected state
 }
-- (IBAction)selectItemAction:(UIButton *)sender {
+- (IBAction)selectOperateAction:(UIButton *)sender {
     sender.selected=!sender.selected;
+    
     if (_delegate) {
-        CAFolerCell * cell=(CAFolerCell *)sender.superview.superview.superview;
-        [_delegate longTouchSelectFoler:cell.itemDto cellIsSelect:sender.selected];
+        [_delegate longTouchSelectFoler:self.itemDto cellIsSelect:sender.selected];
     }
 }
 //- (IBAction)longPressGetures:(UILongPressGestureRecognizer *)sender {

@@ -55,6 +55,8 @@
 		DD5DEEFB1985FAF4006C49BD /* 预览小图@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEECB1985FAF4006C49BD /* 预览小图@2x.png */; };
 		DD5DEF0319865B28006C49BD /* 首页底部@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEF0219865B28006C49BD /* 首页底部@2x.png */; };
 		DD611E7D19A48E2E0030500D /* TXMD5.m in Sources */ = {isa = PBXBuildFile; fileRef = DD611E7C19A48E2E0030500D /* TXMD5.m */; };
+		DD6E738619E6CDDD0088EB8A /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = DD6E738419E6CDDD0088EB8A /* pinyin.c */; };
+		DD6E738C19E6D0070088EB8A /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E738B19E6D0070088EB8A /* ChineseString.m */; };
 		DDA813721987A437004E997B /* 顶部蓝条64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA813711987A437004E997B /* 顶部蓝条64@2x.png */; };
 		DDA962FD198A021200A5B5A1 /* CATransferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA962FB198A021200A5B5A1 /* CATransferCell.m */; };
 		DDA962FE198A021200A5B5A1 /* CATransferCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA962FC198A021200A5B5A1 /* CATransferCell.xib */; };
@@ -283,6 +285,10 @@
 		DD5DEF0219865B28006C49BD /* 首页底部@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页底部@2x.png"; sourceTree = "<group>"; };
 		DD611E7B19A48E2E0030500D /* TXMD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXMD5.h; sourceTree = "<group>"; };
 		DD611E7C19A48E2E0030500D /* TXMD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXMD5.m; sourceTree = "<group>"; };
+		DD6E738419E6CDDD0088EB8A /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		DD6E738519E6CDDD0088EB8A /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
+		DD6E738A19E6D0070088EB8A /* ChineseString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseString.h; sourceTree = "<group>"; };
+		DD6E738B19E6D0070088EB8A /* ChineseString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
 		DDA813711987A437004E997B /* 顶部蓝条64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "顶部蓝条64@2x.png"; sourceTree = "<group>"; };
 		DDA962FA198A021200A5B5A1 /* CATransferCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransferCell.h; sourceTree = "<group>"; };
 		DDA962FB198A021200A5B5A1 /* CATransferCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransferCell.m; sourceTree = "<group>"; wrapsLines = 0; };
@@ -673,6 +679,17 @@
 			path = CDImage;
 			sourceTree = "<group>";
 		};
+		DD6E738319E6CDDD0088EB8A /* 拼音 */ = {
+			isa = PBXGroup;
+			children = (
+				DD6E738419E6CDDD0088EB8A /* pinyin.c */,
+				DD6E738519E6CDDD0088EB8A /* pinyin.h */,
+				DD6E738A19E6D0070088EB8A /* ChineseString.h */,
+				DD6E738B19E6D0070088EB8A /* ChineseString.m */,
+			);
+			path = "拼音";
+			sourceTree = "<group>";
+		};
 		DDB4D06219B4B5180021FB4D /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,6 +1044,7 @@
 		DDBD4FBD19800349002E739D /* CATools */ = {
 			isa = PBXGroup;
 			children = (
+				DD6E738319E6CDDD0088EB8A /* 拼音 */,
 				DDB8C2EC19D647C100319B33 /* OCCloud */,
 				DDB4D06219B4B5180021FB4D /* Reachability */,
 				DDE61FB019A718220074003C /* TXAssetsPickerController */,
@@ -1537,6 +1555,7 @@
 				DDB8C34019D647C100319B33 /* OCXMLShareByLinkParser.m in Sources */,
 				DDB8C34419D647C100319B33 /* OCChunkDto.m in Sources */,
 				DDB8C34519D647C100319B33 /* OCChunkInputStream.m in Sources */,
+				DD6E738C19E6D0070088EB8A /* ChineseString.m in Sources */,
 				DDE61FB819A718220074003C /* NSDate+TimeInterval.m in Sources */,
 				DDBB96C21997C1CA00A8784A /* Feeds.m in Sources */,
 				DDC5B6301998FE70000C7492 /* CASubTabViewController.m in Sources */,
@@ -1547,6 +1566,7 @@
 				DDB8C33719D647C100319B33 /* OCCommunication.m in Sources */,
 				DDB8C32E19D647C100319B33 /* AFHTTPRequestOperation.m in Sources */,
 				DDC5B61F1998E560000C7492 /* TXSize.m in Sources */,
+				DD6E738619E6CDDD0088EB8A /* pinyin.c in Sources */,
 				DDCC0EE5199F1D690010FB80 /* TXUtilsFile.m in Sources */,
 				DDBB96A21997C0B500A8784A /* MKAnnotationView+WebCache.m in Sources */,
 				DDA962FD198A021200A5B5A1 /* CATransferCell.m in Sources */,
@@ -1684,8 +1704,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lin fan (C73B7MUZ7B)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: lin fan (C73B7MUZ7B)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: chen guoliang (5J94238AZ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Haiyi Information Technology Co., Ltd.  (FF3MF689TH)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1696,7 +1716,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "707af6f6-2c7a-4aeb-97a0-ec91d5def5a6";
+				PROVISIONING_PROFILE = "84762A9A-4FBD-40FE-AD1C-5EE5723B0C16";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1706,8 +1726,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lin fan (C73B7MUZ7B)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: lin fan (C73B7MUZ7B)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: chen guoliang (5J94238AZ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Haiyi Information Technology Co., Ltd.  (FF3MF689TH)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1718,7 +1738,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "707af6f6-2c7a-4aeb-97a0-ec91d5def5a6";
+				PROVISIONING_PROFILE = "84762A9A-4FBD-40FE-AD1C-5EE5723B0C16";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

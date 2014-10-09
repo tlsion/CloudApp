@@ -10,29 +10,29 @@
 	<string>CloudApp</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</key>
+		<key>88283AA5306A2E1ECDEBEC62423F1E2CB4D78EF5</key>
 		<string>https://github.com/tlsion/CloudApp.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>CloudApp.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</key>
+		<key>88283AA5306A2E1ECDEBEC62423F1E2CB4D78EF5</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/tlsion/CloudApp.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</string>
+	<string>88283AA5306A2E1ECDEBEC62423F1E2CB4D78EF5</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>C948AC44-0EE9-40FE-98DF-3C34B9D17F9C</string>
+			<string>88283AA5306A2E1ECDEBEC62423F1E2CB4D78EF5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>CloudApp</string>
 		</dict>

@@ -13,7 +13,8 @@
 #import "NSDictionary+HandleNull.h"
 #import "CATransferHelper.h"
 #import "Reachability.h"
-
+#import "pinyin.h"
+#import "ChineseString.h"
 static BOOL isShowWifi =NO;
 @interface CADataHelper()
 
@@ -91,7 +92,7 @@ static BOOL isShowWifi =NO;
         if (newFolders.count>0) {//去掉一个空的
             [newFolders removeObjectAtIndex:0];
         }
-        newFolders=[self sortItems:newFolders];
+        
         
         NSArray *newIds = [newFolders valueForKey:@"etag"];
         
@@ -173,6 +174,12 @@ static BOOL isShowWifi =NO;
 //            }
 //            [deletedOnServer removeLastObject];
 //        }
+        
+        
+        //中英文排序
+        knownFolders=[self getChinesArray:knownFolders];
+        //文件和文件夹排序
+        knownFolders=[self sortItems:knownFolders];
         
         [self writeToFoldersOfPath:path andFolders:knownFolders];
         
@@ -762,18 +769,121 @@ static BOOL isShowWifi =NO;
     NSMutableArray * folders=[[NSMutableArray alloc]init];
     NSMutableArray * newItems=[[NSMutableArray alloc]init];
     
-    for (OCFileDto * item in oldItems) {
-        if (item.isDirectory) {
-            [folders addObject:item];
+    for (NSDictionary * itemDic in oldItems) {
+        if ([[itemDic objectForKey:@"isDirectory"] boolValue]) {
+            [folders addObject:itemDic];
         }
         else{
-            [files addObject:item];
+            [files addObject:itemDic];
         }
     }
     [newItems addObjectsFromArray:folders];
     [newItems addObjectsFromArray:files];
     return newItems;
 }
+
++ (NSMutableArray*)getChinesArray:(NSMutableArray*)arrToSort
+{
+    //创建一个临时的变动数组
+    NSMutableArray *chineseStringsArray = [NSMutableArray array];
+    for(int i =0; i < arrToSort.count; i++)
+    {
+        
+        //创建一个临时的数据模型对象
+        ChineseString *chineseString=[[ChineseString alloc]init];
+        chineseString.fileDic=arrToSort[i];
+        //给模型赋值
+        
+        NSString * fileName=[chineseString.fileDic objectForKey:@"fileName"];
+        chineseString.string=[NSString stringWithString:fileName];
+        
+        if(chineseString.string==nil)
+        {
+            chineseString.string=@"";
+        }
+        if(![chineseString.string isEqualToString:@""])
+        {
+            //join(链接) the pinYin (letter字母) 链接到首字母
+            NSString *pinYinResult = [NSString string];
+            
+            //按照数据模型中row的个数循环
+            
+            for(int j =0;j < chineseString.string.length; j++)
+            {
+                NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
+                                                 pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
+                pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
+            }
+            chineseString.pinYin = pinYinResult;
+            
+        } else {
+            chineseString.pinYin =@"";
+        }
+        [chineseStringsArray addObject:chineseString];
+    }
+    
+    //sort(排序) the ChineseStringArr by pinYin(首字母)
+    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pinYin"ascending:YES]];
+    
+    [chineseStringsArray sortUsingDescriptors:sortDescriptors];
+    
+    NSMutableArray *arrayForArrays = [NSMutableArray array];
+    
+    for(int index =0; index < [chineseStringsArray count]; index++)
+    {
+        ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileName == %@", chineseStr.string];
+        NSArray * matches = [arrToSort filteredArrayUsingPredicate:predicate];
+        if (matches.count > 0) {
+            NSDictionary  *fileDic= [matches lastObject];
+            
+            [arrayForArrays addObject:fileDic];
+        }
+        
+    }
+//
+//    BOOL checkValueAtIndex=NO; //flag to check
+//    
+//    NSMutableArray *TempArrForGrouping =nil;
+//    
+//    NSMutableArray *heads = [NSMutableArray array];
+    
+//    for(int index =0; index < [chineseStringsArray count]; index++)
+//    {
+//        ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
+//        
+//        NSMutableString *strchar= [NSMutableString stringWithString:chineseStr.pinYin];
+//        //sr containing here the first character of each string  (这里包含的每个字符串的第一个字符)
+//        NSString *sr= [strchar substringToIndex:1];
+//        //here I'm checking whether the character already in the selection header keys or not  (检查字符是否已经选择头键)
+//        
+//        if(![heads containsObject:[sr uppercaseString]])
+//        {
+//            [heads addObject:[sr uppercaseString]];
+//            
+//            TempArrForGrouping = [[NSMutableArray alloc]initWithObjects:nil];
+//            
+//            checkValueAtIndex = NO;
+//        }
+//        
+//        if([heads containsObject:[sr uppercaseString]])
+//        {
+//            [TempArrForGrouping addObject:chineseStr.fileDic];
+//            
+//            if(checkValueAtIndex == NO)
+//            {
+//                [arrayForArrays addObjectsFromArray:TempArrForGrouping];
+//                checkValueAtIndex = YES;
+//            }
+//        }
+//        
+//    }
+    
+//    sortHeaders = [NSMutableArray arrayWithArray:heads];
+    return arrayForArrays;
+}
+
+
 //判断网络是否是wifi
 + (void)currentNetIsWiFi {
     Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];

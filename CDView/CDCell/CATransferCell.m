@@ -81,7 +81,6 @@
     
 }
 -(void)setDoBytes:(NSInteger)aBytes{
-    NSLog(@"bbb:%ld",aBytes);
     dispatch_async(kMainQueue, ^{
         
         self.internetSpeedLabel.text=[CommonHelper getFileSizeString:aBytes];

@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *showFaviconsCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *showThumbnailsCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *markWhileScrollingCell;
+@property (strong, nonatomic) IBOutlet UILabel *versionsLabel;
 
 - (IBAction)syncOnStartChanged:(id)sender;
 - (IBAction)syncInBackgroundChanged:(id)sender;

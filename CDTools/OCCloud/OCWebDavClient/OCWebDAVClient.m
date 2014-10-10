@@ -250,7 +250,7 @@ NSString const *OCWebDAVModificationDateKey	= @"modificationdate";
     //Progress block
     [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
         
-        NSLog(@"bytes read are: %lld of total bytes are: %lld", totalBytesRead, totalBytesExpectedToRead);
+//        NSLog(@"bytes read are: %lld of total bytes are: %lld", totalBytesRead, totalBytesExpectedToRead);
         
         progress(bytesRead, totalBytesRead, totalBytesExpectedToRead);
         

@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     CATransferListCodeDownloading,
     CATransferListCodeDownloaded
 };
-@interface CATransferListViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@interface CATransferListViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
 //#define Plist_Name_AllFolders @"AllFolders.plist"
 //#define Plist_Name_Uploading @"UploadingFiles.plist"
@@ -33,13 +33,13 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     
     IBOutlet UIButton *uploadButton;
     
-    NSArray * uploadingFiles;
-    NSArray * uploadedFiles;
-    NSArray * downloadingFiles;
-    NSArray * downloadedFiles;
+    NSMutableArray * uploadingFiles;
+    NSMutableArray * uploadedFiles;
+    NSMutableArray * downloadingFiles;
+    NSMutableArray * downloadedFiles;
     
-    UITableView * selectTabelView;
-    NSIndexPath * selectIndexPath;
+//    UITableView * selectTabelView;
+//    NSIndexPath * selectIndexPath;
 }
 @end
 
@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 }
 -(void)viewDidLayoutSubviews{
     
-    mainScrollView.contentSize=CGSizeMake(640, CGRectGetHeight(mainScrollView.frame));
+    mainScrollView.contentSize=CGSizeMake(mainScrollView.width*2, CGRectGetHeight(mainScrollView.frame));
 }
 - (IBAction)topOperaterAction:(UIButton *)sender {
     for (UIButton * btn in sender.superview.subviews) {
@@ -245,11 +245,44 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 {
     if(editingStyle==UITableViewCellEditingStyleDelete)//删除
     {
-        selectTabelView=tableView;
-        selectIndexPath=indexPath;
-        UIAlertView * av=[[UIAlertView alloc]initWithTitle:@"提示" message:@"您确定要删除记录？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        av.tag=indexPath.row;
-        [av show];
+        OCFileDto * item=nil;
+        NSString * plistName=nil;
+        if (tableView==downloadTableView){
+            if (indexPath.section==0) {
+                item=downloadingFiles[indexPath.row];
+                [downloadingFiles removeObjectAtIndex:[indexPath row]];
+                plistName=Plist_Name_Downloading;
+            }
+            else{
+                item=downloadedFiles[indexPath.row];
+                [downloadedFiles removeObjectAtIndex:[indexPath row]];
+                plistName=Plist_Name_Downloaded;
+            }
+        }
+        else{
+            if (indexPath.section==0) {
+                item=uploadingFiles[indexPath.row];
+                [uploadingFiles removeObjectAtIndex:[indexPath row]];
+                plistName=Plist_Name_Uploading;
+            }
+            else{
+                item=uploadedFiles[indexPath.row];
+                [uploadedFiles removeObjectAtIndex:[indexPath row]];
+                plistName=Plist_Name_Uploaded;
+            }
+        }
+        [CADataHelper deletePlaceFileDto:item andPlistName:plistName];
+        
+        
+        //        删除单元格的某一行时，在用动画效果实现删除过程
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+//        if (tableView==uploadTabelView) {
+//            [self getAllUploadFiles];
+//        }
+//        else{
+//            [self getAllDownloadFiles];
+//        }
     }
     
 }
@@ -330,43 +363,6 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 //        [controller.view makeToast:@"上传失败"];
     } failureBeforeRequest:^(NSError *error) {
     }];
-}
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex==1) {
-        OCFileDto * item=nil;
-        NSString * plistName=nil;
-        if (selectTabelView==downloadTableView){
-            if (selectIndexPath.section==0) {
-                item=downloadingFiles[selectIndexPath.row];
-                plistName=Plist_Name_Downloading;
-            }
-            else{
-                item=downloadedFiles[selectIndexPath.row];
-                plistName=Plist_Name_Downloaded;
-            }
-        }
-        else{
-            if (selectIndexPath.section==0) {
-                item=uploadingFiles[selectIndexPath.row];
-                plistName=Plist_Name_Uploading;
-            }
-            else{
-                item=uploadedFiles[selectIndexPath.row];
-                plistName=Plist_Name_Uploaded;
-            }
-        }
-        [CADataHelper deletePlaceFileDto:item andPlistName:plistName];
-        
-        if (selectTabelView==uploadTabelView) {
-            [self getAllUploadFiles];
-        }
-        else{
-            [self getAllDownloadFiles];
-        }
-        [selectTabelView reloadData];
-    }
-    selectIndexPath=nil;
-    selectTabelView=nil;
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     SLLogPoint(scrollView.contentOffset);

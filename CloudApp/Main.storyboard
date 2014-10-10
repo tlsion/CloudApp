@@ -258,6 +258,13 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="olN-uE-rdc">
+                                                    <rect key="frame" x="214" y="12" width="91" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -270,6 +277,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="设置" id="4jo-Xj-y4S"/>
+                    <connections>
+                        <outlet property="versionsLabel" destination="olN-uE-rdc" id="x0U-Ka-bky"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="csc-Ua-Ciy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

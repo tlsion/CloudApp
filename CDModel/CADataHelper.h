@@ -59,7 +59,7 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
 //@property (nonatomic,weak) id<CACloudHelperDelegate>delegate;
 
 //文件夹
-+(NSArray *)getItemsOfPath:(NSString *)path;
++(NSMutableArray *)getItemsOfPath:(NSString *)path;
 
 
 //读取本地的路径
@@ -69,7 +69,7 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
 +(NSString *)urlWithOCFileDto:(OCFileDto *)fileDto;
 
 //传输列表或文件的plist
-+(NSArray *)getPlistItemsOfName:(NSString *)plistName;
++(NSMutableArray *)getPlistItemsOfName:(NSString *)plistName;
 
 //删除传输列表或文件的plist
 +(void) deletePlistItemsOfName:(NSString *)plistName;

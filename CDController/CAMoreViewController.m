@@ -13,6 +13,7 @@
 @interface CAMoreViewController ()<UIAlertViewDelegate>
 {
     NSString * updateURL;
+    NSString * dataVersion;
 }
 @end
 
@@ -78,6 +79,8 @@
     self.showFaviconsCell.accessoryView = self.showFaviconsSwitch;
     self.showThumbnailsCell.accessoryView = self.showThumbnailsSwitch;
     self.markWhileScrollingCell.accessoryView = self.markWhileScrollingSwitch;
+    
+    [self getVersionNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -170,16 +173,21 @@
             [self.navigationController pushViewController:controller animated:YES];
         }
         else if(indexPath.row==1){
-            [MVHTTPService requestGetMethod:@"version.php" andParam:@{@"type": @"ios"} andServiceSuccessBlock:^(MVHTTPService * service) {
-                [self softUpdate:service.allDataDic];
-            } andServiceFailBlock:^{
-                [self.view makeToast:@"服务请求失败"];
-            }];
-            
+            [self softUpdate];
         }
     }
 }
-
+-(void)getVersionNumber{
+    [MVHTTPService requestGetMethod:@"version.php" andParam:@{@"type": @"ios"} andServiceSuccessBlock:^(MVHTTPService * service) {
+//        [self softUpdate:service.allDataDic];
+        updateURL=service.allDataDic[@"client"];
+        dataVersion=service.allDataDic[@"version"];
+        _versionsLabel.text=FORMAT(@"V  %@",dataVersion);
+        
+    } andServiceFailBlock:^{
+        [self.view makeToast:@"服务请求失败"];
+    }];
+}
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller
@@ -228,24 +236,28 @@
 - (IBAction)exitAction:(id)sender {
     NSUserDefaults * userDefaults=[NSUserDefaults standardUserDefaults];
     [userDefaults setBool:NO forKey:User_IsLogined];
+    [userDefaults removeObjectForKey:User_UserPassword];
     [userDefaults synchronize];
     [self enterLoginController];
 }
 -(void)enterLoginController{
+    
     CALoginViewController * controller=[[CALoginViewController alloc]init];
     CABaseNavigationController * firstNC=[CAGlobalData shared].az_mainTab.viewControllers[0];
     controller.delegate=firstNC.viewControllers[0];
     CABaseNavigationController * navController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
-    [self presentViewController:navController animated:YES completion:nil];
+    [self presentViewController:navController animated:YES completion:^{
+        
+        [self.navigationController popViewControllerAnimated:NO];
+        [[CAGlobalData shared].az_mainTab setSelectedIndex:0];
+    }];
 }
 
 
--(void)softUpdate:(NSDictionary *)data{
-    NSString * dataVersion=data[@"version"];
+-(void)softUpdate{
     NSString * currentVersion=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    updateURL=data[@"client"];
     if (![dataVersion isEqualToString:currentVersion]) {
-        UIAlertView * av=[[UIAlertView alloc]initWithTitle:nil message:@"是否更新最新版本？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"马上更新", nil];
+        UIAlertView * av=[[UIAlertView alloc]initWithTitle:@"" message:@"是否更新最新版本？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"马上更新", nil];
         [av show];
     }
     else {

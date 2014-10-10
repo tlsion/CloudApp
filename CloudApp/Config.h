@@ -58,7 +58,7 @@
 #define RGB(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define RGBA(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
 //提示
-#define ALERT(msg)  [[[UIAlertView alloc]initWithTitle:nil message:msg delegate:nil \
+#define ALERT(msg)  [[[UIAlertView alloc]initWithTitle:@"" message:msg delegate:nil \
 cancelButtonTitle:@"确定" otherButtonTitles:nil,nil] show]
 //版本
 #define  SystemVersion [[[UIDevice currentDevice]systemVersion]floatValue]

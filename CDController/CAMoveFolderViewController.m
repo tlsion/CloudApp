@@ -75,10 +75,12 @@
     
     _itemsOfPath=[[NSMutableArray alloc]init];
     for (OCFileDto * fd in allItems) {
-        if (fd.isDirectory) {
+        if (fd.isDirectory && fd.etag !=_itemDto.etag) {
             [_itemsOfPath addObject:fd];
         }
     }
+    
+    
     [_itemsTableView reloadData];
 }
 #pragma mark 集成下拉刷新控件
@@ -112,6 +114,7 @@
     cell.textLabel.font=[UIFont boldSystemFontOfSize:12];
     cell.textLabel.text=itemDto.fileTitle;
     cell.imageView.image=[UIImage imageNamed:@"文件-文件夹_2_4.png"];
+    NSLog(@"%@%@,%@%@",_itemDto.filePath,_itemDto.fileName,itemDto.filePath,itemDto.fileName);
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

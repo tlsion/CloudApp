@@ -86,6 +86,10 @@
     [self.navigationController pushViewController:regVC animated:YES];
 }
 - (IBAction)loginAction:(id)sender {
+    if ([serviceURLTxt.text rangeOfString:@"ext/storage"].length==0) {
+        ALERT(@"不是赛凡网盘服务器，无法连接");
+        return;
+    }
     if (acountTxt.text.length * passwordTxt.text.length * serviceURLTxt.text.length!=0) {
         
         __weak NSUserDefaults * userDefaults=[NSUserDefaults standardUserDefaults];

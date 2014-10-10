@@ -20,7 +20,7 @@ static BOOL isShowWifi =NO;
 
 @end
 @implementation CADataHelper
-+(NSArray *)getItemsOfPath:(NSString *)path{
++(NSMutableArray *)getItemsOfPath:(NSString *)path{
     
     NSArray * allPaths=[self subPath:path];
     
@@ -42,7 +42,7 @@ static BOOL isShowWifi =NO;
     }
     return [CADataHelper getOCFileDtoWith:pathFolders];
 }
-+(NSArray *)getPlistItemsOfName:(NSString *)plistName{
++(NSMutableArray *)getPlistItemsOfName:(NSString *)plistName{
     return [self getOCFileDtoWith:[self getPlistFolders:plistName]];
 }
 +(void)deletePlistItemsOfName:(NSString *)plistName{
@@ -72,6 +72,7 @@ static BOOL isShowWifi =NO;
     NSArray * matches = [itemDictArr filteredArrayUsingPredicate:predicate];
     if (matches.count > 0) {
         NSMutableDictionary * itemDict=[matches lastObject];
+//        [itemDict setObject:[NSNumber numberWithBool:YES] forKey:@"isDelete"];
         [itemDictArr removeObject:itemDict];
         [itemDictArr writeToFile:[CADataHelper plistPath:plistName] atomically:YES];
     }
@@ -399,6 +400,9 @@ static BOOL isShowWifi =NO;
                     OCFileDto * doingFD=matches[0];
                     doingFD.bytes=fd.bytes;
                     doingFD.totalBytes=fd.totalBytes;
+//                    if (doingFD.isDelete==YES) {
+//                        [downloadOperation cancel];
+//                    }
                 }
                 else{
                     [doingFolders addObject:fd];
@@ -505,7 +509,9 @@ static BOOL isShowWifi =NO;
         folder.bytes=[[dic objectForKeyNotNull:@"bytes" fallback:@"0"]integerValue];
         folder.totalBytes=[[dic objectForKeyNotNull:@"totalBytes" fallback:@"0"]integerValue];
         folder.tranferStatus=[[dic objectForKeyNotNull:@"tranferStatus" fallback:@"0"]integerValue];
-        [newFolders addObject:folder];
+//        if (folder.isDelete==NO) {
+            [newFolders addObject:folder];
+//        }
     }
     return newFolders;
 }

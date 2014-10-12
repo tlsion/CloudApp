@@ -34,4 +34,16 @@
     _downloadingFiles=[NSMutableArray arrayWithArray:[CADataHelper getPlistItemsOfName:Plist_Name_Downloading]];
     _uploadingFiles=[NSMutableArray arrayWithArray:[CADataHelper getPlistItemsOfName:Plist_Name_Uploading]];
 }
+-(void)addUploadOperationToTheNetworkQueue:(NSDictionary *)operationDict{
+    if (!_uploadOperations) {
+        _uploadOperations=[[NSMutableArray alloc]init];
+    }
+    [_uploadOperations addObject:operationDict];
+}
+-(void)addDownloadOperationToTheNetworkQueue:(NSDictionary *)operationDict{
+    if (!_downloadOperations) {
+        _downloadOperations=[[NSMutableArray alloc]init];
+    }
+    [_downloadOperations addObject:operationDict];
+}
 @end

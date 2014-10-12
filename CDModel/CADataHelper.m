@@ -15,6 +15,7 @@
 #import "Reachability.h"
 #import "pinyin.h"
 #import "ChineseString.h"
+#import "OCHTTPRequestOperation.h"
 static BOOL isShowWifi =NO;
 @interface CADataHelper()
 
@@ -239,8 +240,8 @@ static BOOL isShowWifi =NO;
     
     
     //Upload block
-    __weak NSOperation * uploadOperation=nil;
-    uploadOperation=[[AppDelegate sharedOCCommunication] uploadFile:localPath toDestiny:[self getServiceUrl:remotePath] onCommunication:[AppDelegate sharedOCCommunication] progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
+    OCHTTPRequestOperation  * uploadOperation=nil;
+    uploadOperation=(OCHTTPRequestOperation  *)[[AppDelegate sharedOCCommunication] uploadFile:localPath toDestiny:[self getServiceUrl:remotePath] onCommunication:[AppDelegate sharedOCCommunication] progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
         progressUpload(bytesWrite,totalBytesWrite,totalBytesWrite);
         //Progress
 //        NSLog(@"Uploading: bytesWrite:%ld,totalBytesWrite:%lld bytes,totalExpectedBytesWrite:%lld",bytesWrite,totalBytesWrite,totalExpectedBytesWrite);
@@ -284,21 +285,57 @@ static BOOL isShowWifi =NO;
                 OCFileDto * doingFD=matches[0];
                 doingFD.bytes=fd.bytes;
                 doingFD.totalBytes=fd.totalBytes;
+                
+                
+                if (doingFD.isDelete==YES) {
+                    //取出下载线程
+                    //
+                    NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                    
+                    NSArray * operationMatches = [[CATransferHelper sharedInstance].uploadOperations filteredArrayUsingPredicate:operationPredicate];
+                    if (operationMatches.count>0) {
+                        OCHTTPRequestOperation  * operation =[operationMatches[0] objectForKey:@"Operation"];
+                        [operation cancel];
+                        [[CATransferHelper sharedInstance].uploadOperations removeObject:operationMatches[0]];
+                    }
+                    
+                    if ([transferHelper.uploadingFiles containsObject:doingFD]) {
+                        [transferHelper.uploadingFiles removeObject:doingFD];
+                    }
+                    [self deletePlaceFileDto:doingFD andPlistName:Plist_Name_Uploading];
+                    
+                    dispatch_async(kMainQueue, ^{
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartUpload]}];
+                        
+                    });
+                    
+                }
+
+                
             }
             else{
-                [doingFolders addObject:fd];
                 
-                [self doFileRequestWithWay:Do_Upload_Request fileInfo:[self fileDictWithFileDto:fd]];
+                NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
                 
-                dispatch_async(kMainQueue, ^{
-                    start();
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartUpload]}];
+                NSArray * operationMatches = [[CATransferHelper sharedInstance].uploadOperations filteredArrayUsingPredicate:operationPredicate];
+                
+                if (operationMatches.count>0) {
+                    [doingFolders addObject:fd];
                     
+                    [self doFileRequestWithWay:Do_Upload_Request fileInfo:[self fileDictWithFileDto:fd]];
                     
-                    [self currentNetIsWiFi];
-                });
+                    dispatch_async(kMainQueue, ^{
+                        start();
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartUpload]}];
+                        
+                        
+                        [self currentNetIsWiFi];
+                    });
+
+                }
                 
             }
+            
         });
 //        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_UPLOADING object:[NSNumber numberWithLongLong:totalBytesWrite]];
         
@@ -319,10 +356,10 @@ static BOOL isShowWifi =NO;
 //        [self readFolder:nil];
         
     } failureRequest:^(NSHTTPURLResponse *response, NSString *redirectedServer, NSError *error) {
-        //Request failure
-        
-//        [[self appDelegateWindow] makeToast:@"服务器出错"];
-        failureRequest(error);
+//        NSLog(@"ero:%d,%d",response.statusCode,error.code);
+        if (error.code!= (-999)) {
+            failureRequest(error);
+        }
         
     } failureBeforeRequest:^(NSError *error) {
         //Failure before the request
@@ -332,8 +369,12 @@ static BOOL isShowWifi =NO;
         
     } shouldExecuteAsBackgroundTaskWithExpirationHandler:^{
         //Specifies that the operation should continue execution after the app has entered the background, and the expiration handler for that background task.
-        [uploadOperation cancel];
+//        [uploadOperation cancel];
     }];
+    
+    
+    NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:uploadOperation,@"Operation",FORMAT(@"%@%@",remotePath,fileName),@"Path", nil];
+    [[CATransferHelper sharedInstance]addUploadOperationToTheNetworkQueue:operationDict];
     
     
 }
@@ -343,40 +384,17 @@ static BOOL isShowWifi =NO;
     
     NSString * randomStr=[NSString stringWithFormat:@"/%@",fileName];
     NSString *localPath = [folderPath stringByAppendingString:randomStr];
-    
-    
-    __weak NSOperation * downloadOperation=nil;
-    
-    downloadOperation=[[AppDelegate sharedOCCommunication] downloadFile:[self getServiceUrl:remotePath] toDestiny:localPath withLIFOSystem:YES onCommunication:[AppDelegate sharedOCCommunication] progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
+   
+    OCHTTPRequestOperation  * downloadOperation=nil;
+    downloadOperation=(OCHTTPRequestOperation  *)[[AppDelegate sharedOCCommunication] downloadFile:[self getServiceUrl:remotePath] toDestiny:localPath withLIFOSystem:YES onCommunication:[AppDelegate sharedOCCommunication] progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
+        
         //Progress
         progressDownload(bytesRead,totalBytesRead,totalExpectedBytesRead);
         
-        
-                
                 
 //        NSLog(@"下载内：【%ld】，【%lld】，【%lld】",bytesRead,totalBytesRead,totalExpectedBytesRead);
-//        NSMutableArrayf * downloadingFolders=[self getPlistFolders:Plist_Name_Downloading];
-//        if (!downloadingFolders) {
-//            NSMutableArray * folders=[NSMutableArray array];
-//            
-//            [folders writeToFile:[self plistPath:Plist_Name_Downloading] atomically:YES];
-//        }
-//        else{
-//            
-//            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",fileName];
-//            NSArray * matches = [downloadingFolders filteredArrayUsingPredicate:predicate];
-//            if (matches.count > 0) {
+
         
-        //            NSMutableDictionary * folderDic=[NSMutableDictionary dictionary];
-        //            [folderDic setValue:fileName forKeyPath:@"fileName"];
-        //            [folderDic setValue:remotePath forKeyPath:@"filePath"];
-        //            [folderDic setValue:[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKeyPath:@"fileTitle"];
-        //            [folderDic setValue:[NSNumber numberWithBool:NO] forKeyPath:@"isDirectory"];
-        //            [folderDic setValue:[NSNumber numberWithInteger:[CommonHelper fileNameToFileType:fileName]] forKeyPath:@"fileType"];
-        //            [folderDic setValue:[NSNumber numberWithLongLong:totalExpectedBytesRead] forKeyPath:@"size"];
-        //            [folderDic setValue:[NSNumber numberWithLong:[[NSDate date] timeIntervalSince1970]] forKeyPath:@"date"];
-        //            [folderDic setValue:[NSNumber numberWithInteger:bytesRead] forKey:@"bytesWrite"];
-        //            [folderDic setValue:[NSNumber numberWithLongLong:totalBytesRead] forKey:@"totalBytesWrite"];
         dispatch_async(kBgQueue, ^{
             
             OCFileDto * fd=[[OCFileDto alloc]init];
@@ -400,22 +418,49 @@ static BOOL isShowWifi =NO;
                     OCFileDto * doingFD=matches[0];
                     doingFD.bytes=fd.bytes;
                     doingFD.totalBytes=fd.totalBytes;
-//                    if (doingFD.isDelete==YES) {
-//                        [downloadOperation cancel];
-//                    }
+                    if (doingFD.isDelete==YES) {
+                        //取出下载线程
+//                        
+                        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                        
+                        NSArray * operationMatches = [[CATransferHelper sharedInstance].downloadOperations filteredArrayUsingPredicate:operationPredicate];
+                        if (operationMatches.count>0) {
+                            OCHTTPRequestOperation  * operation =[operationMatches[0] objectForKey:@"Operation"];
+                            [operation cancel];
+                            [[CATransferHelper sharedInstance].downloadOperations removeObject:operationMatches[0]];
+                        }
+
+                        if ([transferHelper.downloadingFiles containsObject:doingFD]) {
+                            [transferHelper.downloadingFiles removeObject:doingFD];
+                        }
+                        [self deletePlaceFileDto:doingFD andPlistName:Plist_Name_Downloading];
+                        
+                        dispatch_async(kMainQueue, ^{
+                            [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartDownload]}];
+                            
+                        });
+                        
+                    }
                 }
                 else{
-                    [doingFolders addObject:fd];
-                   
-                    [self doFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:fd]];
                     
-                    dispatch_async(kMainQueue, ^{
-                        start();
-                        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartDownload]}];
+                    NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                    
+                    NSArray * operationMatches = [[CATransferHelper sharedInstance].downloadOperations filteredArrayUsingPredicate:operationPredicate];
+                    
+                    if (operationMatches.count>0) {
+                        [doingFolders addObject:fd];
                         
-                        [self currentNetIsWiFi];
-                    });
-                    
+                        [self doFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:fd]];
+                        
+                        dispatch_async(kMainQueue, ^{
+                            start();
+                            [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartDownload]}];
+                            
+                            [self currentNetIsWiFi];
+                        });
+                    }
+                
                 }
         });
         
@@ -423,11 +468,11 @@ static BOOL isShowWifi =NO;
         //Success
         NSLog(@"下载成功 : %@", localPath);
         
-        
         dispatch_async(kBgQueue, ^{
             [self didFileRequestWithWay:Do_Download_Request fileName:fileName];
             dispatch_async(kMainQueue, ^{
-                successRequest(localPath);[[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidDownloaded]}];
+                successRequest(localPath);
+                [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidDownloaded]}];
                 
             });
         });
@@ -437,18 +482,25 @@ static BOOL isShowWifi =NO;
 //        _deleteLocalFile.enabled = YES;
         
     } failureRequest:^(NSHTTPURLResponse *response, NSError *error) {
-        failureRequest(error);
         //Request failure
+        NSLog(@"ero:%d,%d",response.statusCode,error.code);
+        if (error.code!= (-999)) {
+            failureRequest(error);
+        }
+        //取消下载
+//        error while download a file: Error Domain=NSURLErrorDomain Code=-999 "The operation couldn’t be completed. (NSURLErrorDomain error -999.)" UserInfo=0x16ea56e0 {NSErrorFailingURLKey=http://27.154.58.234:2001/ext/storage/remote.php/webdav/1-owncloud-sync-guide.jpg}
+        //"网络连接已中断。
+//        NSURLErrorDomain Code=-1005 "网络连接已中断。" UserInfo=0x176bf310 {NSErrorFailingURLStringKey=http://27.154.58.234:2001/ext/storage/remote.php/webdav/1-owncloud-sync-guidej.jpg, _kCFStreamErrorCodeKey=57, NSErrorFailingURLKey=http://27.154.58.234:2001/ext/storage/remote.php/webdav/1-owncloud-sync-guidej.jpg, NSLocalizedDescription=网络连接已中断。, _kCFStreamErrorDomainKey=1, NSUnderlyingError=0x176e9a30 "网络连接已中断。"}
         NSLog(@"error while download a file: %@", error);
-//        [[self appDelegateWindow] makeToast:@"服务器出错"];
-//        _progressLabel.text = @"Error in download";
-//        _downloadButton.enabled = YES;
         
     } shouldExecuteAsBackgroundTaskWithExpirationHandler:^{
         //Specifies that the operation should continue execution after the app has entered the background, and the expiration handler for that background task.
         
-        [downloadOperation cancel];
+//        [downloadOperation cancel];
     }];
+    
+    NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:downloadOperation,@"Operation",FORMAT(@"%@%@",remotePath,fileName),@"Path", nil];
+    [[CATransferHelper sharedInstance]addDownloadOperationToTheNetworkQueue:operationDict];
 }
 + (void) deleteFileOrFolder:(NSString *)remotePath
              successRequest:(void (^)())successRequest

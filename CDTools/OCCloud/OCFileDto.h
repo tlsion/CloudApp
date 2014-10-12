@@ -39,7 +39,8 @@
 @property (nonatomic, assign)long date;
 @property (nonatomic, assign)long long etag;
 
-//@property (nonatomic, assign)BOOL isDelete;
+@property (nonatomic, assign)BOOL isDelete;//只有传输列表用到
+
 @property (nonatomic , assign) BOOL isSelect;
 @property (nonatomic, assign) CAFileTypeCode fileType;
 

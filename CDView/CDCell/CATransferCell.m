@@ -87,10 +87,11 @@
     });
 }
 -(void)setDoTotalBytes:(long long)aTotalBytes{
-    
+//    NSLog(@"%lld",aTotalBytes);
     dispatch_async(kMainQueue, ^{
         CGFloat progress=(CGFloat)aTotalBytes/(CGFloat)_itemDto.size;
         self.sizeLabel.text=[NSString stringWithFormat:@"%@/%@",[CommonHelper getFileSizeString:aTotalBytes],[CommonHelper getFileSizeString: _itemDto.size]];
+//        NSLog(@"%@",self.sizeLabel.text);
         [self.scheduleProgressView setProgress:progress animated:YES];
     });
 }

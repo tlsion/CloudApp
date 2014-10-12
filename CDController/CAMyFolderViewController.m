@@ -252,11 +252,11 @@
     
     __weak AppDelegate * app=APP;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{
-        [app.window makeToast:@"已加入上传列表"];
+//        [app.window makeToast:@"添加至上传列表"];
     }progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
         //        NSLog(@"上传：%ld",bytesWrite);
     }successRequest:^{
-        [app.window makeToast:@"上传成功"];
+//        [app.window makeToast:@"上传成功"];
         [_itemsTableView headerBeginRefreshing];
         
         o_uploadData =nil;
@@ -275,12 +275,12 @@
     
     __weak AppDelegate * app=APP;
     [CADataHelper downloadFile:path downloadFileName:fileName willStart:^{
-        [app.window makeToast:@"已加入下载列表"];
+//        [app.window makeToast:@"添加至下载列表"];
     }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
         //        NSLog(@"下载外：%ld",bytesRead);
     } successRequest:^(NSString *downPath) {
-        [app.window makeToast:@"下载成功"];
+//        [app.window makeToast:@"下载成功"];
     } failureRequest:^(NSError *error) {
         [app.window makeToast:@"下载失败"];
     }];

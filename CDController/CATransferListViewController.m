@@ -247,30 +247,50 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     {
         OCFileDto * item=nil;
         NSString * plistName=nil;
+        NSMutableArray * operateArr=nil;
         if (tableView==downloadTableView){
             if (indexPath.section==0) {
                 item=downloadingFiles[indexPath.row];
-                [downloadingFiles removeObjectAtIndex:[indexPath row]];
-                plistName=Plist_Name_Downloading;
+                if (item.isDelete==NO) {
+                    item.isDelete=YES;
+                    return;
+                }
+                else {
+                    operateArr=downloadingFiles;
+                    plistName=Plist_Name_Downloading;
+                }
             }
             else{
                 item=downloadedFiles[indexPath.row];
-                [downloadedFiles removeObjectAtIndex:[indexPath row]];
+                operateArr=downloadedFiles;
                 plistName=Plist_Name_Downloaded;
             }
         }
         else{
             if (indexPath.section==0) {
                 item=uploadingFiles[indexPath.row];
-                [uploadingFiles removeObjectAtIndex:[indexPath row]];
-                plistName=Plist_Name_Uploading;
+                if (item.isDelete==NO) {
+                    item.isDelete=YES;
+                    return;
+                }
+                else {
+                    operateArr=uploadingFiles;
+                    plistName=Plist_Name_Uploading;
+                }
             }
             else{
                 item=uploadedFiles[indexPath.row];
-                [uploadedFiles removeObjectAtIndex:[indexPath row]];
+                operateArr=uploadedFiles;
                 plistName=Plist_Name_Uploaded;
             }
         }
+        if (operateArr.count>indexPath.row) {
+            [operateArr removeObjectAtIndex:[indexPath row]];
+        }
+//        item.isDelete=YES;
+//        if ([[CATransferHelper sharedInstance].downloadingFiles containsObject:item]) {
+//            NSLog(@"fileName:%@",item.fileName);
+//        }
         [CADataHelper deletePlaceFileDto:item andPlistName:plistName];
         
         

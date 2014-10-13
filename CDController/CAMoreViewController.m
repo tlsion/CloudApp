@@ -80,7 +80,9 @@
     self.showThumbnailsCell.accessoryView = self.showThumbnailsSwitch;
     self.markWhileScrollingCell.accessoryView = self.markWhileScrollingSwitch;
     
-    [self getVersionNumber];
+    
+    NSString * currentVersion=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    _versionsLabel.text=FORMAT(@"V  %@",currentVersion);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -173,19 +175,23 @@
             [self.navigationController pushViewController:controller animated:YES];
         }
         else if(indexPath.row==1){
-            [self softUpdate];
+            [self getVersionNumber];
         }
     }
 }
 -(void)getVersionNumber{
+    AppDelegate * app=APP;
+    [app.window makeToastActivity];
     [MVHTTPService requestGetMethod:@"version.php" andParam:@{@"type": @"ios"} andServiceSuccessBlock:^(MVHTTPService * service) {
 //        [self softUpdate:service.allDataDic];
         updateURL=service.allDataDic[@"client"];
         dataVersion=service.allDataDic[@"version"];
-        _versionsLabel.text=FORMAT(@"V  %@",dataVersion);
         
+        [self softUpdate];
+        [app.window hideToastActivity];
     } andServiceFailBlock:^{
-        [self.view makeToast:@"服务请求失败"];
+        [app.window makeToast:@"服务请求失败"];
+        [self.view hideToastActivity];
     }];
 }
 #pragma mark - MFMailComposeViewControllerDelegate

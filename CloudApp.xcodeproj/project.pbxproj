@@ -34,11 +34,6 @@
 		DD5DEEE41985FAF4006C49BD /* 搜索按钮@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEB41985FAF4006C49BD /* 搜索按钮@2x.png */; };
 		DD5DEEE51985FAF4006C49BD /* 搜索输入框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEB51985FAF4006C49BD /* 搜索输入框@2x.png */; };
 		DD5DEEE61985FAF4006C49BD /* 操作按钮底部@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEB61985FAF4006C49BD /* 操作按钮底部@2x.png */; };
-		DD5DEEE71985FAF4006C49BD /* 文件-其他@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEB71985FAF4006C49BD /* 文件-其他@2x.png */; };
-		DD5DEEE81985FAF4006C49BD /* 文件-图片@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEB81985FAF4006C49BD /* 文件-图片@2x.png */; };
-		DD5DEEE91985FAF4006C49BD /* 文件-文档@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEB91985FAF4006C49BD /* 文件-文档@2x.png */; };
-		DD5DEEEA1985FAF4006C49BD /* 文件-视频@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEBA1985FAF4006C49BD /* 文件-视频@2x.png */; };
-		DD5DEEEB1985FAF4006C49BD /* 文件-音乐@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEBB1985FAF4006C49BD /* 文件-音乐@2x.png */; };
 		DD5DEEEC1985FAF4006C49BD /* 暂停@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEBC1985FAF4006C49BD /* 暂停@2x.png */; };
 		DD5DEEED1985FAF4006C49BD /* 欢迎画面@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEBD1985FAF4006C49BD /* 欢迎画面@2x.png */; };
 		DD5DEEEE1985FAF4006C49BD /* 灰白背景@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD5DEEBE1985FAF4006C49BD /* 灰白背景@2x.png */; };
@@ -263,11 +258,6 @@
 		DD5DEEB41985FAF4006C49BD /* 搜索按钮@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "搜索按钮@2x.png"; sourceTree = "<group>"; };
 		DD5DEEB51985FAF4006C49BD /* 搜索输入框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "搜索输入框@2x.png"; sourceTree = "<group>"; };
 		DD5DEEB61985FAF4006C49BD /* 操作按钮底部@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "操作按钮底部@2x.png"; sourceTree = "<group>"; };
-		DD5DEEB71985FAF4006C49BD /* 文件-其他@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "文件-其他@2x.png"; sourceTree = "<group>"; };
-		DD5DEEB81985FAF4006C49BD /* 文件-图片@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "文件-图片@2x.png"; sourceTree = "<group>"; };
-		DD5DEEB91985FAF4006C49BD /* 文件-文档@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "文件-文档@2x.png"; sourceTree = "<group>"; };
-		DD5DEEBA1985FAF4006C49BD /* 文件-视频@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "文件-视频@2x.png"; sourceTree = "<group>"; };
-		DD5DEEBB1985FAF4006C49BD /* 文件-音乐@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "文件-音乐@2x.png"; sourceTree = "<group>"; };
 		DD5DEEBC1985FAF4006C49BD /* 暂停@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暂停@2x.png"; sourceTree = "<group>"; };
 		DD5DEEBD1985FAF4006C49BD /* 欢迎画面@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "欢迎画面@2x.png"; sourceTree = "<group>"; };
 		DD5DEEBE1985FAF4006C49BD /* 灰白背景@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "灰白背景@2x.png"; sourceTree = "<group>"; };
@@ -656,11 +646,6 @@
 				DD5DEEB41985FAF4006C49BD /* 搜索按钮@2x.png */,
 				DD5DEEB51985FAF4006C49BD /* 搜索输入框@2x.png */,
 				DD5DEEB61985FAF4006C49BD /* 操作按钮底部@2x.png */,
-				DD5DEEB71985FAF4006C49BD /* 文件-其他@2x.png */,
-				DD5DEEB81985FAF4006C49BD /* 文件-图片@2x.png */,
-				DD5DEEB91985FAF4006C49BD /* 文件-文档@2x.png */,
-				DD5DEEBA1985FAF4006C49BD /* 文件-视频@2x.png */,
-				DD5DEEBB1985FAF4006C49BD /* 文件-音乐@2x.png */,
 				DD5DEEBC1985FAF4006C49BD /* 暂停@2x.png */,
 				DD5DEEBD1985FAF4006C49BD /* 欢迎画面@2x.png */,
 				DD5DEEBE1985FAF4006C49BD /* 灰白背景@2x.png */,
@@ -1396,8 +1381,6 @@
 				DDBD50271980057B002E739D /* CAMoreViewController.xib in Resources */,
 				DDBB88C519A50FC10047B142 /* CAUploadSelectView.xib in Resources */,
 				DD5DEEF61985FAF4006C49BD /* 进度条@2x.png in Resources */,
-				DD5DEEE71985FAF4006C49BD /* 文件-其他@2x.png in Resources */,
-				DD5DEEE91985FAF4006C49BD /* 文件-文档@2x.png in Resources */,
 				DD5DEECE1985FAF4006C49BD /* 下载2@2x.png in Resources */,
 				DD5DEEDD1985FAF4006C49BD /* 开始@2x.png in Resources */,
 				15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */,
@@ -1407,11 +1390,9 @@
 				DD5DEEEF1985FAF4006C49BD /* 移动2@2x.png in Resources */,
 				DD5DEEFA1985FAF4006C49BD /* 顶部蓝条@2x.png in Resources */,
 				DD5DEECF1985FAF4006C49BD /* 下载@2x.png in Resources */,
-				DD5DEEE81985FAF4006C49BD /* 文件-图片@2x.png in Resources */,
 				DDB4D06D19B4C4570021FB4D /* NoWifiShowView.xib in Resources */,
 				DDA962FE198A021200A5B5A1 /* CATransferCell.xib in Resources */,
 				DD5DEEF81985FAF4006C49BD /* 重命名2@2x.png in Resources */,
-				DD5DEEEB1985FAF4006C49BD /* 文件-音乐@2x.png in Resources */,
 				DDB8C34319D647C100319B33 /* video.MOV in Resources */,
 				DDC1168A19AED1A300681EE2 /* CAShowFileViewController.xib in Resources */,
 				DD5DEF0319865B28006C49BD /* 首页底部@2x.png in Resources */,
@@ -1442,7 +1423,6 @@
 				DD5DEEF91985FAF4006C49BD /* 重命名@2x.png in Resources */,
 				DDC5B6191998DDFE000C7492 /* file_folder_icon@2x.png in Resources */,
 				DDBD4F8E198002E7002E739D /* Images.xcassets in Resources */,
-				DD5DEEEA1985FAF4006C49BD /* 文件-视频@2x.png in Resources */,
 				DD5DEEE21985FAF4006C49BD /* 按钮@2x.png in Resources */,
 				DD5DEEE51985FAF4006C49BD /* 搜索输入框@2x.png in Resources */,
 				DDBB88BE19A4E7750047B142 /* 文件-音乐_2_4@2x.png in Resources */,

@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "ImageManager.h"
 #import "EGOImageView.h"
-@interface MyScrollView : UIScrollView <UIScrollViewDelegate>
+@interface MyScrollView : UIScrollView <UIScrollViewDelegate,EGOImageViewDelegate>
 {
-    NSString *imagePath;
 	EGOImageView *imageView;
 }
-
+@property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, copy) NSString *imagePath;
 @property (nonatomic, strong) UIImage *image;
 @end

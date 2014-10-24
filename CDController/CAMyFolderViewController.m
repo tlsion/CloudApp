@@ -28,18 +28,21 @@
 #import "OCWebDAVClient.h"
 #import "Reachability.h"
 #import "TXMD5.h"
+#import "ImageShowViewController.h"
 #define AV_RENAME_TAG 100
 #define AS_UPLOAD_TAG 200
 
 #define ASSET_PICKER_PHOTO_TAG @"ALAssetTypePhoto"
 #define ASSET_PICKER_VIDEO_TAG @"ALAssetTypeVideo"
 #define MaximumNumberOfSelection 10
+#import "TGRImageViewController.h"
+#import "TGRImageZoomAnimationController.h"
 
-@interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate>
+@interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate,UIViewControllerTransitioningDelegate>
 {
     UIAlertView * addFolderAlertView ;
     NSUserDefaults * userDefaults;
-//    CACloudHelper * cloudHelper;
+    //    CACloudHelper * cloudHelper;
     BOOL isRequest;
     OCFileDto * selectItemDto;
     
@@ -107,8 +110,8 @@
     UIBarButtonItem * rightBarItem=[[UIBarButtonItem alloc]initWithCustomView:rightView];
     [self.navigationItem setRightBarButtonItem:rightBarItem];
     
-//    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"上传" andTarget:self andAction:@selector(uploadFileAction)];
-//    [self.navigationItem setRightBarButtonItem:rightBarItem];
+    //    UIBarButtonItem * rightBarItem=[CrateComponent createRightBarButtonItemWithTitle:@"上传" andTarget:self andAction:@selector(uploadFileAction)];
+    //    [self.navigationItem setRightBarButtonItem:rightBarItem];
 }
 -(void)backAction{
     [self.navigationController popViewControllerAnimated:YES];
@@ -138,13 +141,13 @@
     [self customNavigationBar];
     
     userDefaults =[NSUserDefaults standardUserDefaults];
-
+    
     if (!_az_folderPath) _az_folderPath=@"";
     
-
-//    [[CAGlobalData shared].az_mainTab setAz_operateDelegate:self];
     
-//    [self Contacts];
+    //    [[CAGlobalData shared].az_mainTab setAz_operateDelegate:self];
+    
+    //    [self Contacts];
 }
 -(void)initItemsData{
     if (!isRequest) {
@@ -172,10 +175,10 @@
     [[self addFolderAlertView]show];
 }
 -(void)uploadFileAction{
-//    [[self addFolderAlertView]show];
-//    [self getFoldersData];
-//    FirstViewController * f=[[FirstViewController alloc]init];
-//    [self.navigationController pushViewController:f  animated:YES];
+    //    [[self addFolderAlertView]show];
+    //    [self getFoldersData];
+    //    FirstViewController * f=[[FirstViewController alloc]init];
+    //    [self.navigationController pushViewController:f  animated:YES];
     
     [[self uploadActionSheet] showInView:self.view];
     
@@ -186,23 +189,23 @@
 {
     // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
     [self.itemsTableView addHeaderWithTarget:self action:@selector(headerRereshing)];
-//#pragma mar warning-- 自动刷新(一进入程序就下拉刷新)
-//    [self.itemsTableView headerBeginRefreshing];
+    //#pragma mar warning-- 自动刷新(一进入程序就下拉刷新)
+    //    [self.itemsTableView headerBeginRefreshing];
     
 }
 - (void)headerRereshing
 {
     [self getFoldersData];
-//    dataList=[[NSMutableArray alloc]init];
-//    [self getGoodlist];
+    //    dataList=[[NSMutableArray alloc]init];
+    //    [self getGoodlist];
     //    // 2.2秒后刷新表格UI
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        // 刷新表格
-//        [self.itemsTableView reloadData];
-//
-//        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
-//        [self.itemsTableView headerEndRefreshing];
-//    });
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //        // 刷新表格
+    //        [self.itemsTableView reloadData];
+    //
+    //        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+    //        [self.itemsTableView headerEndRefreshing];
+    //    });
 }
 #pragma mark 云方法
 ///-----------------------------------
@@ -213,30 +216,30 @@
  * Set username and password in the OCComunicacion
  */
 //- (void) setCredencialsInOCCommunication {
-//    
+//
 //    //Sett credencials
 //    [[AppDelegate sharedOCCommunication] setCredentialsWithUser:baseUser andPassword:basePassword];
-//    
+//
 //}
 - (void) getFoldersData {
     [CADataHelper updateFolderWithPath:_az_folderPath successRequest:^(NSHTTPURLResponse * response, NSArray *itemsOfPath) {
-//        NSLog(@"%@",itemsOfPath);
+        //        NSLog(@"%@",itemsOfPath);
         _itemsOfPath=[CADataHelper getItemsOfPath:_az_folderPath];
         
         [self backToNoSelect];
-
+        
     } failureRequest:^(NSHTTPURLResponse * response) {
         
         [_itemsTableView reloadData];
     }];
-//    [CADataHelper updateFolderWithPath:_az_folderPath successRequest:^(NSHTTP NSArray * itemsOfPath) {
-//        NSLog(@"%@",itemsOfPath);
-//        _itemsOfPath=[CADataHelper getItemsOfPath:_az_folderPath];
-//        [_itemsTableView reloadData];
-//    } failureRequest:^(){
-//        NSLog(@"error");
-//         [_itemsTableView reloadData];
-//    }];
+    //    [CADataHelper updateFolderWithPath:_az_folderPath successRequest:^(NSHTTP NSArray * itemsOfPath) {
+    //        NSLog(@"%@",itemsOfPath);
+    //        _itemsOfPath=[CADataHelper getItemsOfPath:_az_folderPath];
+    //        [_itemsTableView reloadData];
+    //    } failureRequest:^(){
+    //        NSLog(@"error");
+    //         [_itemsTableView reloadData];
+    //    }];
 }
 - (void) createFolderName:(NSString *)name {
     NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,name];
@@ -252,11 +255,11 @@
     
     __weak AppDelegate * app=APP;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{
-//        [app.window makeToast:@"添加至上传列表"];
+        //        [app.window makeToast:@"添加至上传列表"];
     }progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
         //        NSLog(@"上传：%ld",bytesWrite);
     }successRequest:^{
-//        [app.window makeToast:@"上传成功"];
+        //        [app.window makeToast:@"上传成功"];
         [_itemsTableView headerBeginRefreshing];
         
         o_uploadData =nil;
@@ -275,12 +278,12 @@
     
     __weak AppDelegate * app=APP;
     [CADataHelper downloadFile:path downloadFileName:fileName willStart:^{
-//        [app.window makeToast:@"添加至下载列表"];
+        //        [app.window makeToast:@"添加至下载列表"];
     }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
         //        NSLog(@"下载外：%ld",bytesRead);
     } successRequest:^(NSString *downPath) {
-//        [app.window makeToast:@"下载成功"];
+        //        [app.window makeToast:@"下载成功"];
     } failureRequest:^(NSError *error) {
         [app.window makeToast:@"下载失败"];
     }];
@@ -352,6 +355,8 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self showImage];
+    return;
     BOOL cellIsSelect=NO;
     for (OCFileDto * oc in _itemsOfPath) {
         if (oc.isSelect) {
@@ -370,14 +375,14 @@
             [self.navigationController pushViewController:folderVC animated:YES];
         }
         else{
-            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
-            controller.itemDto=itemDto;
-            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
-            [self presentViewController:nController animated:YES completion:nil];
-//            [self showImageWithOCFileDto:itemDto];
-//            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
-//            controller.itemDto=itemDto;
-//            [self.navigationController pushViewController:controller animated:YES];
+            //            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+            //            controller.itemDto=itemDto;
+            //            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+            //            [self presentViewController:nController animated:YES completion:nil];
+            [self showImageWithOCFileDto:itemDto];
+            //            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+            //            controller.itemDto=itemDto;
+            //            [self.navigationController pushViewController:controller animated:YES];
         }
     }
     else{
@@ -447,7 +452,7 @@
     [_itemsTableView reloadData];
     
     selectItemDto=nil;
-     [[CAGlobalData shared].az_mainTab showFileTabbar:NO andIsFolder:NO];
+    [[CAGlobalData shared].az_mainTab showFileTabbar:NO andIsFolder:NO];
 }
 #pragma mark -- alertView
 - (UIAlertView*)addFolderAlertView {
@@ -512,9 +517,9 @@
     string =[string stringByReplacingOccurrencesOfString:@"\"" withString:@""];
     string =[string stringByReplacingOccurrencesOfString:@" " withString:@""];
     string =[string stringByReplacingOccurrencesOfString:@"?" withString:@""];
-//    string =[string stringByReplacingOccurrencesOfString:@"'" withString:@""];
-//    string =[string stringByReplacingOccurrencesOfString:@"," withString:@""];
-//    string =[string stringByReplacingOccurrencesOfString:@";" withString:@""];
+    //    string =[string stringByReplacingOccurrencesOfString:@"'" withString:@""];
+    //    string =[string stringByReplacingOccurrencesOfString:@"," withString:@""];
+    //    string =[string stringByReplacingOccurrencesOfString:@";" withString:@""];
     NSLog(@"%@",string);
     return string;
 }
@@ -531,13 +536,13 @@
             case 0:
             {
                 [self showAssetPicker:ASSET_PICKER_PHOTO_TAG];
-//                [self showPickerController:(NSString *)kUTTypeImage];
+                //                [self showPickerController:(NSString *)kUTTypeImage];
             }
                 break;
                 
             case 1:
             {
-//                [self showAssetPicker:ASSET_PICKER_VIDEO_TAG];
+                //                [self showAssetPicker:ASSET_PICKER_VIDEO_TAG];
                 [self showPickerController:(NSString *)kUTTypeMovie];
                 
             }
@@ -573,11 +578,11 @@
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     for (ALAsset *asset in assets) {
-//        NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
-//        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-//        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-//        NSLog(@"a:%@,b:%@,c:%@",[dateFormatter stringFromDate:[asset valueForProperty:ALAssetPropertyDate]],[asset valueForProperty:ALAssetPropertyType],[UIImage imageWithCGImage:asset.thumbnail]);
-//        [asset valueForProperty:ALAssetPropertyType]
+        //        NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
+        //        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        //        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+        //        NSLog(@"a:%@,b:%@,c:%@",[dateFormatter stringFromDate:[asset valueForProperty:ALAssetPropertyDate]],[asset valueForProperty:ALAssetPropertyType],[UIImage imageWithCGImage:asset.thumbnail]);
+        //        [asset valueForProperty:ALAssetPropertyType]
         NSString *fileName =[NSString stringWithFormat:@"%@.jpg",[NSDate nameDescriptionOfTimeInterval:[[asset valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]]];
         NSString * ALAssetType=[NSString stringWithFormat:@"%@",[asset valueForProperty:ALAssetPropertyType]];
         NSData * uploadData=nil;
@@ -585,56 +590,56 @@
             CGImageRef ref = [[asset  defaultRepresentation]fullScreenImage];
             UIImage *img = [[UIImage alloc]initWithCGImage:ref];
             uploadData=UIImageJPEGRepresentation(img, 1);
-//            uploadData=UIImageJPEGRepresentation([UIImage imageWithCGImage:[[asset  defaultRepresentation]fullScreenImage]], 1);
+            //            uploadData=UIImageJPEGRepresentation([UIImage imageWithCGImage:[[asset  defaultRepresentation]fullScreenImage]], 1);
         }
         else if ([ALAssetType isEqualToString:ASSET_PICKER_VIDEO_TAG]) {
             //暂未完成多选视频
-             NSLog(@"ALAssetPropertyAssetURL:%@",[[asset defaultRepresentation]metadata]);
-//            NSURL *videoURL = [[asset  defaultRepresentation] url];
-//            NSString *videoPath=videoURL.absoluteString;
-//            uploadData= [NSData dataWithContentsOfURL:videoURL];
-//            获取缩略图：
-//            
-//            CGImageRef  ref = [result thumbnail];
-//
-//            UIImage *img = [[UIImage alloc]initWithCGImage:ref];
-//            
-//            获取全屏相片：
-//            
-//            CGImageRef ref = [[result  defaultRepresentation]fullScreenImage];
-//            
-//            UIImage *img = [[UIImage alloc]initWithCGImage:ref];
-//            
-//            获取高清相片：
-//            
-//            CGImageRef ref = [[result  defaultRepresentation]fullResolutionImage];
+            NSLog(@"ALAssetPropertyAssetURL:%@",[[asset defaultRepresentation]metadata]);
+            //            NSURL *videoURL = [[asset  defaultRepresentation] url];
+            //            NSString *videoPath=videoURL.absoluteString;
+            //            uploadData= [NSData dataWithContentsOfURL:videoURL];
+            //            获取缩略图：
+            //
+            //            CGImageRef  ref = [result thumbnail];
+            //
+            //            UIImage *img = [[UIImage alloc]initWithCGImage:ref];
+            //
+            //            获取全屏相片：
+            //
+            //            CGImageRef ref = [[result  defaultRepresentation]fullScreenImage];
+            //
+            //            UIImage *img = [[UIImage alloc]initWithCGImage:ref];
+            //
+            //            获取高清相片：
+            //
+            //            CGImageRef ref = [[result  defaultRepresentation]fullResolutionImage];
         }
         
-//        NSLog(@"name:%@,size:%ld",fileName,uploadData.length);
-//        NSString *fileName = [asset filename];
-//        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//        NSLog(@"fileName : %@",fileName);
-//        
-//        NSString *uploadFileName = [self getFileName:fileName];
+        //        NSLog(@"name:%@,size:%ld",fileName,uploadData.length);
+        //        NSString *fileName = [asset filename];
+        //        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        //        NSLog(@"fileName : %@",fileName);
+        //
+        //        NSString *uploadFileName = [self getFileName:fileName];
         
         [self uploadFile:fileName andData:uploadData];
         
     }
     
-//    [self.tableView beginUpdates];
-//    [self.tableView insertRowsAtIndexPaths:[self indexPathOfNewlyAddedAssets:assets]
-//                          withRowAnimation:UITableViewRowAnimationBottom];
-//    
-//    [self.assets addObjectsFromArray:assets];
-//    [self.tableView endUpdates];
+    //    [self.tableView beginUpdates];
+    //    [self.tableView insertRowsAtIndexPaths:[self indexPathOfNewlyAddedAssets:assets]
+    //                          withRowAnimation:UITableViewRowAnimationBottom];
+    //
+    //    [self.assets addObjectsFromArray:assets];
+    //    [self.tableView endUpdates];
 }
 
 - (NSArray *)indexPathOfNewlyAddedAssets:(NSArray *)assets
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     
-//    for (int i = _assets.count; i < assets.count + _assets.count ; i++)
-//        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    //    for (int i = _assets.count; i < assets.count + _assets.count ; i++)
+    //        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     
     return indexPaths;
 }
@@ -646,7 +651,7 @@
     picker.delegate = self;
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     // 设置所支持的类型，设置只能拍照，或则只能录像，或者两者都可以
-//    picker.allowsEditing = YES;
+    //    picker.allowsEditing = YES;
     NSString *requiredMediaType =mediaType;
     NSArray *arrMediaTypes=[NSArray arrayWithObjects: requiredMediaType,nil];
     [picker setMediaTypes:arrMediaTypes];
@@ -665,21 +670,21 @@
         UIImage * pickerImage=[info objectForKey:UIImagePickerControllerOriginalImage];
         uploadData=UIImageJPEGRepresentation(pickerImage, 1);
         
-//        NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
-//        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
-//        {
-//            ALAssetRepresentation *representation = [myasset defaultRepresentation];
-//            NSString *fileName = [representation filename];
-//            fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//            NSLog(@"fileName : %@",fileName);
-//            
-//            [self uploadFile:fileName andData:imageData];
-//        };
-//        
-//        ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-//        [assetslibrary assetForURL:imageURL
-//                       resultBlock:resultblock
-//                      failureBlock:nil];
+        //        NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+        //        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
+        //        {
+        //            ALAssetRepresentation *representation = [myasset defaultRepresentation];
+        //            NSString *fileName = [representation filename];
+        //            fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        //            NSLog(@"fileName : %@",fileName);
+        //
+        //            [self uploadFile:fileName andData:imageData];
+        //        };
+        //
+        //        ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+        //        [assetslibrary assetForURL:imageURL
+        //                       resultBlock:resultblock
+        //                      failureBlock:nil];
         
         
     }
@@ -688,27 +693,27 @@
         NSString *videoPath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
         uploadData= [NSData dataWithContentsOfFile:videoPath];
     }
-//    videoPath	__NSCFString *	@"/private/var/mobile/Applications/43421C8A-ED55-4E61-B45D-B1F722E60D30/tmp/trim.5E80BB7F-A77B-416E-AF30-78714154557A.MOV"	0x158238c0
+    //    videoPath	__NSCFString *	@"/private/var/mobile/Applications/43421C8A-ED55-4E61-B45D-B1F722E60D30/tmp/trim.5E80BB7F-A77B-416E-AF30-78714154557A.MOV"	0x158238c0
     
     o_uploadData=uploadData;
     NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
     {
-//        ALAssetRepresentation *representation = [myasset defaultRepresentation];
-//        NSString *fileName = [representation filename];
-//        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//        NSLog(@"fileName : %@",fileName);
+        //        ALAssetRepresentation *representation = [myasset defaultRepresentation];
+        //        NSString *fileName = [representation filename];
+        //        fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        //        NSLog(@"fileName : %@",fileName);
         NSString *fileName =[NSString stringWithFormat:@"%@.MOV",[NSDate nameDescriptionOfTimeInterval:[[myasset valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]]];
-//        NSString *uploadFileName = [self getFileName:fileName];
+        //        NSString *uploadFileName = [self getFileName:fileName];
         [self uploadFile:fileName andData:o_uploadData];
-
+        
     };
     
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
     [assetslibrary assetForURL:imageURL
                    resultBlock:resultblock
                   failureBlock:nil];
-
+    
     
 }
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -721,25 +726,25 @@
     controller.delegate=self;
     CABaseNavigationController * navController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
     [self presentViewController:navController animated:YES completion:nil];
-//    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    //    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-//-(void)showImageWithOCFileDto:(OCFileDto *)itemDto{
-//    ImageShowViewController * controller=[[ImageShowViewController alloc]init];
-//    controller.showFileDto=itemDto;
-//    [self.navigationController pushViewController:controller animated:YES];
-//}
+-(void)showImageWithOCFileDto:(OCFileDto *)itemDto{
+    ImageShowViewController * controller=[[ImageShowViewController alloc]init];
+    controller.showFileDto=itemDto;
+    [self.navigationController pushViewController:controller animated:YES];
+}
 -(NSString *)getFileName:(NSString *)oldFileName{
-//    oldFileName hasSuffix:
+    //    oldFileName hasSuffix:
     NSRange suffixRange=[oldFileName rangeOfString:@"."];
     NSString * suffixStr=[oldFileName substringFromIndex:suffixRange.location-1];
-//    NSDateFormatter * dateFormatter=[[NSDateFormatter alloc]init];
-//    [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
-//    NSString * dateStr=[dateFormatter stringFromDate:[NSDate date]];
+    //    NSDateFormatter * dateFormatter=[[NSDateFormatter alloc]init];
+    //    [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
+    //    NSString * dateStr=[dateFormatter stringFromDate:[NSDate date]];
     NSString * dateStr=[NSString stringWithFormat:@"%.0f",[[NSDate date]timeIntervalSince1970] * 1000];
     NSLog(@"%@",dateStr);
     dateStr=[dateStr stringByAppendingFormat:@"%d",arc4random()%999];
-//    dateStr=[TXMD5 md5:dateStr];
+    //    dateStr=[TXMD5 md5:dateStr];
     dateStr=[dateStr stringByAppendingFormat:@"%@",suffixStr];
     NSLog(@"filename1:%@",dateStr);
     return dateStr;
@@ -760,4 +765,27 @@
 //        NSLog(@"error:%@",error);
 //    }];
 //}
+
+
+//- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+//    if ([presented isKindOfClass:TGRImageViewController.class]) {
+//        return [[TGRImageZoomAnimationController alloc] initWithReferenceImageView:self.imageButton.imageView];
+//    }
+//    return nil;
+//}
+//
+//- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+//    if ([dismissed isKindOfClass:TGRImageViewController.class]) {
+//        return [[TGRImageZoomAnimationController alloc] initWithReferenceImageView:self.imageButton.imageView];
+//    }
+//    return nil;
+//}
+
+- (void)showImage {
+    TGRImageViewController *viewController = [[TGRImageViewController alloc] initWithImage:[UIImage imageNamed:@"欢迎画面"]];
+    viewController.transitioningDelegate = self;
+    
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
 @end

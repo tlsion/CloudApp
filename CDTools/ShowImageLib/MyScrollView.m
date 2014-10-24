@@ -11,9 +11,6 @@
 @implementation MyScrollView
 
 
-@synthesize imagePath;
-
-
 #pragma mark -
 #pragma mark === Intilization ===
 #pragma mark -
@@ -26,8 +23,11 @@
 		self.maximumZoomScale = 2.5;
 		self.showsVerticalScrollIndicator = NO;
 		self.showsHorizontalScrollIndicator = NO;
-		
-		imageView  = [[EGOImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+//        self.backgroundColor=[UIColor blackColor];
+        
+		imageView  = [[EGOImageView alloc] initWithPlaceholderImage:nil delegate:self];
+        imageView.frame=CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
         [imageView setContentMode:UIViewContentModeScaleAspectFit];
         [imageView setTag:100];
         [imageView setUserInteractionEnabled:NO];
@@ -37,17 +37,20 @@
     }
     return self;
 }
-
+- (void)setImageURL:(NSURL *)imageURL
+{
+    [imageView setImageURL:imageURL];
+    
+    [self.superview makeToastActivity];
+}
 - (void)setImagePath:(NSString *)path
 {
-    imagePath = [[NSString alloc] initWithFormat:@"%@", path];
-    [imageView setImageURL:[NSURL URLWithString:imagePath]];
+    imageView.image=[UIImage imageWithContentsOfFile:path];
 }
 
 - (void)setImage:(UIImage *)image
 {
     imageView.image = image;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 #pragma mark -
@@ -91,5 +94,13 @@
 
 
 
+- (void)imageViewLoadedImage:(EGOImageView*)imageView{
+    
+    [self.superview hideToastActivity];
+}
+- (void)imageViewFailedToLoadImage:(EGOImageView*)imageView error:(NSError*)error{
+    [self.superview makeToast:@"下载出错"];
+    [self.superview hideToastActivity];
+}
 
 @end

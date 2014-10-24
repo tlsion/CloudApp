@@ -14,7 +14,7 @@
 		<string>https://github.com/tlsion/CloudApp.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CloudApp.xcodeproj/project.xcworkspace</string>
+	<string>CloudApp.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>88283AA5306A2E1ECDEBEC62423F1E2CB4D78EF5</key>

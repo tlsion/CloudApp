@@ -20,11 +20,11 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 };
 @interface CATransferListViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-//#define Plist_Name_AllFolders @"AllFolders.plist"
-//#define Plist_Name_Uploading @"UploadingFiles.plist"
-//#define Plist_Name_Uploaded @"UploadedFiles.plist"
-//#define Plist_Name_Downloading @"DownloadingFiles.plist"
-//#define Plist_Name_Downloaded @"DownloadedFiles.plist"
+    //#define Plist_Name_AllFolders @"AllFolders.plist"
+    //#define Plist_Name_Uploading @"UploadingFiles.plist"
+    //#define Plist_Name_Uploaded @"UploadedFiles.plist"
+    //#define Plist_Name_Downloading @"DownloadingFiles.plist"
+    //#define Plist_Name_Downloaded @"DownloadedFiles.plist"
     IBOutlet UIScrollView *mainScrollView;
     IBOutlet UITableView *downloadTableView;
     
@@ -38,8 +38,8 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     NSMutableArray * downloadingFiles;
     NSMutableArray * downloadedFiles;
     
-//    UITableView * selectTabelView;
-//    NSIndexPath * selectIndexPath;
+    //    UITableView * selectTabelView;
+    //    NSIndexPath * selectIndexPath;
 }
 @end
 
@@ -60,15 +60,15 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    [self.navigationController setTitle:@"赛凡云"];
+    //    [self.navigationController setTitle:@"赛凡云"];
     UIImageView  * logoImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"左上角LOGO.png"]];
     UIBarButtonItem * logoLeftItem=[[UIBarButtonItem alloc]initWithCustomView:logoImageView];
     [self.navigationItem setLeftBarButtonItem:logoLeftItem];
-//    mainScrollView.frame=CGRectMake(0, 109, SCREEN_MAX_WIDTH, SCREEN_MAX_HEIGHT-109-20);
+    //    mainScrollView.frame=CGRectMake(0, 109, SCREEN_MAX_WIDTH, SCREEN_MAX_HEIGHT-109-20);
     [[NSNotificationCenter defaultCenter ] addObserver:self selector:@selector(transferChange:) name:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil];
     
     [self updateAllTransferFile];
-
+    
 }
 -(void)viewDidLayoutSubviews{
     
@@ -83,11 +83,11 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
         [mainScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
     else {
-         [mainScrollView setContentOffset:CGPointMake(SCREEN_MAX_WIDTH, 0) animated:YES];
+        [mainScrollView setContentOffset:CGPointMake(SCREEN_MAX_WIDTH, 0) animated:YES];
     }
 }
 -(void)transferChange:(NSNotification *)notification{
-//    NSDictionary * infoDict=[notification de]
+    //    NSDictionary * infoDict=[notification de]
     NSInteger status=[[notification.userInfo objectForKey:@"status"] integerValue];
     if (status==CATransferTypeStartDownload) {
         downloadingFiles=[[CATransferHelper sharedInstance] downloadingFiles];
@@ -162,7 +162,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
             headerLabel.text=[NSString stringWithFormat:@"    正在下载(%ld)",downloadingFiles.count];
         }
         else{
-             headerLabel.text=[NSString stringWithFormat:@"    下载成功(%ld)",downloadedFiles.count];
+            headerLabel.text=[NSString stringWithFormat:@"    下载成功(%ld)",downloadedFiles.count];
         }
     }
     else{
@@ -210,9 +210,9 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
         }
     }
     cell.tag=code;
-//    cell.operaterButton.tag=indexPath.row;
+    //    cell.operaterButton.tag=indexPath.row;
     [cell setItemDto:item];
-//    [cell.operaterButton addTarget:self action:@selector(playAndPauseAction:) forControlEvents:UIControlEventTouchUpInside];
+    //    [cell.operaterButton addTarget:self action:@selector(playAndPauseAction:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -238,7 +238,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     controller.itemDto=item;
     CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
     [self presentViewController:nController animated:YES completion:nil];
-//    [self.navigationController pushViewController:controller animated:YES];
+    //    [self.navigationController pushViewController:controller animated:YES];
 }
 //删除
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -287,22 +287,22 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
         if (operateArr.count>indexPath.row) {
             [operateArr removeObjectAtIndex:[indexPath row]];
         }
-//        item.isDelete=YES;
-//        if ([[CATransferHelper sharedInstance].downloadingFiles containsObject:item]) {
-//            NSLog(@"fileName:%@",item.fileName);
-//        }
+        //        item.isDelete=YES;
+        //        if ([[CATransferHelper sharedInstance].downloadingFiles containsObject:item]) {
+        //            NSLog(@"fileName:%@",item.fileName);
+        //        }
         [CADataHelper deletePlaceFileDto:item andPlistName:plistName];
         
         
         //        删除单元格的某一行时，在用动画效果实现删除过程
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         
-//        if (tableView==uploadTabelView) {
-//            [self getAllUploadFiles];
-//        }
-//        else{
-//            [self getAllDownloadFiles];
-//        }
+        //        if (tableView==uploadTabelView) {
+        //            [self getAllUploadFiles];
+        //        }
+        //        else{
+        //            [self getAllDownloadFiles];
+        //        }
     }
     
 }
@@ -351,17 +351,17 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     NSLog(@"path:%@,file:%@",filePath,fileName);
     NSString * path=[NSString stringWithFormat:@"%@%@",filePath,fileName];
     
-//    __weak CATransferListViewController * controller=self;
+    //    __weak CATransferListViewController * controller=self;
     
     [CADataHelper downloadFile:path downloadFileName:fileName willStart:^{
-//        [controller.view makeToast:@"已加入下载列表"];
+        //        [controller.view makeToast:@"已加入下载列表"];
     }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
         NSLog(@"下载：%ld",bytesRead);
     } successRequest:^(NSString *downPath) {
-//        [controller.view makeToast:@"下载成功"];
+        //        [controller.view makeToast:@"下载成功"];
     } failureRequest:^(NSError *error) {
-//        [controller.view makeToast:@"下载失败"];
+        //        [controller.view makeToast:@"下载失败"];
     }];
     
 }
@@ -373,14 +373,14 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     NSLog(@"path:%@,file:%@",filePath,fileName);
     NSString * path=[NSString stringWithFormat:@"%@%@",filePath,fileName];
     
-//    __weak CAMyFolderViewController * controller=self;
+    //    __weak CAMyFolderViewController * controller=self;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{
     }progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
         NSLog(@"上传：%ld",bytesWrite);
     }successRequest:^{
-//        [controller.view makeToast:@"上传成功"];
+        //        [controller.view makeToast:@"上传成功"];
     } failureRequest:^(NSError * error) {
-//        [controller.view makeToast:@"上传失败"];
+        //        [controller.view makeToast:@"上传失败"];
     } failureBeforeRequest:^(NSError *error) {
     }];
 }

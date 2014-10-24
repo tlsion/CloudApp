@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */; };
+		15B8722319FA59480043E920 /* ImageShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721819FA59480043E920 /* ImageShowViewController.m */; };
+		15B8722419FA59480043E920 /* MyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721A19FA59480043E920 /* MyScrollView.m */; };
+		15B8722519FA59480043E920 /* TGRImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721D19FA59480043E920 /* TGRImageViewController.m */; };
+		15B8722619FA59480043E920 /* TGRImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15B8721E19FA59480043E920 /* TGRImageViewController.xib */; };
+		15B8722719FA59480043E920 /* TGRImageZoomAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */; };
+		15B8722819FA59480043E920 /* UIImage+AspectFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722219FA59480043E920 /* UIImage+AspectFit.m */; };
 		DD33837C19D8295000B2C4D2 /* MVHTTPService.m in Sources */ = {isa = PBXBuildFile; fileRef = DD33837B19D8295000B2C4D2 /* MVHTTPService.m */; };
 		DD41DCCB19AE12CF00B96439 /* CAMoveFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */; };
 		DD41DCCC19AE12CF00B96439 /* CAMoveFolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */; };
@@ -228,6 +234,17 @@
 
 /* Begin PBXFileReference section */
 		15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选中(未选中)@2x.png"; sourceTree = "<group>"; };
+		15B8721719FA59480043E920 /* ImageShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageShowViewController.h; sourceTree = "<group>"; };
+		15B8721819FA59480043E920 /* ImageShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageShowViewController.m; sourceTree = "<group>"; };
+		15B8721919FA59480043E920 /* MyScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyScrollView.h; sourceTree = "<group>"; };
+		15B8721A19FA59480043E920 /* MyScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyScrollView.m; sourceTree = "<group>"; };
+		15B8721C19FA59480043E920 /* TGRImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGRImageViewController.h; sourceTree = "<group>"; };
+		15B8721D19FA59480043E920 /* TGRImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGRImageViewController.m; sourceTree = "<group>"; };
+		15B8721E19FA59480043E920 /* TGRImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TGRImageViewController.xib; sourceTree = "<group>"; };
+		15B8721F19FA59480043E920 /* TGRImageZoomAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGRImageZoomAnimationController.h; sourceTree = "<group>"; };
+		15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGRImageZoomAnimationController.m; sourceTree = "<group>"; };
+		15B8722119FA59480043E920 /* UIImage+AspectFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AspectFit.h"; sourceTree = "<group>"; };
+		15B8722219FA59480043E920 /* UIImage+AspectFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AspectFit.m"; sourceTree = "<group>"; };
 		DD33837A19D8295000B2C4D2 /* MVHTTPService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVHTTPService.h; sourceTree = "<group>"; };
 		DD33837B19D8295000B2C4D2 /* MVHTTPService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MVHTTPService.m; sourceTree = "<group>"; };
 		DD41DCC819AE12CF00B96439 /* CAMoveFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMoveFolderViewController.h; sourceTree = "<group>"; };
@@ -602,6 +619,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15B8721619FA59480043E920 /* ShowImageLib */ = {
+			isa = PBXGroup;
+			children = (
+				15B8721719FA59480043E920 /* ImageShowViewController.h */,
+				15B8721819FA59480043E920 /* ImageShowViewController.m */,
+				15B8721919FA59480043E920 /* MyScrollView.h */,
+				15B8721A19FA59480043E920 /* MyScrollView.m */,
+			);
+			path = ShowImageLib;
+			sourceTree = "<group>";
+		};
+		15B8721B19FA59480043E920 /* Vertigo */ = {
+			isa = PBXGroup;
+			children = (
+				15B8721C19FA59480043E920 /* TGRImageViewController.h */,
+				15B8721D19FA59480043E920 /* TGRImageViewController.m */,
+				15B8721E19FA59480043E920 /* TGRImageViewController.xib */,
+				15B8721F19FA59480043E920 /* TGRImageZoomAnimationController.h */,
+				15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */,
+				15B8722119FA59480043E920 /* UIImage+AspectFit.h */,
+				15B8722219FA59480043E920 /* UIImage+AspectFit.m */,
+			);
+			path = Vertigo;
+			sourceTree = "<group>";
+		};
 		DD5DEE9B1985FAF4006C49BD /* CDImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1029,6 +1071,8 @@
 		DDBD4FBD19800349002E739D /* CATools */ = {
 			isa = PBXGroup;
 			children = (
+				15B8721619FA59480043E920 /* ShowImageLib */,
+				15B8721B19FA59480043E920 /* Vertigo */,
 				DD6E738319E6CDDD0088EB8A /* 拼音 */,
 				DDB8C2EC19D647C100319B33 /* OCCloud */,
 				DDB4D06219B4B5180021FB4D /* Reachability */,
@@ -1397,6 +1441,7 @@
 				DDC1168A19AED1A300681EE2 /* CAShowFileViewController.xib in Resources */,
 				DD5DEF0319865B28006C49BD /* 首页底部@2x.png in Resources */,
 				DD5DEED01985FAF4006C49BD /* 下载、上传数量显示@2x.png in Resources */,
+				15B8722619FA59480043E920 /* TGRImageViewController.xib in Resources */,
 				DD41DCCC19AE12CF00B96439 /* CAMoveFolderViewController.xib in Resources */,
 				DD5DEED61985FAF4006C49BD /* 传输列表左（未选中）@2x.png in Resources */,
 				DDBB88B919A4E7750047B142 /* 文件-压缩_2_4@2x.png in Resources */,
@@ -1450,6 +1495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDCD75FD199B94E5001166ED /* CAGlobalData.m in Sources */,
+				15B8722719FA59480043E920 /* TGRImageZoomAnimationController.m in Sources */,
 				DDB8C33119D647C100319B33 /* AFNetworkReachabilityManager.m in Sources */,
 				DDC64A8519889C8D00241B83 /* MainTabBarViewController.m in Sources */,
 				DDD83A30199F762D002525C4 /* CABaseNavigationController.m in Sources */,
@@ -1473,6 +1519,7 @@
 				DDBB96C01997C1CA00A8784A /* _Item.m in Sources */,
 				DDA96310198A0DDB00A5B5A1 /* TitleTextField.m in Sources */,
 				DDBFC21A199A640A008A37C6 /* UIScrollView+Extension.m in Sources */,
+				15B8722819FA59480043E920 /* UIImage+AspectFit.m in Sources */,
 				DDBB96A31997C0B500A8784A /* NSData+ImageContentType.m in Sources */,
 				DDBB96AF1997C0B500A8784A /* UIImageView+HighlightedWebCache.m in Sources */,
 				DDBB96C11997C1CA00A8784A /* Feed.m in Sources */,
@@ -1499,6 +1546,7 @@
 				DDBB96381997BE9A00A8784A /* KeychainItemWrapper.m in Sources */,
 				DDB8C33B19D647C100319B33 /* NSDate+RFC1123.m in Sources */,
 				DDBB96791997C02B00A8784A /* _Folder.m in Sources */,
+				15B8722519FA59480043E920 /* TGRImageViewController.m in Sources */,
 				DDB8C33919D647C100319B33 /* OCSharedDto.m in Sources */,
 				DDB8C33E19D647C100319B33 /* OCWebDAVClient.m in Sources */,
 				DDBD4FFB19800349002E739D /* CASuperViewController.m in Sources */,
@@ -1512,6 +1560,7 @@
 				DDBB96A91997C0B500A8784A /* SDWebImageManager.m in Sources */,
 				DDCC3BE4198A4D8D00EA5262 /* CrateComponent.m in Sources */,
 				DDB8C33F19D647C100319B33 /* OCXMLParser.m in Sources */,
+				15B8722419FA59480043E920 /* MyScrollView.m in Sources */,
 				DDBFC216199A640A008A37C6 /* MJRefreshBaseView.m in Sources */,
 				DDBB96A51997C0B500A8784A /* SDWebImageCompat.m in Sources */,
 				DDB8C34919D647C100319B33 /* UtilsFramework.m in Sources */,
@@ -1520,6 +1569,7 @@
 				DDA96302198A0CFB00A5B5A1 /* CALoginViewController.m in Sources */,
 				DDB8C33A19D647C100319B33 /* NSDate+ISO8601.m in Sources */,
 				DDBB88B019A4E5600047B142 /* CommonHelper.m in Sources */,
+				15B8722319FA59480043E920 /* ImageShowViewController.m in Sources */,
 				DDCC0EE3199F1D690010FB80 /* UIButton+TXXUtils.m in Sources */,
 				DDC64A981988AA5F00241B83 /* CAFolerCell.m in Sources */,
 				DDB8C33019D647C100319B33 /* AFHTTPSessionManager.m in Sources */,
@@ -1625,7 +1675,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Cyphy Technology Co., Ltd. (77BTWC4A79)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Cyphy Technology Co., Ltd. (77BTWC4A79)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1643,6 +1694,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "affb0466-fef4-4cfc-a3ec-7e45f4752d10";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1663,7 +1715,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Cyphy Technology Co., Ltd. (77BTWC4A79)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Cyphy Technology Co., Ltd. (77BTWC4A79)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1674,6 +1727,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PROVISIONING_PROFILE = "affb0466-fef4-4cfc-a3ec-7e45f4752d10";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1684,8 +1738,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lin fan (C73B7MUZ7B)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: lin fan (C73B7MUZ7B)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1693,10 +1747,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CloudApp/CloudApp-Prefix.pch";
 				INFOPLIST_FILE = "CloudApp/CloudApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
+				PROVISIONING_PROFILE = "67419150-4d16-48de-9ce7-08bd6795da8d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1706,8 +1760,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lin fan (C73B7MUZ7B)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: lin fan (C73B7MUZ7B)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1715,10 +1769,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CloudApp/CloudApp-Prefix.pch";
 				INFOPLIST_FILE = "CloudApp/CloudApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c98abde-3ed1-413b-a9b8-98c999b1207f";
+				PROVISIONING_PROFILE = "67419150-4d16-48de-9ce7-08bd6795da8d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

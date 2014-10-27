@@ -72,15 +72,15 @@ cancelButtonTitle:@"确定" otherButtonTitles:nil,nil] show]
 #define SERVICE_URL @"http://27.154.58.234:2001"
 //#define HomeFolderPath [NSString stringWithFormat:@"%@/ext/storage/remote.php/webdav/",SERVICE_URL]
 //user
-static NSString *baseUser = @"admin";
-////password
-static NSString *basePassword = @"admin1";
-
-//To test the download you must be enter a path of specific file
-static NSString *pathOfDownloadFile = @"path of file to download"; //@"LibExampleDownload/default.png";
-
-//Optional. Set the path of the file to upload
-static NSString *pathOfUploadFile = @"1_new_file.jpg";
+//static NSString *baseUser = @"admin";
+//////password
+//static NSString *basePassword = @"admin1";
+//
+////To test the download you must be enter a path of specific file
+//static NSString *pathOfDownloadFile = @"path of file to download"; //@"LibExampleDownload/default.png";
+//
+////Optional. Set the path of the file to upload
+//static NSString *pathOfUploadFile = @"1_new_file.jpg";
 
 //#define SERVICE_URL @"http://192.168.0.144:8080/NewMovie"
 //#define SERVICE_URL @"http://59.61.92.182:86/NewMovie"

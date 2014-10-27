@@ -30,17 +30,16 @@
 #import "TXMD5.h"
 #import "ImageShowViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-//#import "CloudAppCommon.h"
+#import "TGRImageViewController.h"
+#import "TGRImageZoomAnimationController.h"
 #define AV_RENAME_TAG 100
 #define AS_UPLOAD_TAG 200
 
 #define ASSET_PICKER_PHOTO_TAG @"ALAssetTypePhoto"
 #define ASSET_PICKER_VIDEO_TAG @"ALAssetTypeVideo"
 #define MaximumNumberOfSelection 10
-#import "TGRImageViewController.h"
-#import "TGRImageZoomAnimationController.h"
 
-@interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate,UIViewControllerTransitioningDelegate>
+@interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate,UIViewControllerTransitioningDelegate,UIDocumentInteractionControllerDelegate>
 {
     UIAlertView * addFolderAlertView ;
     NSUserDefaults * userDefaults;
@@ -376,20 +375,20 @@
             [self.navigationController pushViewController:folderVC animated:YES];
         }
         else{
-            //            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
-            //            controller.itemDto=itemDto;
-            //            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
-            //            [self presentViewController:nController animated:YES completion:nil];
+//                        CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+//                        controller.itemDto=itemDto;
+//                        CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+//                        [self presentViewController:nController animated:YES completion:nil];
             
             //            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
             //            controller.itemDto=itemDto;
             //            [self.navigationController pushViewController:controller animated:YES];
             
 //            [self palyVideo:itemDto];
-            [self showImage:itemDto];
+//            [self showImage:itemDto];
 //            [self showImageWithOCFileDto:itemDto];
             
-            
+            [self openFileWithFileDto:itemDto];
         }
     }
     else{
@@ -787,16 +786,34 @@
 //    }
 //    return nil;
 //}
-
+#pragma mark -- OpenFile
+-(void)openFileWithFileDto:(OCFileDto *)fileDto{
+    if (fileDto.fileType==CAFileTypeCodeImage) {
+        [self showImage:fileDto];
+    }
+    else if(fileDto.fileType==CAFileTypeCodeAudio || fileDto.fileType==CAFileTypeCodeVideo){
+        [self playVideo:fileDto];
+    }
+    else if(fileDto.fileType==CAFileTypeCodeTxt || fileDto.fileType==CAFileTypeCodeCompress || fileDto.fileType==CAFileTypeCodeOther){
+        [self openDocument:fileDto];
+    }
+}
 - (void)showImage:(OCFileDto *)fileDto{
     TGRImageViewController *viewController = [[TGRImageViewController alloc] initWithImageDto:fileDto];
     viewController.transitioningDelegate = self;
     
     [self presentViewController:viewController animated:YES completion:nil];
 }
--(void)palyVideo:(OCFileDto *)fileDto{
-    NSURL * videoURL=[NSURL URLWithString:[CADataHelper urlWithOCFileDto:fileDto]];
+-(void)playVideo:(OCFileDto *)fileDto{
+    NSURL * videoURL=nil;
     //[NSURL URLWithString:@"http://static.tripbe.com/videofiles/20121214/9533522808.f4v.mp4"]
+    if ([CADataHelper placeHasSave:fileDto]) {
+        NSString * fileImagePath=[CADataHelper filePath:fileDto.fileTitle];
+        videoURL=[NSURL fileURLWithPath:fileImagePath];
+    }
+    else{
+       videoURL=[NSURL URLWithString:[CADataHelper urlWithOCFileDto:fileDto]];
+    }
     MPMoviePlayerViewController *playerViewController =[[MPMoviePlayerViewController alloc]initWithContentURL:videoURL];
     [self presentMoviePlayerViewControllerAnimated:playerViewController];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
@@ -809,9 +826,62 @@
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
         [invocation setSelector:selector];
         [invocation setTarget:[UIDevice currentDevice]];
-        int val = UIInterfaceOrientationLandscapeRight;
+        int val = UIInterfaceOrientationPortrait;
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
     }
+}
+
+-(void)openDocument:(OCFileDto *)fileDto{
+//    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"Example" withExtension:@"odt"];
+    if ([CADataHelper placeHasSave:fileDto]) {
+        [self openDocumentWithFileDto:fileDto];
+    }
+    else{
+        NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileDto.fileName];
+        
+        
+        __weak AppDelegate * app=APP;
+        [app.window makeToastActivity];
+        [CADataHelper downloadFile:path downloadFileName:fileDto.fileName willStart:^{
+            //        [app.window makeToast:@"添加至下载列表"];
+        }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
+            
+        } successRequest:^(NSString *downPath) {
+            //        [app.window makeToast:@"下载成功"];
+            [app.window hideToastActivity];
+            
+            [self openDocumentWithFileDto:fileDto];
+        } failureRequest:^(NSError *error) {
+            [app.window hideToastActivity];
+            [app.window makeToast:@"下载失败"];
+        }];
+    }
+}
+-(void) openDocumentWithFileDto:(OCFileDto *)fileDto{
+    NSString * fileImagePath=[CADataHelper filePath:fileDto.fileTitle];
+    NSURL * URL=[NSURL fileURLWithPath:fileImagePath];
+    if (URL) {
+        // Initialize Document Interaction Controller
+        UIDocumentInteractionController * documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
+        
+        // Configure Document Interaction Controller
+        [documentInteractionController setDelegate:self];
+        
+        // Preview PDF
+        if (![documentInteractionController presentPreviewAnimated:YES]) {
+            
+            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+            controller.itemDto=fileDto;
+            controller.title=fileDto.fileName;
+            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+            [self presentViewController:nController animated:YES completion:nil];
+            
+
+        }
+    }
+}
+- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
+    return self;
 }
 @end

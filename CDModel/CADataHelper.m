@@ -817,9 +817,10 @@ static BOOL isShowWifi =NO;
 //判断文件是否存在
 +(BOOL)placeHasSave:(OCFileDto *)fileDto{
     NSString *path = [self getCachesPathOfFolderName:Caches_CloudApp];
-    NSString *filePath = [path stringByAppendingFormat:@"%@",fileDto.fileTitle];
+    NSString *filePath = [path stringByAppendingFormat:@"/%@",fileDto.fileTitle];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL result = [fileManager fileExistsAtPath:filePath];
+    
     return result;
 }
 +(NSMutableArray *)sortItems:(NSArray *)oldItems{

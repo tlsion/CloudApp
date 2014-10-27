@@ -12,13 +12,17 @@
 #import "CATransferHelper.h"
 #import "CAShowFileViewController.h"
 #import "CABaseNavigationController.h"
+
+#import <MediaPlayer/MediaPlayer.h>
+#import "TGRImageViewController.h"
+#import "TGRImageZoomAnimationController.h"
 typedef NS_ENUM(NSInteger, CATransferListCode) {
     CATransferListCodeUploading,
     CATransferListCodeUploaded,
     CATransferListCodeDownloading,
     CATransferListCodeDownloaded
 };
-@interface CATransferListViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface CATransferListViewController ()<UITableViewDataSource,UITableViewDelegate,UIViewControllerTransitioningDelegate,UIDocumentInteractionControllerDelegate>
 {
     //#define Plist_Name_AllFolders @"AllFolders.plist"
     //#define Plist_Name_Uploading @"UploadingFiles.plist"
@@ -234,10 +238,11 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
         }
     }
     
-    CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
-    controller.itemDto=item;
-    CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
-    [self presentViewController:nController animated:YES completion:nil];
+    [self openFileWithFileDto:item];
+//    CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+//    controller.itemDto=item;
+//    CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+//    [self presentViewController:nController animated:YES completion:nil];
     //    [self.navigationController pushViewController:controller animated:YES];
 }
 //删除
@@ -401,6 +406,87 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark -- OpenFile
+-(void)openFileWithFileDto:(OCFileDto *)fileDto{
+    if (fileDto.fileType==CAFileTypeCodeImage) {
+        [self showImage:fileDto];
+    }
+    else if(fileDto.fileType==CAFileTypeCodeAudio || fileDto.fileType==CAFileTypeCodeVideo){
+        [self playVideo:fileDto];
+    }
+    else if(fileDto.fileType==CAFileTypeCodeTxt || fileDto.fileType==CAFileTypeCodeCompress || fileDto.fileType==CAFileTypeCodeOther){
+        [self openDocument:fileDto];
+    }
+}
+- (void)showImage:(OCFileDto *)fileDto{
+    TGRImageViewController *viewController = [[TGRImageViewController alloc] initWithImageDto:fileDto];
+    viewController.transitioningDelegate = self;
+    
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+-(void)playVideo:(OCFileDto *)fileDto{
+    NSURL * videoURL=nil;
+    //[NSURL URLWithString:@"http://static.tripbe.com/videofiles/20121214/9533522808.f4v.mp4"]
+    if ([CADataHelper placeHasSave:fileDto]) {
+        NSString * fileImagePath=[CADataHelper filePath:fileDto.fileTitle];
+        videoURL=[NSURL fileURLWithPath:fileImagePath];
+    }
+    else{
+        videoURL=[NSURL URLWithString:[CADataHelper urlWithOCFileDto:fileDto]];
+    }
+    MPMoviePlayerViewController *playerViewController =[[MPMoviePlayerViewController alloc]initWithContentURL:videoURL];
+    [self presentMoviePlayerViewControllerAnimated:playerViewController];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    
+    
+}
+-(void)videoFinished{
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val = UIInterfaceOrientationPortrait;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
+}
+
+-(void)openDocument:(OCFileDto *)fileDto{
+    //    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"Example" withExtension:@"odt"];
+    if ([CADataHelper placeHasSave:fileDto]) {
+        [self openDocumentWithFileDto:fileDto];
+    }
+}
+-(void) openDocumentWithFileDto:(OCFileDto *)fileDto{
+    NSString * fileImagePath=[CADataHelper filePath:fileDto.fileTitle];
+    NSURL * URL=[NSURL fileURLWithPath:fileImagePath];
+    if (URL) {
+        // Initialize Document Interaction Controller
+        UIDocumentInteractionController * documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
+        
+        // Configure Document Interaction Controller
+        [documentInteractionController setDelegate:self];
+        
+        // Preview PDF
+        if (![documentInteractionController presentPreviewAnimated:YES]) {
+            
+            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
+            controller.itemDto=fileDto;
+            controller.title=fileDto.fileName;
+            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
+            [self presentViewController:nController animated:YES completion:nil];
+            
+            
+        }
+    }
+}
+#pragma mark Document Interaction Controller Delegate Methods
+- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
+    return self;
 }
 
 @end

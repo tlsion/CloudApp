@@ -46,14 +46,7 @@
     
     return self;
 }
--(void)dealloc{
-    [_scrollView release];
-    [_imageView release];
-//    [_image release];
-    [_singleTapGestureRecognizer release];
-    [_doubleTapGestureRecognizer release];
-    [super dealloc];
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -94,9 +87,18 @@
 
 - (IBAction)handleSingleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
     
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+//        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
+//                                       withObject:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait]];
+//    }
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
-                                       withObject:(id)UIInterfaceOrientationPortrait];
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val = UIInterfaceOrientationLandscapeRight;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

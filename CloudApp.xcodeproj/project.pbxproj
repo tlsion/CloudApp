@@ -8,11 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1591ACA819FE47AB000AAA90 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1591ACA719FE47AB000AAA90 /* MediaPlayer.framework */; };
-		1591ACB119FE4FD6000AAA90 /* ReleaseAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1591ACB019FE4FD6000AAA90 /* ReleaseAssistant.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */; };
 		15B8722319FA59480043E920 /* ImageShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721819FA59480043E920 /* ImageShowViewController.m */; };
 		15B8722419FA59480043E920 /* MyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721A19FA59480043E920 /* MyScrollView.m */; };
-		15B8722519FA59480043E920 /* TGRImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721D19FA59480043E920 /* TGRImageViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		15B8722519FA59480043E920 /* TGRImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721D19FA59480043E920 /* TGRImageViewController.m */; };
 		15B8722619FA59480043E920 /* TGRImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15B8721E19FA59480043E920 /* TGRImageViewController.xib */; };
 		15B8722719FA59480043E920 /* TGRImageZoomAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */; };
 		15B8722819FA59480043E920 /* UIImage+AspectFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722219FA59480043E920 /* UIImage+AspectFit.m */; };
@@ -235,8 +234,6 @@
 
 /* Begin PBXFileReference section */
 		1591ACA719FE47AB000AAA90 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		1591ACAF19FE4FD6000AAA90 /* ReleaseAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReleaseAssistant.h; sourceTree = "<group>"; };
-		1591ACB019FE4FD6000AAA90 /* ReleaseAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReleaseAssistant.m; sourceTree = "<group>"; };
 		15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选中(未选中)@2x.png"; sourceTree = "<group>"; };
 		15B8721719FA59480043E920 /* ImageShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageShowViewController.h; sourceTree = "<group>"; };
 		15B8721819FA59480043E920 /* ImageShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageShowViewController.m; sourceTree = "<group>"; };
@@ -1067,8 +1064,6 @@
 				DDCD75FF199B99F3001166ED /* ViewUtils.m */,
 				DDBB704919C33C580055B103 /* UIUtils.h */,
 				DDBB704A19C33C580055B103 /* UIUtils.m */,
-				1591ACAF19FE4FD6000AAA90 /* ReleaseAssistant.h */,
-				1591ACB019FE4FD6000AAA90 /* ReleaseAssistant.m */,
 			);
 			name = CAModel;
 			path = CDModel;
@@ -1530,7 +1525,6 @@
 				DDBB967F1997C09B00A8784A /* UIImageView+OCWebCache.m in Sources */,
 				DDB8C33519D647C100319B33 /* AFURLResponseSerialization.m in Sources */,
 				DDBB96AE1997C0B500A8784A /* UIImage+WebP.m in Sources */,
-				1591ACB119FE4FD6000AAA90 /* ReleaseAssistant.m in Sources */,
 				DDC64AAA1988AF6E00241B83 /* EGOImageButton.m in Sources */,
 				DDBB96761997BFD000A8784A /* Folder.m in Sources */,
 				DDC4EC0619822FE700A30FF1 /* CATransferListViewController.m in Sources */,

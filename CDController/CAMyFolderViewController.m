@@ -30,7 +30,6 @@
 #import "TXMD5.h"
 #import "ImageShowViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "ReleaseAssistant.h"
 //#import "CloudAppCommon.h"
 #define AV_RENAME_TAG 100
 #define AS_UPLOAD_TAG 200
@@ -386,8 +385,8 @@
             //            controller.itemDto=itemDto;
             //            [self.navigationController pushViewController:controller animated:YES];
             
-            [self palyVideo:itemDto];
-//            [self showImage:itemDto];
+//            [self palyVideo:itemDto];
+            [self showImage:itemDto];
 //            [self showImageWithOCFileDto:itemDto];
             
             
@@ -800,12 +799,19 @@
     //[NSURL URLWithString:@"http://static.tripbe.com/videofiles/20121214/9533522808.f4v.mp4"]
     MPMoviePlayerViewController *playerViewController =[[MPMoviePlayerViewController alloc]initWithContentURL:videoURL];
     [self presentMoviePlayerViewControllerAnimated:playerViewController];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    
+
 }
 -(void)videoFinished{
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-    
-    [ReleaseAssistant setDeviceInterfaceForPortrait];
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val = UIInterfaceOrientationLandscapeRight;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
 }
 @end

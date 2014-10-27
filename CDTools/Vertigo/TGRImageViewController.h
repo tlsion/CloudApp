@@ -21,7 +21,8 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-
+#import "EGOImageView.h"
+#import "OCFileDto.h"
 // Simple full screen image viewer.
 //
 // Allows the user to view an image in full screen and double tap to zoom it.
@@ -29,15 +30,19 @@
 @interface TGRImageViewController : UIViewController
 
 // The scroll view used for zooming.
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 
 // The image view that displays the image.
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (retain, nonatomic) IBOutlet EGOImageView *imageView;
 
 // The image that will be shown.
-@property (strong, nonatomic, readonly) UIImage *image;
+@property (retain, nonatomic, readonly) UIImage *image;
+
+@property (retain, nonatomic ) OCFileDto * imageDto;
 
 // Initializes the receiver with the specified image.
 - (id)initWithImage:(UIImage *)image;
+
+- (id)initWithImageDto:(OCFileDto *)imageDto;
 
 @end

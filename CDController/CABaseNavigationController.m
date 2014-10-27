@@ -37,6 +37,8 @@
         [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"顶部蓝条.png"] forBarMetrics:UIBarMetricsDefault];
     }
 }
+
+
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     //    viewController.hidesBottomBarWhenPushed = YES;

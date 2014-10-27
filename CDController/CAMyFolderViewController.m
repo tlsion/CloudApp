@@ -29,6 +29,9 @@
 #import "Reachability.h"
 #import "TXMD5.h"
 #import "ImageShowViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "ReleaseAssistant.h"
+//#import "CloudAppCommon.h"
 #define AV_RENAME_TAG 100
 #define AS_UPLOAD_TAG 200
 
@@ -131,6 +134,7 @@
         [super viewDidDisappear:animated];
     }
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -355,8 +359,6 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self showImage];
-    return;
     BOOL cellIsSelect=NO;
     for (OCFileDto * oc in _itemsOfPath) {
         if (oc.isSelect) {
@@ -379,10 +381,16 @@
             //            controller.itemDto=itemDto;
             //            CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
             //            [self presentViewController:nController animated:YES completion:nil];
-            [self showImageWithOCFileDto:itemDto];
+            
             //            CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
             //            controller.itemDto=itemDto;
             //            [self.navigationController pushViewController:controller animated:YES];
+            
+            [self palyVideo:itemDto];
+//            [self showImage:itemDto];
+//            [self showImageWithOCFileDto:itemDto];
+            
+            
         }
     }
     else{
@@ -781,11 +789,23 @@
 //    return nil;
 //}
 
-- (void)showImage {
-    TGRImageViewController *viewController = [[TGRImageViewController alloc] initWithImage:[UIImage imageNamed:@"欢迎画面"]];
+- (void)showImage:(OCFileDto *)fileDto{
+    TGRImageViewController *viewController = [[TGRImageViewController alloc] initWithImageDto:fileDto];
     viewController.transitioningDelegate = self;
     
     [self presentViewController:viewController animated:YES completion:nil];
 }
-
+-(void)palyVideo:(OCFileDto *)fileDto{
+    NSURL * videoURL=[NSURL URLWithString:[CADataHelper urlWithOCFileDto:fileDto]];
+    //[NSURL URLWithString:@"http://static.tripbe.com/videofiles/20121214/9533522808.f4v.mp4"]
+    MPMoviePlayerViewController *playerViewController =[[MPMoviePlayerViewController alloc]initWithContentURL:videoURL];
+    [self presentMoviePlayerViewControllerAnimated:playerViewController];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+}
+-(void)videoFinished{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    
+    [ReleaseAssistant setDeviceInterfaceForPortrait];
+}
 @end

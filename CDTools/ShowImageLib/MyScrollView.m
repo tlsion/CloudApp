@@ -60,7 +60,7 @@
 	return imageView;
 }
 
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
 	CGFloat zs = scrollView.zoomScale;
 	zs = MAX(zs, 1.0);

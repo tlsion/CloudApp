@@ -18,6 +18,7 @@
 - (void)makeToast:(NSString *)message duration:(CGFloat)interval position:(id)position image:(UIImage *)image;
 
 // displays toast with an activity spinner
+- (void)makeToastActivityNoBackground;
 - (void)makeToastActivity;
 - (void)makeToastActivity:(id)position;
 - (void)hideToastActivity;

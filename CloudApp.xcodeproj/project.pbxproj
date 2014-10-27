@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1591ACA819FE47AB000AAA90 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1591ACA719FE47AB000AAA90 /* MediaPlayer.framework */; };
+		1591ACB119FE4FD6000AAA90 /* ReleaseAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1591ACB019FE4FD6000AAA90 /* ReleaseAssistant.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		15B5916219C66E0B00F36311 /* 选中(未选中)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */; };
 		15B8722319FA59480043E920 /* ImageShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721819FA59480043E920 /* ImageShowViewController.m */; };
 		15B8722419FA59480043E920 /* MyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721A19FA59480043E920 /* MyScrollView.m */; };
-		15B8722519FA59480043E920 /* TGRImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721D19FA59480043E920 /* TGRImageViewController.m */; };
+		15B8722519FA59480043E920 /* TGRImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8721D19FA59480043E920 /* TGRImageViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		15B8722619FA59480043E920 /* TGRImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15B8721E19FA59480043E920 /* TGRImageViewController.xib */; };
 		15B8722719FA59480043E920 /* TGRImageZoomAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */; };
 		15B8722819FA59480043E920 /* UIImage+AspectFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722219FA59480043E920 /* UIImage+AspectFit.m */; };
@@ -162,7 +164,6 @@
 		DDBD4FFD19800349002E739D /* MDSlideNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FB319800349002E739D /* MDSlideNavigationViewController.m */; };
 		DDBD4FFF19800349002E739D /* UIViewController+TopView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FB719800349002E739D /* UIViewController+TopView.m */; };
 		DDBD500119800349002E739D /* UIView+Action.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD4FBC19800349002E739D /* UIView+Action.m */; };
-		DDBD5021198004B2002E739D /* CAMainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBD5020198004B2002E739D /* CAMainTabBarController.m */; };
 		DDBD50271980057B002E739D /* CAMoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBD50261980057B002E739D /* CAMoreViewController.xib */; };
 		DDBFC203199A4D73008A37C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDBFC202199A4D73008A37C6 /* Main.storyboard */; };
 		DDBFC215199A640A008A37C6 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DDBFC205199A640A008A37C6 /* MJRefresh.bundle */; };
@@ -233,6 +234,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1591ACA719FE47AB000AAA90 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		1591ACAF19FE4FD6000AAA90 /* ReleaseAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReleaseAssistant.h; sourceTree = "<group>"; };
+		1591ACB019FE4FD6000AAA90 /* ReleaseAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReleaseAssistant.m; sourceTree = "<group>"; };
 		15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选中(未选中)@2x.png"; sourceTree = "<group>"; };
 		15B8721719FA59480043E920 /* ImageShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageShowViewController.h; sourceTree = "<group>"; };
 		15B8721819FA59480043E920 /* ImageShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageShowViewController.m; sourceTree = "<group>"; };
@@ -479,8 +483,6 @@
 		DDBD4FBB19800349002E739D /* UIView+Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Action.h"; sourceTree = "<group>"; };
 		DDBD4FBC19800349002E739D /* UIView+Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Action.m"; sourceTree = "<group>"; };
 		DDBD501A19800351002E739D /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		DDBD501F198004B2002E739D /* CAMainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMainTabBarController.h; sourceTree = "<group>"; };
-		DDBD5020198004B2002E739D /* CAMainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAMainTabBarController.m; sourceTree = "<group>"; };
 		DDBD50261980057B002E739D /* CAMoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAMoreViewController.xib; sourceTree = "<group>"; };
 		DDBFC202199A4D73008A37C6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		DDBFC205199A640A008A37C6 /* MJRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJRefresh.bundle; sourceTree = "<group>"; };
@@ -592,6 +594,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1591ACA819FE47AB000AAA90 /* MediaPlayer.framework in Frameworks */,
 				DDD2531119A5CED800F03B96 /* AssetsLibrary.framework in Frameworks */,
 				DDBFC251199A6E76008A37C6 /* ImageIO.framework in Frameworks */,
 				DDBFC24B199A6E47008A37C6 /* StoreKit.framework in Frameworks */,
@@ -957,6 +960,7 @@
 		DDBD4F75198002E7002E739D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1591ACA719FE47AB000AAA90 /* MediaPlayer.framework */,
 				DDD2531019A5CED800F03B96 /* AssetsLibrary.framework */,
 				DDBFC252199A6E7E008A37C6 /* libxml2.dylib */,
 				DDBFC250199A6E76008A37C6 /* ImageIO.framework */,
@@ -1063,6 +1067,8 @@
 				DDCD75FF199B99F3001166ED /* ViewUtils.m */,
 				DDBB704919C33C580055B103 /* UIUtils.h */,
 				DDBB704A19C33C580055B103 /* UIUtils.m */,
+				1591ACAF19FE4FD6000AAA90 /* ReleaseAssistant.h */,
+				1591ACB019FE4FD6000AAA90 /* ReleaseAssistant.m */,
 			);
 			name = CAModel;
 			path = CDModel;
@@ -1133,8 +1139,6 @@
 				DDD83A2F199F762D002525C4 /* CABaseNavigationController.m */,
 				DDBD4FB619800349002E739D /* UIViewController+TopView.h */,
 				DDBD4FB719800349002E739D /* UIViewController+TopView.m */,
-				DDBD501F198004B2002E739D /* CAMainTabBarController.h */,
-				DDBD5020198004B2002E739D /* CAMainTabBarController.m */,
 				DDC64A8319889C8D00241B83 /* MainTabBarViewController.h */,
 				DDC64A8419889C8D00241B83 /* MainTabBarViewController.m */,
 			);
@@ -1526,6 +1530,7 @@
 				DDBB967F1997C09B00A8784A /* UIImageView+OCWebCache.m in Sources */,
 				DDB8C33519D647C100319B33 /* AFURLResponseSerialization.m in Sources */,
 				DDBB96AE1997C0B500A8784A /* UIImage+WebP.m in Sources */,
+				1591ACB119FE4FD6000AAA90 /* ReleaseAssistant.m in Sources */,
 				DDC64AAA1988AF6E00241B83 /* EGOImageButton.m in Sources */,
 				DDBB96761997BFD000A8784A /* Folder.m in Sources */,
 				DDC4EC0619822FE700A30FF1 /* CATransferListViewController.m in Sources */,
@@ -1550,7 +1555,6 @@
 				DDB8C33919D647C100319B33 /* OCSharedDto.m in Sources */,
 				DDB8C33E19D647C100319B33 /* OCWebDAVClient.m in Sources */,
 				DDBD4FFB19800349002E739D /* CASuperViewController.m in Sources */,
-				DDBD5021198004B2002E739D /* CAMainTabBarController.m in Sources */,
 				DD611E7D19A48E2E0030500D /* TXMD5.m in Sources */,
 				DDB8C34619D647C100319B33 /* OCUploadOperation.m in Sources */,
 				DDC64AAC1988AF6E00241B83 /* EGOImageLoader.m in Sources */,

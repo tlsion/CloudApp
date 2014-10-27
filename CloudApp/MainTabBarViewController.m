@@ -31,6 +31,9 @@
     }
     return self;
 }
+-(BOOL)shouldAutorotate{
+    return NO;
+}
 -(void)initViewController
 {
     //创建几个视图控制器

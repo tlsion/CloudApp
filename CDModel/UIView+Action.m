@@ -116,6 +116,50 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     [self makeToastActivity:CSToastActivityDefaultPosition];
 }
 
+//临时定义
+-(void)makeToastActivityNoBackground{
+    // sanity
+    UIView *existingActivityView = (UIView *)objc_getAssociatedObject(self, &CSToastActivityViewKey);
+    if (existingActivityView != nil) return;
+    
+    UIView *activityView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CSToastActivityWidth, CSToastActivityHeight)];
+    activityView.center = [self centerPointForPosition:CSToastActivityDefaultPosition withToast:activityView];
+    activityView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:CSToastOpacity];
+    activityView.alpha = 0.0;
+    activityView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+    activityView.layer.cornerRadius = CSToastCornerRadius;
+    
+    if (CSToastDisplayShadow) {
+        activityView.layer.shadowColor = [UIColor blackColor].CGColor;
+        activityView.layer.shadowOpacity = CSToastShadowOpacity;
+        activityView.layer.shadowRadius = CSToastShadowRadius;
+        activityView.layer.shadowOffset = CSToastShadowOffset;
+    }
+    
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicatorView.center = CGPointMake(activityView.bounds.size.width / 2, activityView.bounds.size.height / 2);
+    [activityView addSubview:activityIndicatorView];
+    [activityIndicatorView startAnimating];
+    
+    
+//    //添加覆盖层（不可点击）
+//    UIView * activityBGView=[[UIView alloc]initWithFrame:self.frame];
+//    activityBGView.backgroundColor=[UIColor clearColor];
+//    activityBGView.autoresizingMask=UIViewAutoresizingFlexibleLeftMargin |UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+//    [activityBGView addSubview:activityView];
+    [self addSubview:activityView];
+    
+    // associate ourselves with the activity view
+    objc_setAssociatedObject (self, &CSToastActivityViewKey, activityView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    //end
+    
+    [UIView animateWithDuration:CSToastFadeDuration
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         activityView.alpha = 1.0;
+                     } completion:nil];
+}
 - (void)makeToastActivity:(id)position {
     // sanity
     UIView *existingActivityView = (UIView *)objc_getAssociatedObject(self, &CSToastActivityViewKey);
@@ -144,6 +188,7 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     //添加覆盖层（不可点击）
     UIView * activityBGView=[[UIView alloc]initWithFrame:self.frame];
     activityBGView.backgroundColor=[UIColor clearColor];
+    activityBGView.autoresizingMask=UIViewAutoresizingFlexibleLeftMargin |UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     [activityBGView addSubview:activityView];
     [self addSubview:activityBGView];
     

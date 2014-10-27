@@ -22,10 +22,10 @@
 
 #import "TGRImageViewController.h"
 
-@interface TGRImageViewController ()
+@interface TGRImageViewController ()<EGOImageViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITapGestureRecognizer *singleTapGestureRecognizer;
-@property (weak, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
+@property (retain, nonatomic) IBOutlet UITapGestureRecognizer *singleTapGestureRecognizer;
+@property (retain, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
 
 @end
 
@@ -39,11 +39,45 @@
     return self;
 }
 
+- (id)initWithImageDto:(OCFileDto *)imageDto{
+    if (self = [super init]) {
+        _imageDto = imageDto;
+    }
+    
+    return self;
+}
+-(void)dealloc{
+    [_scrollView release];
+    [_imageView release];
+//    [_image release];
+    [_singleTapGestureRecognizer release];
+    [_doubleTapGestureRecognizer release];
+    [super dealloc];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self.singleTapGestureRecognizer requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
-    self.imageView.image = self.image;
+    if (self.image) {
+        self.imageView.image = self.image;
+    }
+    else if (self.imageDto){
+        
+        
+        if ([CADataHelper placeHasSave:_imageDto]) {
+            NSString * fileImagePath=[CADataHelper filePath:_imageDto.fileTitle];
+            self.imageView.image=[UIImage imageWithContentsOfFile:fileImagePath];
+        }
+        else{
+            NSURL * imageURL=[NSURL URLWithString:[CADataHelper urlWithOCFileDto:_imageDto]];
+            self.imageView.imageURL=imageURL;
+            self.imageView.delegate=self;
+            if (self.imageView.image==nil && imageURL) {
+                [self.view makeToastActivityNoBackground];
+            }
+            
+        }
+    }
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -59,6 +93,12 @@
 #pragma mark - Private methods
 
 - (IBAction)handleSingleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
+    
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
+                                       withObject:(id)UIInterfaceOrientationPortrait];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -75,6 +115,20 @@
         // Zoom out
         [self.scrollView zoomToRect:self.scrollView.bounds animated:YES];
     }
+}
+
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+
+
+- (void)imageViewLoadedImage:(EGOImageView*)imageView{
+    [self.view hideToastActivity];
+}
+
+- (void)imageViewFailedToLoadImage:(EGOImageView*)imageView error:(NSError*)error{
+    [self.view makeToast:@"下载失败"];
+    [self.view hideToastActivity];
 }
 
 @end

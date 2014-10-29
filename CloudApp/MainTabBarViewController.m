@@ -14,6 +14,8 @@
 #import "UIViewExt.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define SCREEN_HEIGHT MAX(SCREEN_MAX_HEIGHT, SCREEN_MAX_WIDTH)
+
 @interface MainTabBarViewController ()
 {
     CAFolderOperateView * aq_folderBottomOperateBgView;
@@ -32,7 +34,7 @@
     return self;
 }
 -(BOOL)shouldAutorotate{
-    return YES;
+    return NO;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -172,6 +174,8 @@
     button.selected=YES;
     self.selectedIndex =button.tag;
 }
+
+
 -(void)showFileTabbar:(BOOL)show andIsFolder:(BOOL)isDirectory{
     
     if (show && !aq_folderBottomOperateBgView.isShow) {
@@ -179,20 +183,20 @@
         aq_folderBottomOperateBgView.isDirectory=isDirectory;
         
         [UIView animateWithDuration:0.3 animations:^{
-            _tabbarView.bottom=SCREEN_MAX_HEIGHT+49;
+            _tabbarView.bottom=SCREEN_HEIGHT+49;
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.3 animations:^{
-                aq_folderBottomOperateBgView.bottom=SCREEN_MAX_HEIGHT;
+                aq_folderBottomOperateBgView.bottom=SCREEN_HEIGHT;
             }];
         }];
     }
     else{
         [UIView animateWithDuration:0.3 animations:^{
             
-            aq_folderBottomOperateBgView.bottom=SCREEN_MAX_HEIGHT+49;
+            aq_folderBottomOperateBgView.bottom=SCREEN_HEIGHT+49;
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.3 animations:^{
-                _tabbarView.bottom=SCREEN_MAX_HEIGHT;
+                _tabbarView.bottom=SCREEN_HEIGHT;
             }];
         }];
     }

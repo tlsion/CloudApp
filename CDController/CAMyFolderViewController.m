@@ -357,6 +357,7 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    NSLog(@"height:%f , width:%f",self.view.superview.frame.size.height,self.view.superview.frame.size.width);
     BOOL cellIsSelect=NO;
     for (OCFileDto * oc in _itemsOfPath) {
         if (oc.isSelect) {
@@ -816,20 +817,12 @@
     }
     MPMoviePlayerViewController *playerViewController =[[MPMoviePlayerViewController alloc]initWithContentURL:videoURL];
     [self presentMoviePlayerViewControllerAnimated:playerViewController];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     
 
 }
 -(void)videoFinished{
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val = UIInterfaceOrientationPortrait;
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
-    }
+    
 }
 
 -(void)openDocument:(OCFileDto *)fileDto{
@@ -864,7 +857,6 @@
     if (URL) {
         // Initialize Document Interaction Controller
         UIDocumentInteractionController * documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
-        
         // Configure Document Interaction Controller
         [documentInteractionController setDelegate:self];
         
@@ -881,7 +873,35 @@
         }
     }
 }
-- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
+- (UIViewController*)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController*)controller
+
+{
+    
     return self;
+    
+}
+
+- (UIView*)documentInteractionControllerViewForPreview:(UIDocumentInteractionController*)controller
+
+{
+    
+    return self.view;
+    
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController*)controller
+
+{
+    
+    return self.view.frame;
+    
+}
+
+// 点击预览窗口的“Done”(完成)按钮时调用
+
+- (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController*)_controller
+
+{
+    
 }
 @end

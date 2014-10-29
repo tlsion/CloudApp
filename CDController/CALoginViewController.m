@@ -43,8 +43,10 @@
 //    [self.navigationItem setRightBarButtonItem:rightBarItem];
 }
 -(void)backAction{
-    if (
-        ![self.navigationController popViewControllerAnimated:YES]) {
+    if (![self.navigationController popViewControllerAnimated:YES]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else{
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 
@@ -131,7 +133,11 @@
                     if (_delegate) {
                         [_delegate getFoldersDataReloadData];
                     }
-                    
+                
+                
+                
+                    [[CAGlobalData shared].az_mainTab selectCurrentIndex:0];
+                
                     [self backAction];
 //                });
                 

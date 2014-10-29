@@ -15,7 +15,7 @@
 #define EXTENSION_COMPRESS @"rar|zip"
 #define EXTENSION_TXT @"xml|html|aspx|cs|js|txt|sql|doc|docx|cc|c|php|py|pdf"
 #define EXTENSION_AUIDO @"mp3|wav|mid|asf|tti|cda"
-#define EXTENSION_VIDEO @"mpv|mpg|mpeg|avi|rm|rmvb|mov|wmv|asf|dat|asx|wvx|mpe|mpa|3gp|MP4|gdf"
+#define EXTENSION_VIDEO @"mpv|mpg|mpeg|avi|rm|rmvb|mov|wmv|asf|dat|asx|wvx|mpe|mpa|3gp|mp4|gdf"
 // 255216 jpg;
 // 7173 gif;
 // 6677 bmp,

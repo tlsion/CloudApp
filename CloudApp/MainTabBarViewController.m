@@ -32,8 +32,15 @@
     return self;
 }
 -(BOOL)shouldAutorotate{
-    return NO;
+    return YES;
 }
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 -(void)initViewController
 {
     //创建几个视图控制器
@@ -153,6 +160,9 @@
     }
 }
 
+-(void)selectCurrentIndex:(NSInteger )index{
+    [self selectedTab:btnArr[index]];
+}
 // 通过tag切换界面 。
 -(void)selectedTab:(UIButton * )button
 {

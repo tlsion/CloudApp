@@ -17,12 +17,15 @@
     UIImageView * _sliderView;
     UIImageView * _badgeView;
     NSMutableArray * btnArr;
+    
 }
 
 @property (weak ,nonatomic) id<BottonOperateDelegate> az_operateDelegate;
 @property (copy,nonatomic)NSString *count;
 -(void)showBadge:(BOOL)show;
 -(void)showTabbar:(BOOL)show;
+
+-(void)selectCurrentIndex:(NSInteger )index;
 
 -(void)showFileTabbar:(BOOL)show andIsFolder:(BOOL) isDirectory;
 @end

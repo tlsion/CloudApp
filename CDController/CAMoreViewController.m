@@ -254,8 +254,9 @@
     CABaseNavigationController * navController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
     [self presentViewController:navController animated:YES completion:^{
         
+        [[CAGlobalData shared].az_mainTab selectCurrentIndex:0];
         [self.navigationController popViewControllerAnimated:NO];
-        [[CAGlobalData shared].az_mainTab setSelectedIndex:0];
+        
     }];
 }
 

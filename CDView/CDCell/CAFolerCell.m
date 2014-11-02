@@ -74,6 +74,13 @@
             break;
     }
     
+    if (itemDto.fileStatus==1) {
+        self.statusImageView.image=[UIImage imageNamed:@"下载.png"];
+    }
+    else{
+        self.statusImageView.image=nil;
+    }
+    
     self.selectButton.selected=itemDto.isSelect;
     
     self.mainTitleLabel.text=itemDto.fileTitle;

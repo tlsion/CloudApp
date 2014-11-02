@@ -27,7 +27,7 @@
 
 -(void)selectCurrentIndex:(NSInteger )index;
 
--(void)showFileTabbar:(BOOL)show andIsFolder:(BOOL) isDirectory;
+-(void)showFileTabbar:(BOOL)show andNeedDelete:(BOOL) need;
 @end
 @protocol BottonOperateDelegate <NSObject>
 

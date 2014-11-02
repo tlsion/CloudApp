@@ -75,7 +75,13 @@
         
         self.mainTitleLabel.text=itemDto.fileTitle;
         self.sizeLabel.text=[NSString stringWithFormat:@"%@/%@",[CommonHelper getFileSizeString:itemDto.totalBytes],[CommonHelper getFileSizeString: itemDto.size]];
-        [self.scheduleProgressView setProgress:itemDto.totalBytes/itemDto.size animated:NO];
+        
+        if (itemDto.size==0) {
+            [self.scheduleProgressView setProgress:1 animated:NO];
+        }else{
+            
+            [self.scheduleProgressView setProgress:itemDto.totalBytes/itemDto.size animated:NO];
+        }
 //        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(aaa) userInfo:nil repeats:YES];
     }
     

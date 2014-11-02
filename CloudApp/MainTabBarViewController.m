@@ -176,11 +176,11 @@
 }
 
 
--(void)showFileTabbar:(BOOL)show andIsFolder:(BOOL)isDirectory{
+-(void)showFileTabbar:(BOOL)show andNeedDelete:(BOOL) need{
     
     if (show && !aq_folderBottomOperateBgView.isShow) {
         
-        aq_folderBottomOperateBgView.isDirectory=isDirectory;
+        aq_folderBottomOperateBgView.isDirectory=!need;
         
         [UIView animateWithDuration:0.3 animations:^{
             _tabbarView.bottom=SCREEN_HEIGHT+49;

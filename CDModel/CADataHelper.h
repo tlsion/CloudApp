@@ -97,14 +97,12 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
            failureRequest:(void (^)())failureRequest
        errorBeforeRequest:(void (^)())errorBeforeRequest;
 
+//更新文件状态
++(void) updatePlaseFileStatusWithStatus:(NSInteger )fileStatus andFileDto:(OCFileDto *)fileDto;
+
+
 //判断文件是否存在
 +(BOOL)placeHasSave:(OCFileDto *)fileDto;
-//+ (NSOperation *) downloadFile:(NSString *)remotePath toDestiny:(NSString *)localPath withLIFOSystem:(BOOL)isLIFO onCommunication:(OCCommunication *)sharedOCCommunication progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSHTTPURLResponse *, NSString *)) successRequest failureRequest:(void(^)(NSHTTPURLResponse *, NSError *)) failureRequest shouldExecuteAsBackgroundTaskWithExpirationHandler:(void (^)(void))handler;
-//+ (NSMutableArray*)getFoldersWith:(NSArray *)folderDicts;
-////+ (NSArray*)folders;
-//+(NSMutableArray *)getFoldersOfPath:(NSString *)path;
-//@end
-//@protocol CACloudHelperDelegate <NSObject>
-//
-//-(void)cloudHelper:(CACloudHelper *)helper didUpdateFolders:(NSArray *)floders;
+
+
 @end

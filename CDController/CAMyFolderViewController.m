@@ -264,6 +264,7 @@
         //        [app.window makeToast:@"上传成功"];
         [_itemsTableView headerBeginRefreshing];
         
+        
         o_uploadData =nil;
     } failureRequest:^(NSError * error) {
         [app.window makeToast:@"上传失败"];
@@ -274,24 +275,29 @@
     }];
     
 }
--(void)downloadFile:(NSString *)fileName {
-    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileName];
+
+-(void)downloadFileDto:(OCFileDto *)fileDto {
+    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileDto.fileName];
     
     
     __weak AppDelegate * app=APP;
-    [CADataHelper downloadFile:path downloadFileName:fileName willStart:^{
+    [CADataHelper downloadFile:path downloadFileName:fileDto.fileName willStart:^{
         //        [app.window makeToast:@"添加至下载列表"];
     }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
         //        NSLog(@"下载外：%ld",bytesRead);
     } successRequest:^(NSString *downPath) {
         //        [app.window makeToast:@"下载成功"];
+        
+        [CADataHelper updatePlaseFileStatusWithStatus:1 andFileDto:fileDto];
+        [self getFoldersDataReloadData];
     } failureRequest:^(NSError *error) {
         [app.window makeToast:@"下载失败"];
     }];
     
     [self backToNoSelect];
 }
+
 -(void)deleteFile:(OCFileDto *)itemDto{
     
     NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,itemDto.fileName];
@@ -307,7 +313,9 @@
     
     [self backToNoSelect];
 }
+
 -(void)renameItemDto:(OCFileDto *)itemDto andNewName:(NSString *)newName{
+    
     NSString * oldPath=[NSString stringWithFormat:@"%@%@",_az_folderPath,itemDto.fileName];
     NSString * newPath=[NSString stringWithFormat:@"%@%@",_az_folderPath,newName];
     
@@ -322,25 +330,32 @@
     }];
     
     [self backToNoSelect];
+    
 }
+
 #pragma mark -- placeGetData
+
 -(void)getFoldersDataReloadData{
     _itemsOfPath=[CADataHelper getItemsOfPath:_az_folderPath];
     [_itemsTableView reloadData];
 }
+
 //#pragma mark CACloudHelperDelegate
 //-(void)cloudHelper:(CACloudHelper *)helper didUpdateFolders:(NSArray *)floders{
 //    _itemsOfPath=floders;
 //    [self.itemsTableView reloadData];
 //}
 #pragma mark --- tableView
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     [self.itemsTableView headerEndRefreshing];
     return _itemsOfPath.count;
 }
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 63;
 }
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *cellOfOrderListIdentifier = @"CAFolerCell";
     CAFolerCell *cell = (CAFolerCell *)[tableView  dequeueReusableCellWithIdentifier:cellOfOrderListIdentifier];
@@ -356,6 +371,7 @@
     
     return cell;
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 //    NSLog(@"height:%f , width:%f",self.view.superview.frame.size.height,self.view.superview.frame.size.width);
     BOOL cellIsSelect=NO;
@@ -403,7 +419,12 @@
     itemDto.isSelect=!itemDto.isSelect;
     if (itemDto.isSelect) {
         selectItemDto=itemDto;
-        [[CAGlobalData shared].az_mainTab showFileTabbar:isSelect andIsFolder:itemDto.isDirectory];
+        
+        BOOL needDelete=YES;
+        if (itemDto.isDirectory || itemDto.fileStatus==1) {
+            needDelete=NO;
+        }
+        [[CAGlobalData shared].az_mainTab showFileTabbar:isSelect andNeedDelete:needDelete];
     }else{
         [self backToNoSelect];
     }
@@ -414,7 +435,7 @@
         switch (code) {
             case CAFloderOperateCodeDownload:
             {
-                [self downloadFile:selectItemDto.fileName];
+                [self downloadFileDto:selectItemDto];
                 
                 [self backToNoSelect];
             }
@@ -459,7 +480,7 @@
     [_itemsTableView reloadData];
     
     selectItemDto=nil;
-    [[CAGlobalData shared].az_mainTab showFileTabbar:NO andIsFolder:NO];
+    [[CAGlobalData shared].az_mainTab showFileTabbar:NO andNeedDelete:YES];
 }
 #pragma mark -- alertView
 - (UIAlertView*)addFolderAlertView {
@@ -476,18 +497,21 @@
     return addFolderAlertView;
 }
 -(UIAlertView *)rechristenAlerView{
-//    NSString * editingName=selectItemDto.fileTitle;
-//    NSRange aRange=[editingName rangeOfString:@"."];
-//    if (aRange.length>0) {
-//        editingName=[editingName substringToIndex:aRange.location];
-//    }
+    NSString * editingName=@"";
+    if (selectItemDto.isDirectory) {
+        editingName=selectItemDto.fileTitle;
+    }
+    else{
+        editingName=[self getRenameWithJudgeName:selectItemDto.fileTitle andCombineName:@"" andIsExtension:NO];
+    }
+    
     UIAlertView * av=[[UIAlertView alloc] initWithTitle:@"重命名文件" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     av.tag=AV_RENAME_TAG;
     av.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField * alertTextField = [av textFieldAtIndex:0];
     alertTextField.clearButtonMode=UITextFieldViewModeAlways;
     alertTextField.keyboardType = UIKeyboardTypeDefault;
-    alertTextField.text = selectItemDto.fileTitle;
+    alertTextField.text = editingName;
     alertTextField.placeholder = @"文件名";
     return av;
 }
@@ -505,13 +529,18 @@
             }
             else {
                 //重命名
-//                NSString * editingExtension=txt.text;
-//                NSRange aRange=[selectItemDto.fileTitle rangeOfString:@"."];
-//                if (aRange.length>0) {
-//                    editingExtension=[selectItemDto.fileTitle substringFromIndex:aRange.location];
-//                }
-                NSString * editingName=txt.text;//[txt.text stringByAppendingString:editingExtension];
-                [self renameItemDto:selectItemDto andNewName:[self removeTheSensitiveCharacter:editingName]];
+                
+                NSString * newName=@"";
+                if (selectItemDto.isDirectory) {
+                    newName=txt.text;
+                }
+                else{
+                    newName=FORMAT(@"%@%@",txt.text,[self getRenameWithJudgeName:selectItemDto.fileTitle andCombineName:@"" andIsExtension:YES]);
+                }
+                
+                NSLog(@"fileName:%@",newName);
+
+                [self renameItemDto:selectItemDto andNewName:[self removeTheSensitiveCharacter:newName]];
             }
         }
     }
@@ -757,16 +786,31 @@
     return dateStr;
 }
 
--(NSString * )getRenameWithBeforeName:(NSString *)beforeName andAfterName:(NSString *)afterName{
-    NSRange aRange=[afterName rangeOfString:@"."];
+-(NSString * )getRenameWithJudgeName:(NSString *)jName andCombineName:(NSString *)cName andIsExtension:(BOOL) isExtension{
+    NSRange aRange=[jName rangeOfString:@"."];
     if (aRange.length>0) {
-        beforeName=[afterName substringToIndex:aRange.location];
-        afterName=[afterName substringFromIndex:aRange.location];
-        return [self getRenameWithBeforeName:beforeName andAfterName:afterName];
+        NSString * beforeName=[jName substringToIndex:aRange.location+1];
+        NSString * afterName=[jName substringFromIndex:aRange.location+1];
+        return [self getRenameWithJudgeName:afterName andCombineName:[NSString stringWithFormat:@"%@%@",cName,beforeName] andIsExtension:isExtension];
     }
     
-    return FORMAT(@"%@%@",beforeName,afterName);
+    if (cName.length>0) {
+        NSString * lastStr=[cName substringFromIndex:cName.length-1];
+        if ([lastStr isEqualToString:@"."]) {
+            cName=[cName substringToIndex:cName.length-1];
+            jName=[NSString stringWithFormat:@".%@",jName];
+        }
+        
+        return isExtension?jName:cName;
+    }
+    else{
+        return isExtension?cName:jName;
+    }
+    
 }
+
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -854,6 +898,10 @@
         } successRequest:^(NSString *downPath) {
             //        [app.window makeToast:@"下载成功"];
             [app.window hideToastActivity];
+            
+            
+            [CADataHelper updatePlaseFileStatusWithStatus:1 andFileDto:fileDto];
+            [self getFoldersDataReloadData];
             
             [self openDocumentWithFileDto:fileDto];
         } failureRequest:^(NSError *error) {

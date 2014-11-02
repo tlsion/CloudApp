@@ -67,6 +67,7 @@ static BOOL isShowWifi =NO;
         
     }];
 }
+
 +(void)deletePlaceFileDto:(OCFileDto *)foleDto andPlistName:(NSString *)plistName{
     NSMutableArray * itemDictArr=[self getPlistFolders:plistName];
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",foleDto.fileName];
@@ -79,6 +80,7 @@ static BOOL isShowWifi =NO;
     }
     [self deleteLocalFile:[self getCachesPathOfFolderName:[NSString stringWithFormat:@"%@/%@",Caches_CloudApp,foleDto.fileName]]];
 }
+
 + (void) updateFolderWithPath:(NSString *)path successRequest:(void (^)(NSHTTPURLResponse *,NSArray *))itemsOfPath failureRequest:(void (^)(NSHTTPURLResponse *))errorRequest{
     [[self appDelegateWindow] makeToastActivity];
     if (!path) path=@"";
@@ -468,6 +470,35 @@ static BOOL isShowWifi =NO;
         //Success
         NSLog(@"下载成功 : %@", localPath);
         
+        //如果是0字节的文件
+        
+        OCFileDto * fd=[[OCFileDto alloc]init];
+        fd.fileName=fileName;
+        fd.filePath=remotePath;
+        fd.fileTitle=fileName;
+        fd.isDirectory=NO;
+        fd.fileType=[CommonHelper fileNameToFileType:fileName];
+        fd.isTransfer=YES;
+        fd.tranferStatus=CATransferStatusDoing;
+        
+        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"filePath == %@",remotePath];
+        
+        NSMutableArray * downloadOperations=[CADataHelper getPlistItemsOfName:Plist_Name_Downloaded];
+        NSArray * operationMatches = [downloadOperations filteredArrayUsingPredicate:operationPredicate];
+        
+        if (operationMatches.count==0) {
+            
+            
+            [self didFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:fd]];
+            
+            dispatch_async(kMainQueue, ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartDownload]}];
+            });
+        }
+
+        
+        
+        //下载完成操作
         dispatch_async(kBgQueue, ^{
             [self didFileRequestWithWay:Do_Download_Request fileName:fileName];
             dispatch_async(kMainQueue, ^{
@@ -501,6 +532,7 @@ static BOOL isShowWifi =NO;
     
     NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:downloadOperation,@"Operation",FORMAT(@"%@%@",remotePath,fileName),@"Path", nil];
     [[CATransferHelper sharedInstance]addDownloadOperationToTheNetworkQueue:operationDict];
+    
 }
 + (void) deleteFileOrFolder:(NSString *)remotePath
              successRequest:(void (^)())successRequest
@@ -538,7 +570,29 @@ static BOOL isShowWifi =NO;
         errorBeforeRequest();
     }];
 }
-#pragma mark -- until
+
+
++(void) updatePlaseFileStatusWithStatus:(NSInteger )fileStatus andFileDto:(OCFileDto *)fileDto {
+    
+    NSRange aRange=[fileDto.filePath rangeOfString:RemoteWebdav];
+    
+    NSString * path=[fileDto.filePath substringFromIndex:aRange.length+aRange.location+1];
+    
+    NSMutableArray * itemDictArr= [self getFoldersOfPath:path];
+    
+    
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",fileDto.fileName];
+    NSArray * matches = [itemDictArr filteredArrayUsingPredicate:predicate];
+    if (matches.count > 0) {
+        NSMutableDictionary * itemDict=[matches lastObject];
+        [itemDict setObject:[NSNumber numberWithInteger:fileStatus] forKey:@"fileStatus"];
+        
+        
+        [self writeToFoldersOfPath:path andFolders:itemDictArr];
+    }
+}
+
+#pragma mark -- 辅助功能
 
 +(NSMutableArray *)getPlistFolders:(NSString *)plistName{
     return [[[NSMutableArray alloc]initWithContentsOfFile:[CADataHelper plistPath:plistName]]mutableCopy];
@@ -553,6 +607,7 @@ static BOOL isShowWifi =NO;
         folder.fileTitle=[dic objectForKeyNotNull:@"fileTitle" fallback:@""];
         folder.fileName=[dic objectForKeyNotNull:@"fileName" fallback:@""];
         folder.filePath=[dic objectForKeyNotNull:@"filePath" fallback:@""];
+        folder.fileStatus=[[dic objectForKeyNotNull:@"fileStatus" fallback:@"0"]integerValue];
         folder.isDirectory=[[dic objectForKeyNotNull:@"isDirectory" fallback:[NSNumber numberWithBool:NO]] boolValue];
         folder.fileType=[[dic objectForKeyNotNull:@"fileType" fallback:@"0"]integerValue];
         folder.size=[[dic objectForKeyNotNull:@"size" fallback:@"0"] integerValue];
@@ -572,6 +627,7 @@ static BOOL isShowWifi =NO;
     folder.fileTitle=[fileDict objectForKeyNotNull:@"fileTitle" fallback:@""];
     folder.fileName=[fileDict objectForKeyNotNull:@"fileName" fallback:@""];
     folder.filePath=[fileDict objectForKeyNotNull:@"filePath" fallback:@""];
+    folder.fileStatus=[[fileDict objectForKeyNotNull:@"fileStatus" fallback:@"0"]integerValue];
     folder.isDirectory=[[fileDict objectForKeyNotNull:@"isDirectory" fallback:[NSNumber numberWithBool:NO]] boolValue];
     folder.fileType=[[fileDict objectForKeyNotNull:@"fileType" fallback:@"0"]integerValue];
     folder.size=[[fileDict objectForKeyNotNull:@"size" fallback:@"0"] integerValue];
@@ -588,6 +644,7 @@ static BOOL isShowWifi =NO;
     [folderDic setValue:fileDto.fileName forKeyPath:@"fileName"];
     [folderDic setValue:fileDto.filePath forKeyPath:@"filePath"];
     [folderDic setValue:fileDto.fileTitle forKeyPath:@"fileTitle"];
+    [folderDic setValue:[NSNumber numberWithInteger:fileDto.fileStatus] forKey:@"fileStatus"];
     [folderDic setValue:[NSNumber numberWithBool:fileDto.isDirectory] forKeyPath:@"isDirectory"];
     [folderDic setValue:[NSNumber numberWithInteger:fileDto.fileType] forKeyPath:@"fileType"];
     [folderDic setValue:[NSNumber numberWithLongLong:fileDto.size] forKeyPath:@"size"];
@@ -630,10 +687,13 @@ static BOOL isShowWifi =NO;
     }
     return pathFolders;
 }
+
+//保存数组到指定Plist目录下
 +(BOOL)writeToFoldersOfPath:(NSString *)path andFolders:(NSMutableArray *)saveFolders{
     if (path.length==0 || !path) {
         return [saveFolders writeToFile:[CADataHelper plistPath:Plist_Name_AllFolders] atomically:YES];
     }
+    
     NSArray * allPaths=[self subPath:path];
     
     NSMutableArray * pathFolders=[self getPlistFolders:Plist_Name_AllFolders];
@@ -699,6 +759,8 @@ static BOOL isShowWifi =NO;
 //        }
     }
 }
+
+//fromDownloadingPlistToDownloadedPlist
 +(void)didFileRequestWithWay:(NSString *)doWay fileName:(NSString *)fileName{
     NSString * doingStr=nil;
     NSMutableArray * plistFolders=nil;
@@ -722,16 +784,16 @@ static BOOL isShowWifi =NO;
     if (matches.count > 0) {
         
         OCFileDto * fileDto=[matches lastObject];
-        NSMutableDictionary * itemDict=[self fileDictWithFileDto:fileDto];
+//        NSMutableDictionary * itemDict=[self fileDictWithFileDto:fileDto];
         
-        [itemDict setObject:[NSNumber numberWithInteger:CATransferStatusDid] forKey:@"tranferStatus"];
+//        [itemDict setObject:[NSNumber numberWithInteger:CATransferStatusDid] forKey:@"tranferStatus"];
         
-        NSMutableArray * itemDictArr=[self getPlistFolders:didStr];
-        if (!itemDictArr) {
-            itemDictArr=[NSMutableArray array];
-        }
-        [itemDictArr addObject:itemDict];
-        [itemDictArr writeToFile:[CADataHelper plistPath:didStr] atomically:YES];
+//        NSMutableArray * itemDictArr=[self getPlistFolders:didStr];
+//        if (!itemDictArr) {
+//            itemDictArr=[NSMutableArray array];
+//        }
+//        [itemDictArr addObject:itemDict];
+//        [itemDictArr writeToFile:[CADataHelper plistPath:didStr] atomically:YES];
         
         
         [tempFolders removeObject:fileDto];
@@ -748,6 +810,32 @@ static BOOL isShowWifi =NO;
 
     }
 
+}
+
+//ToDownloadedPlist （more）
++(void)didFileRequestWithWay:(NSString *)doWay fileInfo:(NSMutableDictionary *)itemDict {
+    
+    [itemDict setObject:[NSNumber numberWithInteger:CATransferStatusDid] forKey:@"tranferStatus"];
+    NSString * didStr=nil;
+    CATransferHelper * transferHelper=[CATransferHelper sharedInstance];
+    if ([doWay isEqualToString:Do_Download_Request]) {
+        didStr=Plist_Name_Downloaded;
+    }else{
+        didStr=Plist_Name_Uploaded;
+    }
+    
+    NSMutableArray * doingFolders=[self getPlistFolders:didStr];
+    
+    if (!doingFolders) {
+        NSMutableArray * folders=[NSMutableArray array];
+        [folders addObject:itemDict];
+        [folders writeToFile:[self plistPath:didStr] atomically:YES];
+    }
+    else{
+        [doingFolders addObject:itemDict];
+        [doingFolders writeToFile:[self plistPath:didStr] atomically:YES];
+    }
+    
 }
 #pragma end mark
 +(NSArray * )subPath:(NSString *)path{

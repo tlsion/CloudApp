@@ -163,18 +163,18 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     
     if (tableView==downloadTableView){
         if (section==0) {
-            headerLabel.text=[NSString stringWithFormat:@"    正在下载(%ld)",downloadingFiles.count];
+            headerLabel.text=[NSString stringWithFormat:@"    正在下载(%d)",downloadingFiles.count];
         }
         else{
-            headerLabel.text=[NSString stringWithFormat:@"    下载成功(%ld)",downloadedFiles.count];
+            headerLabel.text=[NSString stringWithFormat:@"    下载成功(%d)",downloadedFiles.count];
         }
     }
     else{
         if (section==0) {
-            headerLabel.text=[NSString stringWithFormat:@"    正在上传(%ld)",uploadingFiles.count];
+            headerLabel.text=[NSString stringWithFormat:@"    正在上传(%d)",uploadingFiles.count];
         }
         else{
-            headerLabel.text=[NSString stringWithFormat:@"    上传成功(%ld)",uploadedFiles.count];
+            headerLabel.text=[NSString stringWithFormat:@"    上传成功(%d)",uploadedFiles.count];
         }
     }
     

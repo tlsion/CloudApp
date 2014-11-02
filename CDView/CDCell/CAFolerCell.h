@@ -12,6 +12,7 @@
 @protocol CAFolerCellDelegate;
 @interface CAFolerCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet EGOImageView *mainImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *statusImageView;
 @property (strong, nonatomic) IBOutlet UILabel *mainTitleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *sizeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;

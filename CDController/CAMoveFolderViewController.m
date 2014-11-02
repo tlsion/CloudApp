@@ -31,7 +31,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self customNavigationBar];
-    [self initItemsData];
+    [self setupRefresh];
+    [self.itemsTableView headerBeginRefreshing];
 }
 -(void)customNavigationBar{
     UIBarButtonItem * backBarItem=[CrateComponent createBackBarButtonItemWithTarget:self andAction:@selector(backAction)];
@@ -42,7 +43,9 @@
     [self.navigationItem setRightBarButtonItem:rightBarItem];
 }
 -(void)backAction{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (![self.navigationController popViewControllerAnimated:YES]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 -(void)moveAction{
     __weak CAMoveFolderViewController * controller=self;

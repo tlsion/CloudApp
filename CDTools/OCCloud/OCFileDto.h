@@ -41,6 +41,8 @@
 
 @property (nonatomic, assign)BOOL isDelete;//只有传输列表用到
 
+@property (nonatomic, assign)NSInteger fileStatus;//判断状态  0、未下载或未上传 1、已下载
+
 @property (nonatomic , assign) BOOL isSelect;
 @property (nonatomic, assign) CAFileTypeCode fileType;
 

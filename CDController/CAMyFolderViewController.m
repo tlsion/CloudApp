@@ -476,18 +476,18 @@
     return addFolderAlertView;
 }
 -(UIAlertView *)rechristenAlerView{
-    NSString * editingName=selectItemDto.fileTitle;
-    NSRange aRange=[editingName rangeOfString:@"."];
-    if (aRange.length>0) {
-        editingName=[editingName substringToIndex:aRange.location];
-    }
+//    NSString * editingName=selectItemDto.fileTitle;
+//    NSRange aRange=[editingName rangeOfString:@"."];
+//    if (aRange.length>0) {
+//        editingName=[editingName substringToIndex:aRange.location];
+//    }
     UIAlertView * av=[[UIAlertView alloc] initWithTitle:@"重命名文件" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     av.tag=AV_RENAME_TAG;
     av.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField * alertTextField = [av textFieldAtIndex:0];
     alertTextField.clearButtonMode=UITextFieldViewModeAlways;
     alertTextField.keyboardType = UIKeyboardTypeDefault;
-    alertTextField.text = editingName;
+    alertTextField.text = selectItemDto.fileTitle;
     alertTextField.placeholder = @"文件名";
     return av;
 }
@@ -505,12 +505,12 @@
             }
             else {
                 //重命名
-                NSString * editingExtension=txt.text;
-                NSRange aRange=[selectItemDto.fileTitle rangeOfString:@"."];
-                if (aRange.length>0) {
-                    editingExtension=[selectItemDto.fileTitle substringFromIndex:aRange.location];
-                }
-                NSString * editingName=[txt.text stringByAppendingString:editingExtension];
+//                NSString * editingExtension=txt.text;
+//                NSRange aRange=[selectItemDto.fileTitle rangeOfString:@"."];
+//                if (aRange.length>0) {
+//                    editingExtension=[selectItemDto.fileTitle substringFromIndex:aRange.location];
+//                }
+                NSString * editingName=txt.text;//[txt.text stringByAppendingString:editingExtension];
                 [self renameItemDto:selectItemDto andNewName:[self removeTheSensitiveCharacter:editingName]];
             }
         }
@@ -755,6 +755,17 @@
     dateStr=[dateStr stringByAppendingFormat:@"%@",suffixStr];
     NSLog(@"filename1:%@",dateStr);
     return dateStr;
+}
+
+-(NSString * )getRenameWithBeforeName:(NSString *)beforeName andAfterName:(NSString *)afterName{
+    NSRange aRange=[afterName rangeOfString:@"."];
+    if (aRange.length>0) {
+        beforeName=[afterName substringToIndex:aRange.location];
+        afterName=[afterName substringFromIndex:aRange.location];
+        return [self getRenameWithBeforeName:beforeName andAfterName:afterName];
+    }
+    
+    return FORMAT(@"%@%@",beforeName,afterName);
 }
 - (void)didReceiveMemoryWarning
 {

@@ -15,11 +15,15 @@
 #define User_UserPassword @"UserPassword"
 #define User_Domain @"Domain"
 #define User_AllServiceUrl @"AllServiceUrl"
+#define User_OnlyServiceUrl @"OnlyServiceUrl"
 
 #define RemoteWebdav @"/remote.php/webdav"
-
+#define FilePath @"/ext/storage/remote.php/webdav/"
 
 #define NSNOTIFICATION_NAME_TRANSFER_CHANGE @"Now_Transfer_change"
+
+#define NSNOTIFICATION_NAME_UPDATE_STATUS @"Update_File_Status"
+
 typedef NS_ENUM(NSInteger, CATransferType) {
     CATransferTypeStartUpload = 1,
     CATransferTypeDidUploaded,
@@ -31,6 +35,12 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
     CATransferStatusDoing = 1,
     CATransferStatusStop,
     CATransferStatusDid
+};
+
+typedef NS_ENUM (NSInteger, CAPlaceStutus){
+    CAPlaceStutusDefault = 0, // 默认
+    CAPlaceStutusDownload, //下载的文件
+    CAPlaceStutusUpload    //上传的文件
 };
 
 #define Caches_CloudApp @"CloudApp"
@@ -85,7 +95,7 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
 //上传
 + (void) uploadFile:(NSString *) remotePath uploadFileName:(NSString *)fileName fileData:(NSData *)fileData willStart:(void(^)())start progressUpload:(void(^)(NSUInteger, long long, long long))progressUpload successRequest:(void(^)()) successRequest failureRequest:(void(^)(NSError *)) failureRequest  failureBeforeRequest:(void(^)(NSError *)) failureBeforeRequest ;
 //下载
-+(void) downloadFile:(NSString *)remotePath downloadFileName:(NSString *)fileName willStart:(void(^)())start progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSString *)) successRequest failureRequest:(void(^)(NSError *)) failureRequest;
++(void) downloadFileDto:(OCFileDto *)dFileDto willStart:(void(^)())start progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSString *)) successRequest failureRequest:(void(^)(NSError *)) failureRequest;
 //删除
 + (void) deleteFileOrFolder:(NSString *)remotePath
              successRequest:(void (^)())successRequest
@@ -98,7 +108,7 @@ typedef NS_ENUM (NSInteger, CATransferStatus){
        errorBeforeRequest:(void (^)())errorBeforeRequest;
 
 //更新文件状态
-+(void) updatePlaseFileStatusWithStatus:(NSInteger )fileStatus andFileDto:(OCFileDto *)fileDto;
++(void) updatePlaseFileStatusWithStatus:(CAPlaceStutus )placeStatus andFileDto:(OCFileDto *)fileDto;
 
 
 //判断文件是否存在

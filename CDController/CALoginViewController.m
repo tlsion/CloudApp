@@ -106,6 +106,12 @@
         [userDefaults setObject:serviceUrl forKey:User_ServiceUrl];
         [userDefaults setObject:[self getDomain:serviceUrl] forKey:User_Domain];
         
+        NSRange oRange=[serviceUrl rangeOfString:@"/ext/storage"];
+        if (oRange.length>0) {
+            NSString * onlyService=[serviceUrl substringToIndex:oRange.location];
+            [userDefaults setObject:onlyService forKey:User_OnlyServiceUrl];
+        }
+        
         [userDefaults synchronize];
         
         [[AppDelegate sharedOCCommunication] setCredentialsWithUser:acountTxt.text andPassword:passwordTxt.text];

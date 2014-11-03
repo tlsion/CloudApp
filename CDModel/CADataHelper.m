@@ -142,10 +142,21 @@ static BOOL isShowWifi =NO;
                 if (folder.isDirectory) {//如果是文件夹，创建一个文件夹数组
                     [folderDic setObject:[NSMutableArray array] forKey:@"folders"];
                 }
+                
                 [folderDic setValue:[NSNumber numberWithInteger:folder.fileType] forKeyPath:@"fileType"];
                 [folderDic setValue:[NSNumber numberWithLongLong:folder.size] forKeyPath:@"size"];
                 [folderDic setValue:[NSNumber numberWithLong:folder.date] forKeyPath:@"date"];
                 [folderDic setValue:[NSNumber numberWithLongLong:folder.etag] forKeyPath:@"etag"];
+                
+                //判断是否是本地上传的文件
+                NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"filePath == %@ && fileName == %@",folder.filePath,folder.fileName];
+                
+                NSMutableArray * uploadOperations=[CADataHelper getPlistItemsOfName:Plist_Name_Uploaded];
+                NSArray * operationMatches = [uploadOperations filteredArrayUsingPredicate:operationPredicate];
+                
+                if (operationMatches.count>0) {
+                    [folderDic setValue:[NSNumber numberWithInteger:CAPlaceStutusUpload] forKey:@"placeStatus"];
+                }
                 [knownFolders  addObject:folderDic];
 //                [self addFolderFromDictionary:[matches lastObject]];
             }
@@ -240,43 +251,25 @@ static BOOL isShowWifi =NO;
 //    _pathOfLocalUploadedFile = imagePath;
     
     
+    OCFileDto * uFileDto=[[OCFileDto alloc]init];
+    uFileDto.fileName=fileName;
+    uFileDto.filePath=FORMAT(@"%@%@",FilePath,[remotePath stringByReplacingOccurrencesOfString:fileName withString:@""]);
+    uFileDto.fileTitle=fileName;
+    uFileDto.isDirectory=NO;
+    uFileDto.fileType=[CommonHelper fileNameToFileType:fileName];
+    uFileDto.isTransfer=YES;
     
     //Upload block
     OCHTTPRequestOperation  * uploadOperation=nil;
     uploadOperation=(OCHTTPRequestOperation  *)[[AppDelegate sharedOCCommunication] uploadFile:localPath toDestiny:[self getServiceUrl:remotePath] onCommunication:[AppDelegate sharedOCCommunication] progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
         progressUpload(bytesWrite,totalBytesWrite,totalBytesWrite);
-        //Progress
-//        NSLog(@"Uploading: bytesWrite:%ld,totalBytesWrite:%lld bytes,totalExpectedBytesWrite:%lld",bytesWrite,totalBytesWrite,totalExpectedBytesWrite);
-//        OCFileDto
-//        NSInteger
-//        NSString * tempPlist=[NSString stringWithFormat:@"%@%@",[self getCachesPathOfFolderName:Caches_CloudTemp],randomStr];
-//        dispatch_async(kBgQueue, ^{
-//            NSMutableDictionary * folderDic=[NSMutableDictionary dictionary];
-//            [folderDic setValue:fileName forKeyPath:@"fileName"];
-//            [folderDic setValue:remotePath forKeyPath:@"filePath"];
-//            [folderDic setValue:[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKeyPath:@"fileTitle"];
-//            [folderDic setValue:[NSNumber numberWithBool:NO] forKeyPath:@"isDirectory"];
-//            [folderDic setValue:[NSNumber numberWithInteger:[CommonHelper fileNameToFileType:fileName]] forKeyPath:@"fileType"];
-//            [folderDic setValue:[NSNumber numberWithLongLong:totalExpectedBytesWrite] forKeyPath:@"size"];
-//            [folderDic setValue:[NSNumber numberWithLong:[[NSDate date] timeIntervalSince1970]] forKeyPath:@"date"];
-//            [folderDic setValue:[NSNumber numberWithInteger:bytesWrite] forKey:@"bytes"];
-//            [folderDic setValue:[NSNumber numberWithLongLong:totalBytesWrite] forKey:@"totalBytes"];
-//            
-//            [self doFileRequestWithWay:Do_Upload_Request fileInfo:folderDic];
-//        });
+        
         dispatch_async(kBgQueue, ^{
             
-            OCFileDto * fd=[[OCFileDto alloc]init];
-            fd.fileName=fileName;
-            fd.filePath=remotePath;
-            fd.fileTitle=fileName;
-            fd.isDirectory=NO;
-            fd.fileType=[CommonHelper fileNameToFileType:fileName];
-            fd.size=totalExpectedBytesWrite;
-            fd.bytes=bytesWrite;
-            fd.totalBytes=totalBytesWrite;
-            fd.isTransfer=YES;
-            fd.tranferStatus=CATransferStatusDoing;
+            uFileDto.size=totalExpectedBytesWrite;
+            uFileDto.bytes=bytesWrite;
+            uFileDto.totalBytes=totalBytesWrite;
+            uFileDto.tranferStatus=CATransferStatusDoing;
             
             CATransferHelper * transferHelper=[CATransferHelper sharedInstance];
             NSMutableArray * doingFolders=[transferHelper uploadingFiles];
@@ -285,14 +278,14 @@ static BOOL isShowWifi =NO;
             NSArray * matches = [doingFolders filteredArrayUsingPredicate:predicate];
             if (matches.count > 0) {
                 OCFileDto * doingFD=matches[0];
-                doingFD.bytes=fd.bytes;
-                doingFD.totalBytes=fd.totalBytes;
+                doingFD.bytes=uFileDto.bytes;
+                doingFD.totalBytes=uFileDto.totalBytes;
                 
                 
                 if (doingFD.isDelete==YES) {
                     //取出下载线程
                     //
-                    NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                    NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",FilePath,fileName)];
                     
                     NSArray * operationMatches = [[CATransferHelper sharedInstance].uploadOperations filteredArrayUsingPredicate:operationPredicate];
                     if (operationMatches.count>0) {
@@ -317,14 +310,14 @@ static BOOL isShowWifi =NO;
             }
             else{
                 
-                NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",uFileDto.filePath,fileName)];
                 
                 NSArray * operationMatches = [[CATransferHelper sharedInstance].uploadOperations filteredArrayUsingPredicate:operationPredicate];
                 
                 if (operationMatches.count>0) {
-                    [doingFolders addObject:fd];
+                    [doingFolders addObject:uFileDto];
                     
-                    [self doFileRequestWithWay:Do_Upload_Request fileInfo:[self fileDictWithFileDto:fd]];
+                    [self doFileRequestWithWay:Do_Upload_Request fileInfo:[self fileDictWithFileDto:uFileDto]];
                     
                     dispatch_async(kMainQueue, ^{
                         start();
@@ -345,15 +338,25 @@ static BOOL isShowWifi =NO;
         //Success
         NSLog(@"上传成功");
         
+        uFileDto.isTransfer=YES;
+        uFileDto.tranferStatus=CATransferStatusDid;
+        
+        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"filePath == %@ && fileName == %@",uFileDto.filePath,uFileDto.fileName];
+        
+        NSMutableArray * uploadOperations=[CADataHelper getPlistItemsOfName:Plist_Name_Uploaded];
+        NSArray * operationMatches = [uploadOperations filteredArrayUsingPredicate:operationPredicate];
+        
+        if (operationMatches.count==0) {
+            
+            [self didFileRequestWithWay:Do_Upload_Request fileInfo:[self fileDictWithFileDto:uFileDto]];
+            
+        }
         
         
-        dispatch_async(kBgQueue, ^{
-            [self didFileRequestWithWay:Do_Upload_Request fileName:fileName];
-            dispatch_async(kMainQueue, ^{
-                successRequest(localPath);[[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidUploaded]}];
-            });
-        });
+        [self didFileRequestWithWay:Do_Upload_Request fileName:fileName];
         
+        successRequest(localPath);
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidUploaded]}];
         //Refresh the file list
 //        [self readFolder:nil];
         
@@ -375,20 +378,28 @@ static BOOL isShowWifi =NO;
     }];
     
     
-    NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:uploadOperation,@"Operation",FORMAT(@"%@%@",remotePath,fileName),@"Path", nil];
+    NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:uploadOperation,@"Operation",FORMAT(@"%@%@",uFileDto.filePath,fileName),@"Path", nil];
     [[CATransferHelper sharedInstance]addUploadOperationToTheNetworkQueue:operationDict];
     
     
 }
-+(void) downloadFile:(NSString *)remotePath downloadFileName:(NSString *)fileName willStart:(void(^)())start progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSString *)) successRequest failureRequest:(void(^)(NSError *)) failureRequest{
-    fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
++(void) downloadFileDto:(OCFileDto *)dFileDto willStart:(void(^)())start progressDownload:(void(^)(NSUInteger, long long, long long))progressDownload successRequest:(void(^)(NSString *)) successRequest failureRequest:(void(^)(NSError *)) failureRequest{
+    
+    
+    NSString * remotePath=[NSString stringWithFormat:@"%@%@%@",[[NSUserDefaults standardUserDefaults] objectForKey:User_OnlyServiceUrl],dFileDto.filePath,dFileDto.fileName];
+    remotePath = [remotePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSString * fileName =dFileDto.fileName;
+//    fileName=[fileName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     NSString *folderPath = [self getCachesPathOfFolderName:Caches_CloudApp]; // Get documents folder
     
-    NSString * randomStr=[NSString stringWithFormat:@"/%@",fileName];
+    NSString * randomStr=[NSString stringWithFormat:@"/%@",dFileDto.fileName];
     NSString *localPath = [folderPath stringByAppendingString:randomStr];
    
+    
+    
     OCHTTPRequestOperation  * downloadOperation=nil;
-    downloadOperation=(OCHTTPRequestOperation  *)[[AppDelegate sharedOCCommunication] downloadFile:[self getServiceUrl:remotePath] toDestiny:localPath withLIFOSystem:YES onCommunication:[AppDelegate sharedOCCommunication] progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
+    downloadOperation=(OCHTTPRequestOperation  *)[[AppDelegate sharedOCCommunication] downloadFile:remotePath toDestiny:localPath withLIFOSystem:YES onCommunication:[AppDelegate sharedOCCommunication] progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
         //Progress
         progressDownload(bytesRead,totalBytesRead,totalExpectedBytesRead);
@@ -399,31 +410,25 @@ static BOOL isShowWifi =NO;
         
         dispatch_async(kBgQueue, ^{
             
-            OCFileDto * fd=[[OCFileDto alloc]init];
-            fd.fileName=fileName;
-            fd.filePath=remotePath;
-            fd.fileTitle=fileName;
-            fd.isDirectory=NO;
-            fd.fileType=[CommonHelper fileNameToFileType:fileName];
-            fd.size=totalExpectedBytesRead;
-            fd.bytes=bytesRead;
-            fd.totalBytes=totalBytesRead;
-            fd.isTransfer=YES;
-            fd.tranferStatus=CATransferStatusDoing;
+            dFileDto.size=totalExpectedBytesRead;
+            dFileDto.bytes=bytesRead;
+            dFileDto.totalBytes=totalBytesRead;
+            dFileDto.isTransfer=YES;
+            dFileDto.tranferStatus=CATransferStatusDoing;
             
             CATransferHelper * transferHelper=[CATransferHelper sharedInstance];
             NSMutableArray * doingFolders=[transferHelper downloadingFiles];
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",fileName];
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",dFileDto.fileName];
                 
                 NSArray * matches = [doingFolders filteredArrayUsingPredicate:predicate];
                 if (matches.count > 0) {
                     OCFileDto * doingFD=matches[0];
-                    doingFD.bytes=fd.bytes;
-                    doingFD.totalBytes=fd.totalBytes;
+                    doingFD.bytes=dFileDto.bytes;
+                    doingFD.totalBytes=dFileDto.totalBytes;
                     if (doingFD.isDelete==YES) {
                         //取出下载线程
 //                        
-                        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",dFileDto.filePath,dFileDto.fileName)];
                         
                         NSArray * operationMatches = [[CATransferHelper sharedInstance].downloadOperations filteredArrayUsingPredicate:operationPredicate];
                         if (operationMatches.count>0) {
@@ -446,14 +451,14 @@ static BOOL isShowWifi =NO;
                 }
                 else{
                     
-                    NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",remotePath,fileName)];
+                    NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"Path == %@",FORMAT(@"%@%@",dFileDto.filePath,dFileDto.fileName)];
                     
                     NSArray * operationMatches = [[CATransferHelper sharedInstance].downloadOperations filteredArrayUsingPredicate:operationPredicate];
                     
                     if (operationMatches.count>0) {
-                        [doingFolders addObject:fd];
+                        [doingFolders addObject:dFileDto];
                         
-                        [self doFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:fd]];
+                        [self doFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:dFileDto]];
                         
                         dispatch_async(kMainQueue, ^{
                             start();
@@ -469,44 +474,30 @@ static BOOL isShowWifi =NO;
     } successRequest:^(NSHTTPURLResponse *response, NSString *redirectedServer) {
         //Success
         NSLog(@"下载成功 : %@", localPath);
+
         
-        //如果是0字节的文件
+        dFileDto.isTransfer=YES;
+        dFileDto.tranferStatus=CATransferStatusDid;
         
-        OCFileDto * fd=[[OCFileDto alloc]init];
-        fd.fileName=fileName;
-        fd.filePath=remotePath;
-        fd.fileTitle=fileName;
-        fd.isDirectory=NO;
-        fd.fileType=[CommonHelper fileNameToFileType:fileName];
-        fd.isTransfer=YES;
-        fd.tranferStatus=CATransferStatusDoing;
-        
-        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"filePath == %@",remotePath];
+        NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"filePath == %@ && fileName == %@",dFileDto.filePath,dFileDto.fileName];
         
         NSMutableArray * downloadOperations=[CADataHelper getPlistItemsOfName:Plist_Name_Downloaded];
         NSArray * operationMatches = [downloadOperations filteredArrayUsingPredicate:operationPredicate];
         
         if (operationMatches.count==0) {
             
+            [self didFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:dFileDto]];
             
-            [self didFileRequestWithWay:Do_Download_Request fileInfo:[self fileDictWithFileDto:fd]];
-            
-            dispatch_async(kMainQueue, ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeStartDownload]}];
-            });
         }
-
-        
         
         //下载完成操作
-        dispatch_async(kBgQueue, ^{
-            [self didFileRequestWithWay:Do_Download_Request fileName:fileName];
-            dispatch_async(kMainQueue, ^{
-                successRequest(localPath);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidDownloaded]}];
-                
-            });
-        });
+        
+        [self didFileRequestWithWay:Do_Download_Request fileName:dFileDto.fileName];
+        
+        
+        successRequest(localPath);
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidDownloaded]}];
         
 //        _downloadedImageView.image = image;
 //        _progressLabel.text = @"Success";
@@ -514,7 +505,7 @@ static BOOL isShowWifi =NO;
         
     } failureRequest:^(NSHTTPURLResponse *response, NSError *error) {
         //Request failure
-        NSLog(@"ero:%d,%d",response.statusCode,error.code);
+//        NSLog(@"ero:%d,%d",response.statusCode,error.code);
         if (error.code!= (-999)) {
             failureRequest(error);
         }
@@ -530,7 +521,7 @@ static BOOL isShowWifi =NO;
 //        [downloadOperation cancel];
     }];
     
-    NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:downloadOperation,@"Operation",FORMAT(@"%@%@",remotePath,fileName),@"Path", nil];
+    NSDictionary * operationDict=[NSDictionary dictionaryWithObjectsAndKeys:downloadOperation,@"Operation",FORMAT(@"%@%@",dFileDto.filePath,dFileDto.fileName),@"Path", nil];
     [[CATransferHelper sharedInstance]addDownloadOperationToTheNetworkQueue:operationDict];
     
 }
@@ -572,7 +563,7 @@ static BOOL isShowWifi =NO;
 }
 
 
-+(void) updatePlaseFileStatusWithStatus:(NSInteger )fileStatus andFileDto:(OCFileDto *)fileDto {
++(void) updatePlaseFileStatusWithStatus:(CAPlaceStutus )placeStatus andFileDto:(OCFileDto *)fileDto {
     
     NSRange aRange=[fileDto.filePath rangeOfString:RemoteWebdav];
     
@@ -581,14 +572,16 @@ static BOOL isShowWifi =NO;
     NSMutableArray * itemDictArr= [self getFoldersOfPath:path];
     
     
-    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",fileDto.fileName];
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileName == %@",fileDto.fileName];
     NSArray * matches = [itemDictArr filteredArrayUsingPredicate:predicate];
     if (matches.count > 0) {
         NSMutableDictionary * itemDict=[matches lastObject];
-        [itemDict setObject:[NSNumber numberWithInteger:fileStatus] forKey:@"fileStatus"];
+        [itemDict setObject:[NSNumber numberWithInteger:placeStatus] forKey:@"placeStatus"];
         
         
         [self writeToFoldersOfPath:path andFolders:itemDictArr];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_UPDATE_STATUS object:nil userInfo:nil];
     }
 }
 
@@ -607,7 +600,7 @@ static BOOL isShowWifi =NO;
         folder.fileTitle=[dic objectForKeyNotNull:@"fileTitle" fallback:@""];
         folder.fileName=[dic objectForKeyNotNull:@"fileName" fallback:@""];
         folder.filePath=[dic objectForKeyNotNull:@"filePath" fallback:@""];
-        folder.fileStatus=[[dic objectForKeyNotNull:@"fileStatus" fallback:@"0"]integerValue];
+        folder.placeStatus=[[dic objectForKeyNotNull:@"placeStatus" fallback:@"0"]integerValue];
         folder.isDirectory=[[dic objectForKeyNotNull:@"isDirectory" fallback:[NSNumber numberWithBool:NO]] boolValue];
         folder.fileType=[[dic objectForKeyNotNull:@"fileType" fallback:@"0"]integerValue];
         folder.size=[[dic objectForKeyNotNull:@"size" fallback:@"0"] integerValue];
@@ -627,7 +620,7 @@ static BOOL isShowWifi =NO;
     folder.fileTitle=[fileDict objectForKeyNotNull:@"fileTitle" fallback:@""];
     folder.fileName=[fileDict objectForKeyNotNull:@"fileName" fallback:@""];
     folder.filePath=[fileDict objectForKeyNotNull:@"filePath" fallback:@""];
-    folder.fileStatus=[[fileDict objectForKeyNotNull:@"fileStatus" fallback:@"0"]integerValue];
+    folder.placeStatus=[[fileDict objectForKeyNotNull:@"placeStatus" fallback:@"0"]integerValue];
     folder.isDirectory=[[fileDict objectForKeyNotNull:@"isDirectory" fallback:[NSNumber numberWithBool:NO]] boolValue];
     folder.fileType=[[fileDict objectForKeyNotNull:@"fileType" fallback:@"0"]integerValue];
     folder.size=[[fileDict objectForKeyNotNull:@"size" fallback:@"0"] integerValue];
@@ -644,7 +637,7 @@ static BOOL isShowWifi =NO;
     [folderDic setValue:fileDto.fileName forKeyPath:@"fileName"];
     [folderDic setValue:fileDto.filePath forKeyPath:@"filePath"];
     [folderDic setValue:fileDto.fileTitle forKeyPath:@"fileTitle"];
-    [folderDic setValue:[NSNumber numberWithInteger:fileDto.fileStatus] forKey:@"fileStatus"];
+    [folderDic setValue:[NSNumber numberWithInteger:fileDto.placeStatus] forKey:@"placeStatus"];
     [folderDic setValue:[NSNumber numberWithBool:fileDto.isDirectory] forKeyPath:@"isDirectory"];
     [folderDic setValue:[NSNumber numberWithInteger:fileDto.fileType] forKeyPath:@"fileType"];
     [folderDic setValue:[NSNumber numberWithLongLong:fileDto.size] forKeyPath:@"size"];
@@ -817,7 +810,6 @@ static BOOL isShowWifi =NO;
     
     [itemDict setObject:[NSNumber numberWithInteger:CATransferStatusDid] forKey:@"tranferStatus"];
     NSString * didStr=nil;
-    CATransferHelper * transferHelper=[CATransferHelper sharedInstance];
     if ([doWay isEqualToString:Do_Download_Request]) {
         didStr=Plist_Name_Downloaded;
     }else{

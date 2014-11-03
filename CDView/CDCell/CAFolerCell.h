@@ -10,7 +10,7 @@
 #import "EGOImageView.h"
 #import "OCFileDto.h"
 @protocol CAFolerCellDelegate;
-@interface CAFolerCell : UITableViewCell
+@interface CAFolerCell : UITableViewCell<EGOImageViewDelegate>
 @property (strong, nonatomic) IBOutlet EGOImageView *mainImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *statusImageView;
 @property (strong, nonatomic) IBOutlet UILabel *mainTitleLabel;

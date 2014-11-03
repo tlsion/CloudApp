@@ -66,6 +66,9 @@
     }
     return self;
 }
+-(void)dealloc  {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSNOTIFICATION_NAME_UPDATE_STATUS object:nil];
+}
 -(void)customNavigationBar{
     if (_az_isRootPath) {
         UIImageView  * logoImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"左上角LOGO.png"]];
@@ -142,6 +145,7 @@
     
     [self customNavigationBar];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFoldersDataReloadData) name:NSNOTIFICATION_NAME_UPDATE_STATUS object:nil];
     userDefaults =[NSUserDefaults standardUserDefaults];
     
     if (!_az_folderPath) _az_folderPath=@"";
@@ -277,11 +281,11 @@
 }
 
 -(void)downloadFileDto:(OCFileDto *)fileDto {
-    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileDto.fileName];
+//    NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileDto.fileName];
     
     
     __weak AppDelegate * app=APP;
-    [CADataHelper downloadFile:path downloadFileName:fileDto.fileName willStart:^{
+   [CADataHelper downloadFileDto:fileDto willStart:^{
         //        [app.window makeToast:@"添加至下载列表"];
     }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
         
@@ -289,8 +293,8 @@
     } successRequest:^(NSString *downPath) {
         //        [app.window makeToast:@"下载成功"];
         
-        [CADataHelper updatePlaseFileStatusWithStatus:1 andFileDto:fileDto];
-        [self getFoldersDataReloadData];
+        [CADataHelper updatePlaseFileStatusWithStatus:CAPlaceStutusDownload andFileDto:fileDto];
+//        [self getFoldersDataReloadData];
     } failureRequest:^(NSError *error) {
         [app.window makeToast:@"下载失败"];
     }];
@@ -421,7 +425,7 @@
         selectItemDto=itemDto;
         
         BOOL needDelete=YES;
-        if (itemDto.isDirectory || itemDto.fileStatus==1) {
+        if (itemDto.isDirectory || itemDto.placeStatus==CAPlaceStutusDownload || itemDto.placeStatus==CAPlaceStutusUpload) {
             needDelete=NO;
         }
         [[CAGlobalData shared].az_mainTab showFileTabbar:isSelect andNeedDelete:needDelete];
@@ -877,7 +881,7 @@
 
 }
 -(void)videoFinished{
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
 }
 
 -(void)openDocument:(OCFileDto *)fileDto{
@@ -886,12 +890,12 @@
         [self openDocumentWithFileDto:fileDto];
     }
     else{
-        NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileDto.fileName];
+//        NSString * path=[NSString stringWithFormat:@"%@%@",_az_folderPath,fileDto.fileName];
         
         
         __weak AppDelegate * app=APP;
         [app.window makeToastActivity];
-        [CADataHelper downloadFile:path downloadFileName:fileDto.fileName willStart:^{
+        [CADataHelper downloadFileDto:fileDto willStart:^{
             //        [app.window makeToast:@"添加至下载列表"];
         }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
             
@@ -900,8 +904,7 @@
             [app.window hideToastActivity];
             
             
-            [CADataHelper updatePlaseFileStatusWithStatus:1 andFileDto:fileDto];
-            [self getFoldersDataReloadData];
+            [CADataHelper updatePlaseFileStatusWithStatus:CAPlaceStutusDownload andFileDto:fileDto];
             
             [self openDocumentWithFileDto:fileDto];
         } failureRequest:^(NSError *error) {

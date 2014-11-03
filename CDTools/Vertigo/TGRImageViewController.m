@@ -51,6 +51,7 @@
     [super viewDidLoad];
     
     [self.singleTapGestureRecognizer requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
+    self.imageView.delegate=self;
     if (self.image) {
         self.imageView.image = self.image;
     }
@@ -125,6 +126,7 @@
 
 
 - (void)imageViewLoadedImage:(EGOImageView*)imageView{
+    [CADataHelper updatePlaseFileStatusWithStatus:CAPlaceStutusDownload andFileDto:self.imageDto];
     [self.view hideToastActivity];
 }
 
@@ -132,5 +134,6 @@
     [self.view makeToast:@"下载失败"];
     [self.view hideToastActivity];
 }
+
 
 @end

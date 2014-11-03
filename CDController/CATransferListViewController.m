@@ -297,6 +297,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
         //            NSLog(@"fileName:%@",item.fileName);
         //        }
         [CADataHelper deletePlaceFileDto:item andPlistName:plistName];
+        [CADataHelper updatePlaseFileStatusWithStatus:CAPlaceStutusDefault andFileDto:item];
         
         
         //        删除单元格的某一行时，在用动画效果实现删除过程
@@ -314,62 +315,63 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
     return @"删除";
 }
--(void)playAndPauseAction:(UIButton *)sender{
-    CATransferCell *cell=(CATransferCell *)sender.superview.superview.superview;
-    
-    CATransferListCode code=cell.tag;
-    NSInteger row=sender.tag;
-    
-    if (sender.selected==NO) {
-        OCFileDto * item=nil;
-        switch (code) {
-            case CATransferListCodeDownloading:{
-                item=downloadingFiles[row];
-                
-                [self downloadFile:item];
-            }
-                break;
-                
-            case CATransferListCodeUploading:{
-                item=downloadingFiles[row];
-                
-                NSData* fileData = [NSData dataWithContentsOfFile:[CADataHelper filePath:item.fileTitle]];
-                [self uploadFile:item andData:fileData];
-            }
-                break;
-                
-            default:
-                break;
-        }
-    }
-    else{
-        
-    }
-    
-    
-}
--(void)downloadFile:(OCFileDto *)item {
-    NSString * fileName=item.fileTitle;
-    NSString * filePath=item.filePath;
-    filePath = [filePath stringByReplacingOccurrencesOfString:RemoteWebdav withString:@""];
-    filePath =[filePath stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"/%@",item.fileName] withString:@""];
-    NSLog(@"path:%@,file:%@",filePath,fileName);
-    NSString * path=[NSString stringWithFormat:@"%@%@",filePath,fileName];
-    
-    //    __weak CATransferListViewController * controller=self;
-    
-    [CADataHelper downloadFile:path downloadFileName:fileName willStart:^{
-        //        [controller.view makeToast:@"已加入下载列表"];
-    }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
-        
-        NSLog(@"下载：%ld",bytesRead);
-    } successRequest:^(NSString *downPath) {
-        //        [controller.view makeToast:@"下载成功"];
-    } failureRequest:^(NSError *error) {
-        //        [controller.view makeToast:@"下载失败"];
-    }];
-    
-}
+//-(void)playAndPauseAction:(UIButton *)sender{
+//    CATransferCell *cell=(CATransferCell *)sender.superview.superview.superview;
+//    
+//    CATransferListCode code=cell.tag;
+//    NSInteger row=sender.tag;
+//    
+//    if (sender.selected==NO) {
+//        OCFileDto * item=nil;
+//        switch (code) {
+//            case CATransferListCodeDownloading:{
+//                item=downloadingFiles[row];
+//                
+//                [self downloadFile:item];
+//            }
+//                break;
+//                
+//            case CATransferListCodeUploading:{
+//                item=downloadingFiles[row];
+//                
+//                NSData* fileData = [NSData dataWithContentsOfFile:[CADataHelper filePath:item.fileTitle]];
+//                [self uploadFile:item andData:fileData];
+//            }
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//    }
+//    else{
+//        
+//    }
+//    
+//    
+//}
+//-(void)downloadFile:(OCFileDto *)item {
+//    NSString * fileName=item.fileTitle;
+//    NSString * filePath=item.filePath;
+//    filePath = [filePath stringByReplacingOccurrencesOfString:RemoteWebdav withString:@""];
+//    filePath =[filePath stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"/%@",item.fileName] withString:@""];
+////    NSLog(@"path:%@,file:%@",filePath,fileName);
+////    NSString * path=[NSString stringWithFormat:@"%@%@",filePath,fileName];
+//    
+//    //    __weak CATransferListViewController * controller=self;
+//    
+//    [CADataHelper downloadFileDto:item willStart:^{
+//        
+//        //        [controller.view makeToast:@"已加入下载列表"];
+//    }progressDownload:^(NSUInteger bytesRead, long long totalBytesRead, long long totalExpectedBytesRead) {
+//        
+//        NSLog(@"下载：%ld",bytesRead);
+//    } successRequest:^(NSString *downPath) {
+//        //        [controller.view makeToast:@"下载成功"];
+//    } failureRequest:^(NSError *error) {
+//        //        [controller.view makeToast:@"下载失败"];
+//    }];
+//    
+//}
 -(void)uploadFile:(OCFileDto *)item andData:(NSData *)fileData {
     NSString * fileName=item.fileTitle;
     NSString * filePath=item.filePath;

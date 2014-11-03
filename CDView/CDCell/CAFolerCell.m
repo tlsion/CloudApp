@@ -16,6 +16,7 @@
 {
     // Initialization code
     self.mainImageView.placeholderImage=[UIImage imageNamed:@"预览小图.png"];
+    self.mainImageView.delegate=self;
 //    self.longPressGesture.minimumPressDuration=0.5;
 }
 
@@ -74,8 +75,11 @@
             break;
     }
     
-    if (itemDto.fileStatus==1) {
+    if (itemDto.placeStatus==CAPlaceStutusDownload) {
         self.statusImageView.image=[UIImage imageNamed:@"下载.png"];
+    }
+    else if (itemDto.placeStatus==CAPlaceStutusUpload) {
+        self.statusImageView.image=[UIImage imageNamed:@"下载2.png"];
     }
     else{
         self.statusImageView.image=nil;
@@ -86,5 +90,13 @@
     self.mainTitleLabel.text=itemDto.fileTitle;
     
     self.timeLabel.text=[NSDate getTimeWithTimeInterval:itemDto.date];
+}
+
+
+- (void)imageViewLoadedImage:(EGOImageView*)imageView{
+    [CADataHelper updatePlaseFileStatusWithStatus:CAPlaceStutusDownload andFileDto:self.itemDto];
+}
+- (void)imageViewFailedToLoadImage:(EGOImageView*)imageView error:(NSError*)error{
+    
 }
 @end

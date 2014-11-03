@@ -137,15 +137,15 @@
 -(void)showTabbar:(BOOL)show
 {
     [UIView animateWithDuration:0.5 animations:^{
-    if (show) {
-//        _tabbarView.left = 0;
-        _tabbarView.bottom=SCREEN_MAX_HEIGHT;
-    }
-    else
-    {
-        _tabbarView.bottom=SCREEN_MAX_HEIGHT+49;
-//        _tabbarView.left = -SCREEN_MAX_WIDTH;
-    }
+        if (show) {
+    //        _tabbarView.left = 0;
+            _tabbarView.bottom=SCREEN_MAX_HEIGHT;
+        }
+        else
+        {
+            _tabbarView.bottom=SCREEN_MAX_HEIGHT+49;
+    //        _tabbarView.left = -SCREEN_MAX_WIDTH;
+        }
     }];
 //    [self _resizeView:show];
 }

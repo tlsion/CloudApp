@@ -27,7 +27,7 @@
 //
 // Allows the user to view an image in full screen and double tap to zoom it.
 // The view controller can be dismissed with a single tap.
-@interface TGRImageViewController : UIViewController
+@interface TGRImageViewController : UIViewController<EGOImageViewDelegate>
 
 // The scroll view used for zooming.
 @property (retain, nonatomic) IBOutlet UIScrollView *scrollView;

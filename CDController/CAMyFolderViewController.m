@@ -39,7 +39,7 @@
 #define ASSET_PICKER_VIDEO_TAG @"ALAssetTypeVideo"
 #define MaximumNumberOfSelection 10
 
-@interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate,UIViewControllerTransitioningDelegate,UIDocumentInteractionControllerDelegate>
+@interface CAMyFolderViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,BottonOperateDelegate,CAFolerCellDelegate,CTAssetsPickerControllerDelegate,UIViewControllerTransitioningDelegate,UIDocumentInteractionControllerDelegate,UITextFieldDelegate>
 {
     UIAlertView * addFolderAlertView ;
     NSUserDefaults * userDefaults;
@@ -486,6 +486,12 @@
     selectItemDto=nil;
     [[CAGlobalData shared].az_mainTab showFileTabbar:NO andNeedDelete:YES];
 }
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    if (textField.tag==100) {
+        [textField selectAll:self];
+    }
+}
 #pragma mark -- alertView
 - (UIAlertView*)addFolderAlertView {
     if (!addFolderAlertView) {
@@ -513,6 +519,8 @@
     av.tag=AV_RENAME_TAG;
     av.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField * alertTextField = [av textFieldAtIndex:0];
+    alertTextField.delegate=self;
+    alertTextField.tag=100;
     alertTextField.clearButtonMode=UITextFieldViewModeAlways;
     alertTextField.keyboardType = UIKeyboardTypeDefault;
     alertTextField.text = editingName;

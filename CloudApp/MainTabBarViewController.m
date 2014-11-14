@@ -220,7 +220,7 @@
 //    CATransferListViewController * vc2=[[CATransferListViewController alloc]init];
 //    [vc2 setTitle:@"传输列表"];
 //    CAMoreViewController * vc3=[[CAMoreViewController alloc]init];
-    aq_folderBottomOperateBgView=[ViewUtils loadViewWithViewClass:[CAFolderOperateView class]];
+    aq_folderBottomOperateBgView=[ViewUtils loadViewFromNib:@"CAFolderOperateView"];
     aq_folderBottomOperateBgView.frame=CGRectMake(0, SCREEN_MAX_HEIGHT, 320, 49);
     aq_folderBottomOperateBgView.delegate=self;
     [self.view addSubview:aq_folderBottomOperateBgView];

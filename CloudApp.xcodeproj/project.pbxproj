@@ -15,6 +15,8 @@
 		15B8722619FA59480043E920 /* TGRImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15B8721E19FA59480043E920 /* TGRImageViewController.xib */; };
 		15B8722719FA59480043E920 /* TGRImageZoomAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */; };
 		15B8722819FA59480043E920 /* UIImage+AspectFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B8722219FA59480043E920 /* UIImage+AspectFit.m */; };
+		15B9A4631A15AC6500A0D648 /* download-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B9A4611A15AC6500A0D648 /* download-logo@2x.png */; };
+		15B9A4641A15AC6500A0D648 /* upload-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B9A4621A15AC6500A0D648 /* upload-logo@2x.png */; };
 		DD33837C19D8295000B2C4D2 /* MVHTTPService.m in Sources */ = {isa = PBXBuildFile; fileRef = DD33837B19D8295000B2C4D2 /* MVHTTPService.m */; };
 		DD41DCCB19AE12CF00B96439 /* CAMoveFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41DCC919AE12CF00B96439 /* CAMoveFolderViewController.m */; };
 		DD41DCCC19AE12CF00B96439 /* CAMoveFolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD41DCCA19AE12CF00B96439 /* CAMoveFolderViewController.xib */; };
@@ -246,6 +248,8 @@
 		15B8722019FA59480043E920 /* TGRImageZoomAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGRImageZoomAnimationController.m; sourceTree = "<group>"; };
 		15B8722119FA59480043E920 /* UIImage+AspectFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AspectFit.h"; sourceTree = "<group>"; };
 		15B8722219FA59480043E920 /* UIImage+AspectFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AspectFit.m"; sourceTree = "<group>"; };
+		15B9A4611A15AC6500A0D648 /* download-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "download-logo@2x.png"; sourceTree = "<group>"; };
+		15B9A4621A15AC6500A0D648 /* upload-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload-logo@2x.png"; sourceTree = "<group>"; };
 		DD33837A19D8295000B2C4D2 /* MVHTTPService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVHTTPService.h; sourceTree = "<group>"; };
 		DD33837B19D8295000B2C4D2 /* MVHTTPService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MVHTTPService.m; sourceTree = "<group>"; };
 		DD41DCC819AE12CF00B96439 /* CAMoveFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMoveFolderViewController.h; sourceTree = "<group>"; };
@@ -647,6 +651,8 @@
 		DD5DEE9B1985FAF4006C49BD /* CDImage */ = {
 			isa = PBXGroup;
 			children = (
+				15B9A4611A15AC6500A0D648 /* download-logo@2x.png */,
+				15B9A4621A15AC6500A0D648 /* upload-logo@2x.png */,
 				15B5916119C66E0B00F36311 /* 选中(未选中)@2x.png */,
 				DDBB88B119A4E7750047B142 /* 文件-其他_2_4@2x.png */,
 				DDBB88B219A4E7750047B142 /* 文件-压缩_2_4@2x.png */,
@@ -1448,6 +1454,7 @@
 				DD5DEEE61985FAF4006C49BD /* 操作按钮底部@2x.png in Resources */,
 				DD5DEEF11985FAF4006C49BD /* 编辑-删除@2x.png in Resources */,
 				DD5DEEED1985FAF4006C49BD /* 欢迎画面@2x.png in Resources */,
+				15B9A4641A15AC6500A0D648 /* upload-logo@2x.png in Resources */,
 				DD5DEEF01985FAF4006C49BD /* 移动@2x.png in Resources */,
 				DDC64A9019889E4B00241B83 /* tab_icon3_select@2x.png in Resources */,
 				DDA813721987A437004E997B /* 顶部蓝条64@2x.png in Resources */,
@@ -1459,6 +1466,7 @@
 				DD5DEEF71985FAF4006C49BD /* 选中@2x.png in Resources */,
 				DDBB88BB19A4E7750047B142 /* 文件-文件夹_2_4@2x.png in Resources */,
 				DD5DEEFB1985FAF4006C49BD /* 预览小图@2x.png in Resources */,
+				15B9A4631A15AC6500A0D648 /* download-logo@2x.png in Resources */,
 				DD5DEED51985FAF4006C49BD /* 传输列表右（选中）@2x.png in Resources */,
 				DDA96308198A0D1800A5B5A1 /* CARegisterViewController.xib in Resources */,
 				DDC64A991988AA5F00241B83 /* CAFolerCell.xib in Resources */,
@@ -1736,8 +1744,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Weihua Yao (BJBV9H3E3G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Weihua Yao (BJBV9H3E3G)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1748,7 +1756,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "84762A9A-4FBD-40FE-AD1C-5EE5723B0C16";
+				PROVISIONING_PROFILE = "cff4e48c-790a-42ea-92e8-decf64867f7b";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1758,8 +1766,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Weihua Yao (BJBV9H3E3G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Weihua Yao (BJBV9H3E3G)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1770,7 +1778,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "84762A9A-4FBD-40FE-AD1C-5EE5723B0C16";
+				PROVISIONING_PROFILE = "cff4e48c-790a-42ea-92e8-decf64867f7b";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -76,10 +76,10 @@
     }
     
     if (itemDto.placeStatus==CAPlaceStutusDownload) {
-        self.statusImageView.image=[UIImage imageNamed:@"下载.png"];
+        self.statusImageView.image=[UIImage imageNamed:@"download-logo.png"];
     }
     else if (itemDto.placeStatus==CAPlaceStutusUpload) {
-        self.statusImageView.image=[UIImage imageNamed:@"下载2.png"];
+        self.statusImageView.image=[UIImage imageNamed:@"upload-logo.png"];
     }
     else{
         self.statusImageView.image=nil;

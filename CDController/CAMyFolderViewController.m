@@ -484,7 +484,12 @@
     [_itemsTableView reloadData];
     
     selectItemDto=nil;
+    
     [[CAGlobalData shared].az_mainTab showFileTabbar:NO andNeedDelete:YES];
+//    if (self.navigationController.viewControllers.count <= 2) {
+//        [[CAGlobalData shared].az_mainTab showFileTabbar:NO andNeedDelete:YES];
+//    }else{
+//    }
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
@@ -935,7 +940,7 @@
             
             CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
             controller.itemDto=fileDto;
-            controller.title=fileDto.fileName;
+            controller.title=fileDto.fileTitle;
             CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
             [self presentViewController:nController animated:YES completion:nil];
             

@@ -273,7 +273,7 @@ static BOOL isShowWifi =NO;
             
             CATransferHelper * transferHelper=[CATransferHelper sharedInstance];
             NSMutableArray * doingFolders=[transferHelper uploadingFiles];
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",fileName];
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",uFileDto.fileTitle];
             
             NSArray * matches = [doingFolders filteredArrayUsingPredicate:predicate];
             if (matches.count > 0) {
@@ -353,7 +353,7 @@ static BOOL isShowWifi =NO;
         }
         
         
-        [self didFileRequestWithWay:Do_Upload_Request fileName:fileName];
+        [self didFileRequestWithWay:Do_Upload_Request fileTitle:uFileDto.fileTitle];
         
         successRequest(localPath);
         [[NSNotificationCenter defaultCenter] postNotificationName:NSNOTIFICATION_NAME_TRANSFER_CHANGE object:nil userInfo:@{@"status": [NSNumber numberWithInteger:CATransferTypeDidUploaded]}];
@@ -393,7 +393,7 @@ static BOOL isShowWifi =NO;
     
     NSString *folderPath = [self getCachesPathOfFolderName:Caches_CloudApp]; // Get documents folder
     
-    NSString * randomStr=[NSString stringWithFormat:@"/%@",dFileDto.fileName];
+    NSString * randomStr=[NSString stringWithFormat:@"/%@",dFileDto.fileTitle];
     NSString *localPath = [folderPath stringByAppendingString:randomStr];
    
     
@@ -418,7 +418,7 @@ static BOOL isShowWifi =NO;
             
             CATransferHelper * transferHelper=[CATransferHelper sharedInstance];
             NSMutableArray * doingFolders=[transferHelper downloadingFiles];
-                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",dFileDto.fileName];
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"fileTitle == %@",dFileDto.fileTitle];
                 
                 NSArray * matches = [doingFolders filteredArrayUsingPredicate:predicate];
                 if (matches.count > 0) {
@@ -480,7 +480,6 @@ static BOOL isShowWifi =NO;
         dFileDto.tranferStatus=CATransferStatusDid;
         
         NSPredicate * operationPredicate = [NSPredicate predicateWithFormat:@"filePath == %@ && fileName == %@",dFileDto.filePath,dFileDto.fileName];
-        
         NSMutableArray * downloadOperations=[CADataHelper getPlistItemsOfName:Plist_Name_Downloaded];
         NSArray * operationMatches = [downloadOperations filteredArrayUsingPredicate:operationPredicate];
         
@@ -492,7 +491,7 @@ static BOOL isShowWifi =NO;
         
         //下载完成操作
         
-        [self didFileRequestWithWay:Do_Download_Request fileName:dFileDto.fileName];
+        [self didFileRequestWithWay:Do_Download_Request fileTitle:dFileDto.fileTitle];
         
         
         successRequest(localPath);
@@ -754,7 +753,8 @@ static BOOL isShowWifi =NO;
 }
 
 //fromDownloadingPlistToDownloadedPlist
-+(void)didFileRequestWithWay:(NSString *)doWay fileName:(NSString *)fileName{
+
++(void)didFileRequestWithWay:(NSString *)doWay fileTitle:(NSString *)fileName{
     NSString * doingStr=nil;
     NSMutableArray * plistFolders=nil;
     NSString * didStr=nil;

@@ -11,25 +11,25 @@
 
 @implementation TXSize
 +(NSString *)getFileSize:(long long)size{
-    long sizeB=size/SizeUnit;
+    long long sizeB=size/SizeUnit;
     if (sizeB>SizeUnit) {
-        long sizeKB=sizeB/SizeUnit;
+        long long sizeKB=sizeB/SizeUnit;
         if (sizeKB>SizeUnit) {
-            long sizeG=sizeKB/SizeUnit;
+            long long sizeG=sizeKB/SizeUnit;
             if (sizeG>SizeUnit) {
-                long sizeT=sizeG/SizeUnit;
-                return [NSString stringWithFormat:@"%ld t",sizeT];
+                long long sizeT=sizeG/SizeUnit;
+                return [NSString stringWithFormat:@"%lld t",sizeT];
             }
             else{
-                return [NSString stringWithFormat:@"%ld g",sizeG];
+                return [NSString stringWithFormat:@"%lld g",sizeG];
             }
         }
         else{
-            return [NSString stringWithFormat:@"%ld kb",sizeKB];
+            return [NSString stringWithFormat:@"%lld kb",sizeKB];
         }
     }
     else{
-         return [NSString stringWithFormat:@"%ld b", sizeB];
+         return [NSString stringWithFormat:@"%lld b", sizeB];
     }
 }
 @end

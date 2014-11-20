@@ -383,7 +383,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
     //    __weak CAMyFolderViewController * controller=self;
     [CADataHelper uploadFile:path uploadFileName:fileName fileData:fileData willStart:^{
     }progressUpload:^(NSUInteger bytesWrite, long long totalBytesWrite, long long totalExpectedBytesWrite) {
-        NSLog(@"上传：%ld",bytesWrite);
+//        NSLog(@"上传：%ld",bytesWrite);
     }successRequest:^{
         //        [controller.view makeToast:@"上传成功"];
     } failureRequest:^(NSError * error) {
@@ -470,7 +470,7 @@ typedef NS_ENUM(NSInteger, CATransferListCode) {
             
             CAShowFileViewController * controller=[[CAShowFileViewController alloc]init];
             controller.itemDto=fileDto;
-            controller.title=fileDto.fileName;
+            controller.title=fileDto.fileTitle;
             CABaseNavigationController * nController=[[CABaseNavigationController alloc]initWithRootViewController:controller];
             [self presentViewController:nController animated:YES completion:nil];
             

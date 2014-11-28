@@ -856,7 +856,8 @@ static BOOL isShowWifi =NO;
 }
 + (NSString *)getCachesPathOfFolderName:(NSString *)name
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     //获取完整路径
     NSString *pathDirectory = [NSString stringWithFormat:@"%@/%@/%@/%@",[paths objectAtIndex:0],[[NSUserDefaults standardUserDefaults] objectForKey:User_Domain],[[NSUserDefaults standardUserDefaults] objectForKey:User_UserName],name];
     BOOL isDir = NO;
@@ -884,7 +885,7 @@ static BOOL isShowWifi =NO;
     NSString * serverUrl=[NSString stringWithFormat:@"%@/%@",[self serviceUrl],remotePath];
     serverUrl = [serverUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSLog(@"serverUrl:%@",serverUrl);
+//    NSLog(@"serverUrl:%@",serverUrl);
     return serverUrl;
 }
 //获取文件的服务器url

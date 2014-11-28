@@ -504,11 +504,11 @@
         addFolderAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
         UITextField * alertTextField = [addFolderAlertView textFieldAtIndex:0];
         alertTextField.clearButtonMode=UITextFieldViewModeAlways;
-        alertTextField.text=@"新建文件夹";
-        alertTextField.clearButtonMode=UITextFieldViewModeAlways;
         alertTextField.keyboardType = UIKeyboardTypeDefault;
         alertTextField.placeholder = @"新建文件夹";
     }
+    [[addFolderAlertView textFieldAtIndex:0] setText:@"新建文件夹"];
+    
     return addFolderAlertView;
 }
 -(UIAlertView *)rechristenAlerView{
